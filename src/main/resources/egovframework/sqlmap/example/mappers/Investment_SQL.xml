@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.investment.service.impl.InvestmentMapper">
+
+	<select id="selectInvestmentList" resultType="egovframework.example.investment.service.InvestmentDTO">
+        SELECT 
+            ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
+            COMMISSION, CURRENCY, EXCHANGE, BUY_DATE, MEMO
+        FROM INVESTMENT_LOG
+        ORDER BY BUY_DATE DESC
+    </select>
+    
+    <insert id="insertInvestment" parameterType="egovframework.example.investment.service.InvestmentDTO">
+        INSERT INTO INVESTMENT_LOG (
+            ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
+            COMMISSION, CURRENCY, EXCHANGE, MEMO
+        ) VALUES (
+            #{assetName}, #{txType}, #{buyPrice}, #{quantity}, 
+            #{commission}, #{currency}, #{exchange}, #{memo}
+        )
+    </insert>
+</mapper>

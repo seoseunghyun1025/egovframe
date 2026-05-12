@@ -17,7 +17,6 @@ public class InvestmentDTO implements Serializable {
     private String buyDate;
     private String memo;
 
-    // Getter와 Setter를 생성하세요 (Alt + Shift + S -> Generate Getters and Setters)
     
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
