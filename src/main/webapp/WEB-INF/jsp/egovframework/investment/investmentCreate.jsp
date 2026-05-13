@@ -1,10 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>투자 등록</title>
-    <link rel="stylesheet" href="../css/egovframework/investment/investment.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/egovframework/investment/investment.css">
     <style>
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
@@ -60,16 +62,17 @@
 
         <div class="btn-box">
             <button type="submit" class="btn-save">저장하기</button>
-            <button type="button" class="btn-cancel" onclick="location.href='investmentList.html'">취소</button>
+            <button type="button" class="btn-cancel" onclick="location.href='${pageContext.request.contextPath}/investments/investmentList.do'">취소</button>
         </div>
     </form>
 </div>
 
 <script>
-    document.getElementById('investmentForm').addEventListener('submit', async (e) => {
-        e.preventDefault(); // 폼 제출 기본 동작(새로고침) 방지
+    const ctx = '${pageContext.request.contextPath}';
 
-        // 1. 데이터 수집 (DTO 필드명과 100% 일치)
+    document.getElementById('investmentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
         const formData = {
             assetName: document.getElementById('assetName').value,
             txType: document.getElementById('txType').value,
@@ -82,21 +85,20 @@
             exchange: document.getElementById('exchange').value
         };
 
-        console.log("전송 데이터:", formData);
-
         try {
-            // 2. 서버로 POST 요청 (async/await)
-            const response = await fetch('/Study/investments', {
+            // 사수님이 정해주신 데이터 저장 API 주소
+            const response = await fetch(ctx + '/investments/insertInvestment.do', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData) // JSON 직렬화
+                body: JSON.stringify(formData)
             });
 
             if (response.ok) {
                 alert('등록에 성공했습니다!');
-                location.href = 'investmentList.html'; // 목록으로 이동
+                // 저장 성공 후 리스트 화면(.do)으로 이동
+                location.href = ctx + '/investments/investmentList.do';
             } else {
                 const errorText = await response.text();
                 throw new Error(errorText || '등록 실패');
