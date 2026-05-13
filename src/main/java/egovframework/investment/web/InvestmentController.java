@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentService;
+import egovframework.investment.service.InvestmentSummaryDTO;
 import jakarta.annotation.Resource;
 
 @RestController
@@ -34,5 +35,11 @@ public class InvestmentController {
     	investmentService.insertInvestment(dto);
     	
     	return ResponseEntity.status(201).body("Investment record created success");
+    }
+    
+    @GetMapping("/portfolio")
+    public ResponseEntity<List<InvestmentSummaryDTO>> getPortfolio() throws Exception {
+        List<InvestmentSummaryDTO> summaryList = investmentService.selectInvestmentSummary();
+        return ResponseEntity.ok(summaryList);
     }
 }

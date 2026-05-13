@@ -10,5 +10,5 @@ public interface InvestmentService {
     void insertInvestment(InvestmentDTO dto) throws Exception;
     
     //종목별 투자 요약(평단가 등) 조회
-    List<InvestmentDTO> selectInvestmentSummary() throws Exception;
+    List<InvestmentSummaryDTO> selectInvestmentSummary() throws Exception;
 }

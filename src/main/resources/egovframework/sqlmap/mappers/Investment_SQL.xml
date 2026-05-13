@@ -28,7 +28,7 @@
     <insert id="insertInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
         INSERT INTO INVESTMENT_LOG (
             ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
-            COMMISSION, CURRENCY, EXCHANGE, MEMO
+            COMMISSION, CURRENCY, EXCHANGE, BUY_DATE, MEMO
         ) VALUES (
             #{assetName}, #{txType}, #{buyPrice}, #{quantity}, 
             #{commission}, #{currency}, #{exchange}, 
@@ -44,12 +44,12 @@
         )
     </insert>
     
-    <select id="selectInvestmentSummary" resultMap="investmentMap">
-		SELECT
-			ASSET_NAME,
-			SUM(QUANTITY) as QUANTITY, 
-			SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) as BUY_PRICE 
-		FROM INVESTMENT_LOG
-		GROUP BY ASSET_NAME
-	</select>
+    <select id="selectInvestmentSummary" resultType="egovframework.investment.service.InvestmentSummaryDTO">
+    SELECT
+        ASSET_NAME          
+        AS assetName,
+        SUM(QUANTITY) AS totalQuantity, SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) AS avgPrice 
+    FROM INVESTMENT_LOG
+    GROUP BY ASSET_NAME
+</select>
 </mapper>

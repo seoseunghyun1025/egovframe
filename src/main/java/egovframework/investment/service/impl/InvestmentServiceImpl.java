@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentService;
+import egovframework.investment.service.InvestmentSummaryDTO;
 
 @Service("investmentService")
 public class InvestmentServiceImpl extends EgovAbstractServiceImpl implements InvestmentService{
@@ -27,7 +28,7 @@ public class InvestmentServiceImpl extends EgovAbstractServiceImpl implements In
 	}
 
 	@Override
-	public List<InvestmentDTO> selectInvestmentSummary() throws Exception {
+	public List<InvestmentSummaryDTO> selectInvestmentSummary() throws Exception {
 		// TODO Auto-generated method stub
 		return investmentMapper.selectInvestmentSummary();
 	}

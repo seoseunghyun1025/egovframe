@@ -31,12 +31,36 @@
     </table>
 </div>
 
-<script>
-    // 페이지 로드 시 API 호출
-    document.addEventListener('DOMContentLoaded', () => {
-        loadInvestmentData();
-    });
+<div class="container">
+    <section id="portfolioSection" style="margin-bottom: 30px;">
+        <h3>📊 종목별 보유 현황</h3>
+        <div id="portfolioList" style="display: flex; gap: 15px; flex-wrap: wrap;">
+            </div>
+    </section>
 
+    <hr>
+
+    <section id="listSection" style="margin-top: 30px;">
+        <h3>📜 전체 투자 내역</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>종목명</th>
+                    <th>구분</th>
+                    <th>단가</th>
+                    <th>수량</th>
+                    <th>날짜</th>
+                    <th>메모</th>
+                </tr>
+            </thead>
+            <tbody id="investmentTableBody">
+                </tbody>
+        </table>
+    </section>
+</div>
+
+<script>
     async function loadInvestmentData() {
         // Context Path(/Study)를 포함한 API 경로
         // VS Code Live Server 사용 시: 'http://localhost:8080/Study/investments'
@@ -87,6 +111,41 @@
             </tr>
         `).join('');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    loadInvestmentData();  // 기존 목록 호출
+    loadPortfolioSummary(); // 새로 만든 요약 호출
+});
+// [기능 1] 전체 목록 (InvestmentDTO)
+async function loadInvestmentList() {
+    try {
+        const response = await fetch('/Study/investments');
+        const data = await response.json(); // 여기서 200 OK면 데이터가 담김
+        renderTable(data);
+    } catch (e) { console.error("목록 로드 실패", e); }
+}
+
+// [기능 2] 요약 정보 (InvestmentSummaryDTO)
+async function loadPortfolioSummary() {
+    try {
+        const response = await fetch('/Study/investments/portfolio');
+        const data = await response.json(); 
+        renderPortfolio(data);
+    } catch (e) { console.error("요약 로드 실패", e); }
+}
+
+// [렌더링 2] 요약 정보 전용
+function renderPortfolio(summaryList) {
+    const container = document.getElementById('portfolioList');
+    
+    container.innerHTML = summaryList.map(item => `
+        <div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fdfdfd; min-width: 180px;">
+            <div style="font-weight: bold; font-size: 1.1em;">${item.assetName}</div>
+            <div style="color: #666; margin-top: 5px;">수량: ${item.totalQuantity}주</div>
+            <div style="color: #007bff;">평단: ${Math.round(item.avgPrice).toLocaleString()}원</div>
+        </div>
+    `).join('');
+}
 </script>
 
 </body>
