@@ -1,11 +1,13 @@
-package egovframework.example.investment.service.impl;
+package egovframework.investment.service.impl;
 
 import java.util.List;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.example.investment.service.InvestmentDTO;
-import egovframework.example.investment.service.InvestmentService;
+
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import egovframework.investment.service.InvestmentDTO;
+import egovframework.investment.service.InvestmentService;
 
 @Service("investmentService")
 public class InvestmentServiceImpl extends EgovAbstractServiceImpl implements InvestmentService{

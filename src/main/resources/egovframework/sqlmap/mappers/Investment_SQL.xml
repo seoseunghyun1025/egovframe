@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.example.investment.service.impl.InvestmentMapper">
+<mapper namespace="egovframework.investment.service.impl.InvestmentMapper">
 
-	<resultMap id="investmentMap" type="egovframework.example.investment.service.InvestmentDTO">
-        <result property="id" column="ID"/>
-        <result property="assetName" column="ASSET_NAME"/>
-        <result property="txType" column="TX_TYPE"/>
-        <result property="buyPrice" column="BUY_PRICE"/>
-        <result property="quantity" column="QUANTITY"/>
-        <result property="commission" column="COMMISSION"/>
-        <result property="currency" column="CURRENCY"/>
-        <result property="exchange" column="EXCHANGE"/>
-        <result property="buyDate" column="BUY_DATE"/>
-        <result property="memo" column="MEMO"/>
-    </resultMap>
+	<resultMap id="investmentMap" type="egovframework.investment.service.InvestmentDTO">
+    	<result property="id" column="ID"/>
+    	<result property="assetName" column="ASSET_NAME"/>
+    	<result property="txType" column="TX_TYPE"/>
+    	<result property="buyPrice" column="BUY_PRICE"/>
+    	<result property="quantity" column="QUANTITY"/>
+    	<result property="buyDate" column="BUY_DATE"/>
+    	<result property="memo" column="MEMO"/>
+    	<result property="commission" column="COMMISSION"/>
+    	<result property="currency" column="CURRENCY"/>
+    	<result property="exchange" column="EXCHANGE"/>
+	</resultMap>
     <!-- resultmap을 쓰면 snake case와 camel case를 강제로 연결시켜주는 용도 -->
 
-	<select id="selectInvestmentList" resultType="egovframework.example.investment.service.InvestmentDTO">
+	<select id="selectInvestmentList" resultMap="investmentMap">
         SELECT 
             ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
             COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
             MEMO
         FROM INVESTMENT_LOG
-        ORDER BY BUY_DATE DESC
+        ORDER BY BUY_DATE DESC, ID DESC
     </select>
     
-    <insert id="insertInvestment" parameterType="egovframework.example.investment.service.InvestmentDTO">
+    <insert id="insertInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
         INSERT INTO INVESTMENT_LOG (
             ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
             COMMISSION, CURRENCY, EXCHANGE, MEMO
         ) VALUES (
             #{assetName}, #{txType}, #{buyPrice}, #{quantity}, 
-            #{commission}, #{currency}, #{exchange}, NVL(#{buyDate}, 
+            #{commission}, #{currency}, #{exchange}, 
             <choose>
             	<when test="buyDate != null and buyDate != ''">
                 	TO_DATE(#{buyDate}, 'YYYY-MM-DD')
             	</when>
             	<otherwise>
-                	NULL
+                	SYSDATE
             	</otherwise>
         	</choose>,
             #{memo}
@@ -49,7 +49,7 @@
 			ASSET_NAME,
 			SUM(QUANTITY) as QUANTITY, 
 			SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) as BUY_PRICE 
-		FROM INVESTMENT_RECORD
+		FROM INVESTMENT_LOG
 		GROUP BY ASSET_NAME
 	</select>
 </mapper>

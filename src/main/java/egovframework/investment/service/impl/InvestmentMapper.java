@@ -1,10 +1,10 @@
-package egovframework.example.investment.service.impl;
+package egovframework.investment.service.impl;
 
 import java.util.List;
 
 import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
-import egovframework.example.investment.service.InvestmentDTO;
+import egovframework.investment.service.InvestmentDTO;
 
 @EgovMapper("investmentMapper")
 public interface InvestmentMapper {

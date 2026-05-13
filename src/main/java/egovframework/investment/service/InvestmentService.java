@@ -1,4 +1,4 @@
-package egovframework.example.investment.service;
+package egovframework.investment.service;
 
 import java.util.List;
 
