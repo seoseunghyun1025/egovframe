@@ -71,5 +71,10 @@
         </property>
     </bean>
     <!-- /For Pagination Tag -->
+    
+    <mvc:default-servlet-handler />
+
+	<mvc:resources mapping="/investment/**" location="/investment/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
 
 </beans>

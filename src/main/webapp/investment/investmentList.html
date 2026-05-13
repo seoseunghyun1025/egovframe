@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 투자 기록</title>
+    <link rel="stylesheet" href="../css/egovframework/investment/investment.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>📈 투자 내역 목록</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>종목명</th>
+                <th>구분</th>
+                <th>단가</th>
+                <th>수량</th>
+                <th>날짜</th>
+                <th>메모</th>
+            </tr>
+        </thead>
+        <tbody id="investmentTableBody">
+            <tr>
+                <td colspan="7">데이터를 불러오는 중입니다...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // 페이지 로드 시 API 호출
+    document.addEventListener('DOMContentLoaded', () => {
+        loadInvestmentData();
+    });
+
+    async function loadInvestmentData() {
+        // Context Path(/Study)를 포함한 API 경로
+        // VS Code Live Server 사용 시: 'http://localhost:8080/Study/investments'
+        // 서버에서 직접 실행 시: '/Study/investments'
+        const apiUrl = '/Study/investments'; 
+
+        try {
+            const response = await fetch(apiUrl);
+            
+            if (response.status === 204) {
+                renderTable([]);
+                return;
+            }
+
+            if (!response.ok) throw new Error('데이터 응답에 문제가 발생했습니다.');
+
+            const data = await response.json();
+            renderTable(data);
+        } catch (error) {
+            console.error('Fetch Error:', error);
+            document.getElementById('investmentTableBody').innerHTML = 
+                `<tr><td colspan="7" style="color:red; padding:20px;">서버와 통신할 수 없습니다. (API 확인 필요)</td></tr>`;
+        }
+    }
+
+    function renderTable(list) {
+        const tbody = document.getElementById('investmentTableBody');
+        
+        if (list.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7">데이터가 없습니다. 첫 투자를 시작해보세요!</td></tr>';
+            return;
+        }
+
+        // CSS 클래스(type-buy, type-sell)를 적용하여 행 생성
+        tbody.innerHTML = list.map(item => `
+            <tr>
+                <td>${item.id}</td>
+                <td><strong>${item.assetName}</strong></td>
+                <td>
+                    <span class="${item.txType === 'BUY' ? 'type-buy' : 'type-sell'}">
+                        ${item.txType}
+                    </span>
+                </td>
+                <td>${item.buyPrice.toLocaleString()}</td>
+                <td>${item.quantity}</td>
+                <td>${item.buyDate}</td>
+                <td>${item.memo || '-'}</td>
+            </tr>
+        `).join('');
+    }
+</script>
+
+</body>
+</html>
