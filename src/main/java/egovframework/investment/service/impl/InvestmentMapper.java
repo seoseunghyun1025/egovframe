@@ -18,5 +18,12 @@ public interface InvestmentMapper {
     // 3. 평단가 계산을 위한 종목별 통계 조회 (나중에 쓸 핵심 로직!)
     List<InvestmentSummaryDTO> selectInvestmentSummary() throws Exception;
     
+    // 상세보기
     InvestmentDTO selectInvestmentDetail(int id)throws Exception;
+    
+    // 수정
+    void updateInvestment(InvestmentDTO dto) throws Exception;
+    
+    // 삭제
+    void deleteInvestment(int id) throws Exception;
 }

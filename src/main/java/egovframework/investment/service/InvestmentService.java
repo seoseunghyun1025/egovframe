@@ -12,5 +12,12 @@ public interface InvestmentService {
     //종목별 투자 요약(평단가 등) 조회
     List<InvestmentSummaryDTO> selectInvestmentSummary() throws Exception;
     
+    //상세 보기
     InvestmentDTO selectInvestmentDetail(int id) throws Exception;
+    
+    //수정
+    void updateInvestment(InvestmentDTO dto) throws Exception;
+
+    //삭제
+    void deleteInvestment(int id) throws Exception;
 }

@@ -22,6 +22,7 @@
             COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
             MEMO
         FROM INVESTMENT_LOG
+        WHERE DEL_YN = 'N'
         ORDER BY BUY_DATE DESC, ID DESC
     </select>
     
@@ -51,6 +52,7 @@
         	AS assetName,
         	SUM(QUANTITY) AS totalQuantity, SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) AS avgPrice 
     	FROM INVESTMENT_LOG
+    	WHERE DEL_YN = 'N'
     	GROUP BY ASSET_NAME
     	HAVING SUM(CASE WHEN TX_TYPE = 'BUY' THEN QUANTITY ELSE -QUANTITY END) > 0
 	</select>
@@ -63,5 +65,26 @@
     	FROM INVESTMENT_LOG
     	WHERE ID = ${id}
 	</select>
+	
+	<update id="updateInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
+		UPDATE INVESTMENT_LOG
+		SET
+			ASSET_NAME = #{assetName},
+			TX_TYPE = #{txType},
+			BUY_PRICE = #{buyPrice},
+			QUANTITY = #{quantity},
+			BUY_DATE = TO_DATE(#{buyDate}, 'YYYY-MM-DD'),
+			MEMO = #{memo},
+			COMMISSION = #{commission},
+			CURRENCY = #{currency},
+			EXCHANGE = #{exchange}
+		WHERE ID = #{id}
+	</update>
+	
+	<update id="deleteInvestment" parameterType="int">
+		UPDATE INVESTMENT_LOG
+		SET DEL_YN = 'Y'
+		WHERE ID = #{id}
+	</update>
 	
 </mapper>

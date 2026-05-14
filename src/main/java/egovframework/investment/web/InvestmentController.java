@@ -94,8 +94,17 @@ public class InvestmentController {
     
     @RequestMapping(value="/regist.do", method=RequestMethod.POST)
     public String registAction(InvestmentDTO dto) throws Exception {
-        investmentService.insertInvestment(dto);
-        
+    	if (dto.getId() > 0) {
+            investmentService.updateInvestment(dto);
+        } else {
+            investmentService.insertInvestment(dto);
+        }
         return "redirect:/investments/list.do";
+    }
+    
+    @RequestMapping(value="/delete.do", method=RequestMethod.POST)
+    public String deleteAction(@RequestParam("id") int id) throws Exception{
+    	investmentService.deleteInvestment(id);
+    	return "redirect:/investments/list.do";
     }
 }
