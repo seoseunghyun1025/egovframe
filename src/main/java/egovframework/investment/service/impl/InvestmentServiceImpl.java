@@ -33,4 +33,10 @@ public class InvestmentServiceImpl extends EgovAbstractServiceImpl implements In
 		return investmentMapper.selectInvestmentSummary();
 	}
 
+	@Override
+	public InvestmentDTO selectInvestmentDetail(int id) throws Exception {
+		// TODO Auto-generated method stub
+		return investmentMapper.selectInvestmentDetail(id);
+	}
+
 }

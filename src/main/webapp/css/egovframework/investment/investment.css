@@ -17,3 +17,16 @@ th { background-color: #007bff; color: white; }
 tr:nth-child(even) { background-color: #f2f2f2; }
 .type-buy { color: red; font-weight: bold; }
 .type-sell { color: blue; font-weight: bold; }
+
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+.form-group input, .form-group select { width: 100%; padding: 8px; box-sizing: border-box; }
+.btn-box { margin-top: 20px; display: flex; gap: 10px; }
+button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; }
+.btn-save { background-color: #007bff; color: white; }
+.btn-cancel { background-color: #6c757d; color: white; }
+
+.type-buy { color: #d9534f; font-weight: bold; }
+.type-sell { color: #0275d8; font-weight: bold; }
+.summary-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fdfdfd; min-width: 180px; }

@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>나의 투자 기록</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/egovframework/investment/investment.css">
-    <style>
-        .container + .container { margin-top: 30px; }
-        .type-buy { color: #d9534f; font-weight: bold; }
-        .type-sell { color: #0275d8; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="<c:url value='/css/egovframework/investment/investment.css'/>">
 </head>
 <body>
 
@@ -18,7 +14,24 @@
     <section id="portfolioSection">
         <h3>📊 종목별 보유 현황</h3>
         <div id="portfolioList" style="display: flex; gap: 15px; flex-wrap: wrap;">
-            <p>데이터 로딩 중...</p>
+            <c:choose>
+                <c:when test="${not empty summaryList}">
+                    <c:forEach var="summary" items="${summaryList}">
+                        <div class="summary-card" 
+     onclick="location.href='<c:url value='/investments/regist.do?id=${summary.id}'/>';" 
+     style="cursor: pointer;">
+                            <div style="font-weight: bold;">${summary.assetName}</div>
+                            <div>수량: ${summary.totalQuantity}주</div>
+                            <div style="color: #007bff;">
+                                평단: <fmt:formatNumber value="${summary.avgPrice}" pattern="#,###"/>원
+                            </div>
+                        </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <p>보유 내역이 없습니다.</p>
+                </c:otherwise>
+            </c:choose>
         </div>
     </section>
 </div>
@@ -26,6 +39,11 @@
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
+        
+        <button type="button" onclick="location.href = '<c:url value='/investments/regist.do'/>';" class="btn-regist">
+                ➕ 새로운 투자 등록
+        </button>
+        
         <table>
             <thead>
                 <tr>
@@ -39,85 +57,32 @@
                 </tr>
             </thead>
             <tbody id="investmentTableBody">
-                <tr><td colspan="7">데이터 로딩 중...</td></tr>
+                <c:choose>
+                    <c:when test="${not empty list}">
+                        <c:forEach var="item" items="${list}">
+                            <tr onclick="location.href='<c:url value="/investments/regist.do"><c:param name="id" value="${item.id}"/></c:url>';" 
+    style="cursor: pointer;">
+                                <td>${item.id}</td>
+                                <td><strong>${item.assetName}</strong></td>
+                                <td>
+                                    <span class="${item.txType == 'BUY' ? 'type-buy' : 'type-sell'}">
+                                        ${item.txType}
+                                    </span>
+                                </td>
+                                <td><fmt:formatNumber value="${item.buyPrice}" pattern="#,###"/></td>
+                                <td>${item.quantity}</td>
+                                <td>${item.buyDate}</td>
+                                <td><c:out value="${item.memo}" default="-"/></td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr><td colspan="7" style="text-align:center;">투자 내역이 없습니다.</td></tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </section>
 </div>
-
-<script>
-    // JSP 변수는 여기서 딱 한 번만 사용!
-    var ctx = '<%= request.getContextPath() %>';
-
-    document.addEventListener('DOMContentLoaded', function() {
-        loadInvestmentList();
-        loadPortfolioSummary();
-    });
-
-    async function loadInvestmentList() {
-        try {
-            var response = await fetch(ctx + '/investments/selectInvestmentList.do');
-            if (response.ok) {
-                var data = await response.json();
-                renderTable(data);
-            }
-        } catch (e) { console.error(e); }
-    }
-
-    async function loadPortfolioSummary() {
-        try {
-            var response = await fetch(ctx + '/investments/selectInvestmentSummary.do');
-            if (response.ok) {
-                var data = await response.json();
-                renderPortfolio(data);
-            }
-        } catch (e) { console.error(e); }
-    }
-
-    function renderTable(list) {
-        var tbody = document.getElementById('investmentTableBody');
-        if (!list || list.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7">데이터가 없습니다.</td></tr>';
-            return;
-        }
-
-        var html = '';
-        for (var i = 0; i < list.length; i++) {
-            var item = list[i];
-            var typeClass = (item.txType === 'BUY') ? 'type-buy' : 'type-sell';
-            
-            html += '<tr>';
-            html += '<td>' + item.id + '</td>';
-            html += '<td><strong>' + item.assetName + '</strong></td>';
-            html += '<td><span class="' + typeClass + '">' + item.txType + '</span></td>';
-            html += '<td>' + item.buyPrice.toLocaleString() + '</td>';
-            html += '<td>' + item.quantity + '</td>';
-            html += '<td>' + item.buyDate + '</td>';
-            html += '<td>' + (item.memo || '-') + '</td>';
-            html += '</tr>';
-        }
-        tbody.innerHTML = html;
-    }
-
-    function renderPortfolio(summaryList) {
-        var container = document.getElementById('portfolioList');
-        if (!summaryList || summaryList.length === 0) {
-            container.innerHTML = '<p>보유 내역이 없습니다.</p>';
-            return;
-        }
-
-        var html = '';
-        for (var i = 0; i < summaryList.length; i++) {
-            var item = summaryList[i];
-            html += '<div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fdfdfd; min-width: 180px;">';
-            html += '<div style="font-weight: bold;">' + item.assetName + '</div>';
-            html += '<div>수량: ' + item.totalQuantity + '주</div>';
-            html += '<div style="color: #007bff;">평단: ' + Math.round(item.avgPrice).toLocaleString() + '원</div>';
-            html += '</div>';
-        }
-        container.innerHTML = html;
-    }
-</script>
-
 </body>
 </html>

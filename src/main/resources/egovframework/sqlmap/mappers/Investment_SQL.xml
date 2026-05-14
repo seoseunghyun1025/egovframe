@@ -45,11 +45,23 @@
     </insert>
     
     <select id="selectInvestmentSummary" resultType="egovframework.investment.service.InvestmentSummaryDTO">
-    SELECT
-        ASSET_NAME          
-        AS assetName,
-        SUM(QUANTITY) AS totalQuantity, SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) AS avgPrice 
-    FROM INVESTMENT_LOG
-    GROUP BY ASSET_NAME
-</select>
+    	SELECT
+    		MAX(ID) as id,
+        	ASSET_NAME          
+        	AS assetName,
+        	SUM(QUANTITY) AS totalQuantity, SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) AS avgPrice 
+    	FROM INVESTMENT_LOG
+    	GROUP BY ASSET_NAME
+    	HAVING SUM(CASE WHEN TX_TYPE = 'BUY' THEN QUANTITY ELSE -QUANTITY END) > 0
+	</select>
+	
+	<select id="selectInvestmentDetail" resultMap="investmentMap">
+    	SELECT
+        	ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY,
+        	TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
+        	MEMO, COMMISSION, CURRENCY, EXCHANGE
+    	FROM INVESTMENT_LOG
+    	WHERE ID = ${id}
+	</select>
+	
 </mapper>

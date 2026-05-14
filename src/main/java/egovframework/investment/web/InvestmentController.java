@@ -46,7 +46,10 @@ package egovframework.investment.web;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentService;
 import egovframework.investment.service.InvestmentSummaryDTO;
@@ -59,39 +62,40 @@ public class InvestmentController {
     @Resource(name = "investmentService")
     private InvestmentService investmentService;
     
-    @RequestMapping(value="/investmentList.do", method=RequestMethod.GET)
-    public String selectInvestmentListView() throws Exception {
-        return "investment/investmentList"; 
-    }
-    
-    @RequestMapping(value="/investmentCreate.do", method=RequestMethod.GET)
-    public String insertInvestmentView() throws Exception {
-        return "investment/investmentCreate";
-    }
-    
-    @RequestMapping(value="/selectInvestmentList.do", method=RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<List<InvestmentDTO>> selectInvestmentList() throws Exception {
+    @RequestMapping(value="/list.do", method=RequestMethod.GET)
+    public ModelAndView selectInvestmentListView() throws Exception {
+        ModelAndView mav = new ModelAndView();
+        
         List<InvestmentDTO> list = investmentService.selectInvestmentList();
-        
-        System.out.println(">>> 가져온 데이터 개수: " + (list != null ? list.size() : 0));
-        
-        return list.isEmpty() ?
-                ResponseEntity.noContent().build() :
-                ResponseEntity.ok(list);
-    }
-    
-    @RequestMapping(value="/insertInvestment.do", method=RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> insertInvestment(@RequestBody InvestmentDTO dto) throws Exception {
-        investmentService.insertInvestment(dto);
-        return ResponseEntity.status(201).body("success");
-    }
-    
-    @RequestMapping(value="/selectInvestmentSummary.do", method=RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<List<InvestmentSummaryDTO>> selectInvestmentSummary() throws Exception {
         List<InvestmentSummaryDTO> summaryList = investmentService.selectInvestmentSummary();
-        return ResponseEntity.ok(summaryList);
-    }    
+        
+        mav.addObject("list", list);
+        mav.addObject("summaryList", summaryList);
+        
+        mav.setViewName("investment/investmentList");
+        
+        System.out.println(">>> 조회된 내역 개수: " + (list != null ? list.size() : 0));
+        
+        return mav; 
+    }
+    
+    @RequestMapping(value="/regist.do", method=RequestMethod.GET)
+    public String registView(@RequestParam(value="id", required=false) Integer id, Model model) throws Exception {
+    	InvestmentDTO dto = null;
+    	
+    	if(id != null && id > 0) {
+    		dto = investmentService.selectInvestmentDetail(id);
+    	}else {
+    		dto = new InvestmentDTO();
+    	}
+    	model.addAttribute("investmentDTO", dto);
+        return "investment/investmentRegist"; 
+    }
+    
+    @RequestMapping(value="/regist.do", method=RequestMethod.POST)
+    public String registAction(InvestmentDTO dto) throws Exception {
+        investmentService.insertInvestment(dto);
+        
+        return "redirect:/investments/list.do";
+    }
 }
