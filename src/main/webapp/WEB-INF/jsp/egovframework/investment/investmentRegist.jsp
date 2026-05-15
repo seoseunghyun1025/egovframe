@@ -16,36 +16,35 @@
     	<input type="hidden" name="id" value="${investmentDTO.id}">
         <div class="form-group">
             <label>종목명</label>
-            <%-- name 속성이 DTO의 필드명과 일치해야 자동 매핑됨 --%>
-            <input type="text" name="assetName" required placeholder="예: 나스닥100">
+            <input type="text" name="assetName" value="${investmentDTO.assetName}" required placeholder="예: 나스닥100">
         </div>
         
         <div class="form-group">
             <label>거래 구분</label>
             <select name="txType">
-                <option value="BUY">매수</option>
-                <option value="SELL">매도</option>
+                <option value="BUY" <c:if test="${investmentDTO.txType == 'BUY'}">selected</c:if>>매수</option>
+                <option value="SELL"  <c:if test="${investmentDTO.txType == 'SELL'}">selected</c:if>>매도</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>단가</label>
-            <input type="number" name="buyPrice" step="0.01" required>
+            <input type="number" name="buyPrice" value="${investmentDTO.buyPrice}" step="0.01" required>
         </div>
 
         <div class="form-group">
             <label>수량</label>
-            <input type="number" name="quantity" step="0.01" required>
+            <input type="number" name="quantity" value="${investmentDTO.quantity}" step="0.01" required>
         </div>
 
         <div class="form-group">
             <label>날짜 (비워두면 오늘)</label>
-            <input type="date" name="buyDate">
+            <input type="date" value="${investmentDTO.buyDate}" name="buyDate">
         </div>
 
         <div class="form-group">
             <label>메모</label>
-            <input type="text" name="memo" placeholder="간단한 메모">
+            <input type="text" name="memo" value="${investmentDTO.memo}" placeholder="간단한 메모">
         </div>
 
         <%-- 히든 필드들도 name 값을 DTO에 맞게 설정 --%>

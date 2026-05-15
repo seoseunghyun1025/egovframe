@@ -63,7 +63,7 @@
         	TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
         	MEMO, COMMISSION, CURRENCY, EXCHANGE
     	FROM INVESTMENT_LOG
-    	WHERE ID = ${id}
+    	WHERE ID = #{id}
 	</select>
 	
 	<update id="updateInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
@@ -86,5 +86,6 @@
 		SET DEL_YN = 'Y'
 		WHERE ID = #{id}
 	</update>
+	
 	
 </mapper>
