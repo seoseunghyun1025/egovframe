@@ -116,4 +116,28 @@
       		AND ASSET_NAME = #{assetName}
 	</select>
 	
+	<select id="selectInvestmentHistoryListTotCnt" parameterType="egovframework.investment.service.InvestmentDTO" resultType="int">
+    	SELECT COUNT(*) AS totCnt
+    	FROM INVESTMENT_LOG
+    	<where> 
+    		AND DEL_YN = 'N'
+    		<if test="assetName != null and assetName != ''">
+    			AND ASSET_NAME = #{assetName}
+    		</if>
+    		
+    		<if test="memo != null and memo != ''">
+    			AND MEMO LIKE '%' || #{memo} || '%'
+    		</if>    			
+    			
+    		<if test="txType != null and txType != ''">
+    			AND TX_TYPE = #{tx_type}
+    		</if>
+    		
+    		<if test="buyPrice > 0">
+    			AND BUY_PRICE = #{buy_price}
+    		</if>
+    	</where>
+    	ORDER BY BUY_DATE DESC, ID DESC
+	</select>
+	
 </mapper>
