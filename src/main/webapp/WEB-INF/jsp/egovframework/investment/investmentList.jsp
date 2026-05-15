@@ -13,13 +13,16 @@
 <div class="container">
     <section id="portfolioSection">
         <h3>📊 종목별 보유 현황</h3>
+        <button type="button" style="margin-bottom: 20px;" onclick="location.href = '<c:url value='/investments/regist.do'/>';" class="btn-regist">
+                ➕ 새로운 투자 등록
+        </button>
         <div id="portfolioList" style="display: flex; gap: 15px; flex-wrap: wrap;">
             <c:choose>
                 <c:when test="${not empty summaryList}">
                     <c:forEach var="summary" items="${summaryList}">
                         <div class="summary-card" 
-     onclick="location.href='<c:url value='/investments/regist.do?id=${summary.id}'/>';" 
-     style="cursor: pointer;">
+     						onclick="location.href='<c:url value='/investments/history.do?assetName=${summary.assetName}'/>';" 
+     						style="cursor: pointer;">
                             <div style="font-weight: bold;">${summary.assetName}</div>
                             <div>수량: ${summary.totalQuantity}주</div>
                             <div style="color: #007bff;">
@@ -39,11 +42,6 @@
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
-        
-        <button type="button" onclick="location.href = '<c:url value='/investments/regist.do'/>';" class="btn-regist">
-                ➕ 새로운 투자 등록
-        </button>
-        
         <table>
             <thead>
                 <tr>

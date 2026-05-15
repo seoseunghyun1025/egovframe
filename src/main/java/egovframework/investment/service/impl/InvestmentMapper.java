@@ -26,4 +26,8 @@ public interface InvestmentMapper {
     
     // 삭제
     void deleteInvestment(int id) throws Exception;
+    
+    List<InvestmentDTO> selectInvestmentHistoryList(InvestmentDTO dto) throws Exception;
+    
+    int selectInvestmentHistoryListTotCnt(InvestmentDTO dto) throws Exception;
 }

@@ -11,7 +11,15 @@
 <body>
 
 <div class="container">
-    <h2>📝 새로운 투자 등록</h2>
+    <c:choose>
+        <c:when test="${not empty investmentDTO.id && investmentDTO.id > 0}">
+        	<h2>📝 현재 투자 상황</h2>	
+        </c:when>
+        <c:otherwise>
+        	<h2>📝 새로운 투자 등록</h2>
+        </c:otherwise>
+    </c:choose>
+    		
     <form id="investmentForm" action="<c:url value='/investments/regist.do'/>" method="post">
     	<input type="hidden" name="id" value="${investmentDTO.id}">
         <div class="form-group">

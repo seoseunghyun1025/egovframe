@@ -47,10 +47,10 @@
     
     <select id="selectInvestmentSummary" resultType="egovframework.investment.service.InvestmentSummaryDTO">
     	SELECT
-    		MAX(ID) as id,
-        	ASSET_NAME          
-        	AS assetName,
-        	SUM(QUANTITY) AS totalQuantity, SUM(BUY_PRICE * QUANTITY) / SUM(QUANTITY) AS avgPrice 
+    		MAX(ID) AS id,
+        	ASSET_NAME AS assetName,
+        	SUM(CASE WHEN TX_TYPE = 'BUY' THEN QUANTITY ELSE -QUANTITY END) AS totalQuantity, 
+        	AVG(CASE WHEN TX_TYPE = 'BUY' THEN BUY_PRICE END) AS avgPrice 
     	FROM INVESTMENT_LOG
     	WHERE DEL_YN = 'N'
     	GROUP BY ASSET_NAME
@@ -87,5 +87,33 @@
 		WHERE ID = #{id}
 	</update>
 	
+	<select id="selectInvestmentHistoryList" parameterType="egovframework.investment.service.InvestmentDTO" resultMap="investmentMap">
+		SELECT * FROM (
+			SELECT
+				list.*, ROWNUM AS rnum
+			FROM(
+				SELECT
+					ID,
+					ASSET_NAME,
+					TX_TYPE,
+					BUY_PRICE,
+					QUANTITY,
+					COMMISSION,
+					CURRENCY,
+					EXCHANGE,
+					TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
+					MEMO
+				FROM INVESTMENT_LOG
+				WHERE DEL_YN = 'N' AND ASSET_NAME = #{assetName} ORDER BY BUY_DATE DESC, ID DESC ) list
+		)
+		WHERE rnum BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage} 
+	</select>
+	
+	<select id="selectInvestmentHistoryListTotCnt" parameterType="egovframework.investment.service.InvestmentDTO" resultType="int">
+    	SELECT COUNT(*) AS totCnt
+    	FROM INVESTMENT_LOG
+    	WHERE DEL_YN = 'N'
+      		AND ASSET_NAME = #{assetName}
+	</select>
 	
 </mapper>

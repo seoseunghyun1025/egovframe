@@ -20,4 +20,10 @@ public interface InvestmentService {
 
     //삭제
     void deleteInvestment(int id) throws Exception;
+    
+    //종목별 리스트
+    List<InvestmentDTO> selectInvestmentHistoryList(InvestmentDTO dto) throws Exception;
+    
+    //종목별 페이징
+    int selectInvestmentHistoryListTotCnt(InvestmentDTO dto) throws Exception;
 }

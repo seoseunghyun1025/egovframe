@@ -16,6 +16,12 @@ public class InvestmentDTO implements Serializable {
     private String exchange;
     private String buyDate;
     private String memo;
+    
+    private int pageIndex = 1;
+    
+    private int firstIndex;
+    private int recordCountPerPage;
+    private int rnum;
 
     
     public int getId() { return id; }
@@ -47,4 +53,17 @@ public class InvestmentDTO implements Serializable {
     
     public String getMemo() { return memo; }
     public void setMemo(String memo) { this.memo = memo; }
+    
+	public int getFirstIndex() { return firstIndex; }
+	public void setFirstIndex(int firstIndex) { this.firstIndex = firstIndex; }
+	
+	public int getRecordCountPerPage() { return recordCountPerPage; }
+	public void setRecordCountPerPage(int recordCountPerPage) { this.recordCountPerPage = recordCountPerPage; }
+	
+	public int getRnum() { return rnum; }
+	public void setRnum(int rnum) { this.rnum = rnum; }
+	
+	public int getPageIndex() {	return pageIndex; }
+	public void setPageIndex(int pageIndex) { this.pageIndex = pageIndex; }
+	
 }

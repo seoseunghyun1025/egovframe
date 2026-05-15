@@ -44,6 +44,8 @@
 package egovframework.investment.web;
 
 import java.util.List;
+
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,5 +108,25 @@ public class InvestmentController {
     public String deleteAction(@RequestParam("id") int id) throws Exception{
     	investmentService.deleteInvestment(id);
     	return "redirect:/investments/list.do";
+    }
+    
+    @RequestMapping(value="/history.do", method=RequestMethod.GET)
+    public String selectInvestmentHistoryList(@ModelAttribute("investmentDTO") InvestmentDTO dto, Model model) throws Exception{    	
+    	PaginationInfo paginationInfo = new PaginationInfo();
+    	paginationInfo.setCurrentPageNo(dto.getPageIndex());
+    	paginationInfo.setRecordCountPerPage(10);
+    	paginationInfo.setPageSize(5);
+    	
+    	dto.setFirstIndex(paginationInfo.getFirstRecordIndex());
+    	dto.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+    	
+    	int totCnt = investmentService.selectInvestmentHistoryListTotCnt(dto);
+    	paginationInfo.setTotalRecordCount(totCnt);
+    	
+    	List<InvestmentDTO> list = investmentService.selectInvestmentHistoryList(dto);
+    	model.addAttribute("paginationInfo", paginationInfo);
+    	model.addAttribute("resultList", list);
+    	
+    	return "investment/historyList";
     }
 }

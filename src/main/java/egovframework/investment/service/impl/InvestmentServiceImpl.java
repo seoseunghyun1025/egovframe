@@ -51,4 +51,16 @@ public class InvestmentServiceImpl extends EgovAbstractServiceImpl implements In
 		investmentMapper.deleteInvestment(id);
 	}
 
+	@Override
+	public List<InvestmentDTO> selectInvestmentHistoryList(InvestmentDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return investmentMapper.selectInvestmentHistoryList(dto);
+	}
+
+	@Override
+	public int selectInvestmentHistoryListTotCnt(InvestmentDTO dto) throws Exception {
+		// TODO Auto-generated method stub
+		return investmentMapper.selectInvestmentHistoryListTotCnt(dto);
+	}
+
 }
