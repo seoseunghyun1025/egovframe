@@ -20,8 +20,15 @@
             <c:choose>
                 <c:when test="${not empty summaryList}">
                     <c:forEach var="summary" items="${summaryList}">
+                        
+                        <%-- 💡 1. 여기에 특수문자(&)를 %26으로 자동 인코딩해주는 태그를 추가합니다 --%>
+                        <c:url value='/investments/history.do' var='safeHistoryUrl'>
+                            <c:param name='assetName' value='${summary.assetName}' />
+                        </c:url>
+
+                        <%-- 💡 2. 기존 onclick의 복잡한 c:url 대신 위에서 만든 safeHistoryUrl 변수를 넣어줍니다 --%>
                         <div class="summary-card" 
-     						onclick="location.href='<c:url value='/investments/history.do?assetName=${summary.assetName}'/>';" 
+     						onclick="location.href='${safeHistoryUrl}';" 
      						style="cursor: pointer;">
                             <div style="font-weight: bold;">${summary.assetName}</div>
                             <div>수량: ${summary.totalQuantity}주</div>
@@ -29,6 +36,7 @@
                                 평단: <fmt:formatNumber value="${summary.avgPrice}" pattern="#,###"/>원
                             </div>
                         </div>
+                        
                     </c:forEach>
                 </c:when>
                 <c:otherwise>

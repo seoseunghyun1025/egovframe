@@ -21,13 +21,13 @@
             ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
             COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
             MEMO
-        FROM INVESTMENT_LOG
+        FROM INVESTMENT
         WHERE DEL_YN = 'N'
         ORDER BY BUY_DATE DESC, ID DESC
     </select>
     
     <insert id="insertInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
-        INSERT INTO INVESTMENT_LOG (
+        INSERT INTO INVESTMENT (
             ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
             COMMISSION, CURRENCY, EXCHANGE, BUY_DATE, MEMO
         ) VALUES (
@@ -51,7 +51,7 @@
         	ASSET_NAME AS assetName,
         	SUM(CASE WHEN TX_TYPE = 'BUY' THEN QUANTITY ELSE -QUANTITY END) AS totalQuantity, 
         	AVG(CASE WHEN TX_TYPE = 'BUY' THEN BUY_PRICE END) AS avgPrice 
-    	FROM INVESTMENT_LOG
+    	FROM INVESTMENT
     	WHERE DEL_YN = 'N'
     	GROUP BY ASSET_NAME
     	HAVING SUM(CASE WHEN TX_TYPE = 'BUY' THEN QUANTITY ELSE -QUANTITY END) > 0
@@ -62,12 +62,12 @@
         	ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY,
         	TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
         	MEMO, COMMISSION, CURRENCY, EXCHANGE
-    	FROM INVESTMENT_LOG
+    	FROM INVESTMENT
     	WHERE ID = #{id}
 	</select>
 	
 	<update id="updateInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
-		UPDATE INVESTMENT_LOG
+		UPDATE INVESTMENT
 		SET
 			ASSET_NAME = #{assetName},
 			TX_TYPE = #{txType},
@@ -82,7 +82,7 @@
 	</update>
 	
 	<update id="deleteInvestment" parameterType="int">
-		UPDATE INVESTMENT_LOG
+		UPDATE INVESTMENT
 		SET DEL_YN = 'Y'
 		WHERE ID = #{id}
 	</update>
@@ -103,7 +103,7 @@
 					EXCHANGE,
 					TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
 					MEMO
-				FROM INVESTMENT_LOG
+				FROM INVESTMENT
 				<where>
 					DEL_YN = 'N'
 					<if test="assetName != null and assetName != ''">
@@ -125,7 +125,7 @@
 	
 	<select id="selectInvestmentHistoryListTotCnt" parameterType="egovframework.investment.service.InvestmentDTO" resultType="int">
     	SELECT COUNT(*) AS totCnt
-		FROM INVESTMENT_LOG
+		FROM INVESTMENT
 		<where> 
 			DEL_YN = 'N'
 			<if test="assetName != null and assetName != ''">
