@@ -104,16 +104,23 @@
 					TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
 					MEMO
 				FROM INVESTMENT_LOG
-				WHERE DEL_YN = 'N' AND ASSET_NAME = #{assetName} ORDER BY BUY_DATE DESC, ID DESC ) list
+				<where>
+					DEL_YN = 'N'
+					<if test="assetName != null and assetName != ''">
+						AND ASSET_NAME = #{assetName}
+					</if>
+					
+					<if test="memo != null and memo != ''">
+               	    	AND MEMO LIKE '%' || #{memo} || '%'
+               		</if>
+					
+					<if test="txType != null and txType != ''">
+               	    	AND TX_TYPE = #{txType}
+               		</if>
+				</where>
+			) list
 		)
 		WHERE rnum BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage} 
-	</select>
-	
-	<select id="selectInvestmentHistoryListTotCnt" parameterType="egovframework.investment.service.InvestmentDTO" resultType="int">
-    	SELECT COUNT(*) AS totCnt
-    	FROM INVESTMENT_LOG
-    	WHERE DEL_YN = 'N'
-      		AND ASSET_NAME = #{assetName}
 	</select>
 	
 	<select id="selectInvestmentHistoryListTotCnt" parameterType="egovframework.investment.service.InvestmentDTO" resultType="int">

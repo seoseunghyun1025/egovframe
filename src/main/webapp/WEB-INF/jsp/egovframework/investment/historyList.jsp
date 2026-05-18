@@ -86,7 +86,8 @@
 
 <div class="container">
     
-    <section id="editSection" class="card">
+    <!-- 1. 수정/삭제 섹션 (기존 유지) -->
+    <section id="editSection" class="card" style="display:none;">
         <div class="form-header">📝 현재 투자 상황</div>
         <form id="editForm">
             <input type="hidden" id="edit-id">
@@ -112,6 +113,7 @@
         </form>
     </section>
 
+    <!-- 2. 상단 요약 카드 (기존 유지) -->
     <section class="card summary-card-layout">
         <div class="summary-blue-zone">
             <div style="font-size: 0.95em; opacity: 0.9;">Asset Name</div>
@@ -130,8 +132,39 @@
         </div>
     </section>
 
+    <!-- 3. 검색 필터 및 상세 리스트 섹션 -->
     <section class="card">
         <div class="table-header-area">📜 상세 거래 히스토리</div>
+        
+        <!-- 💡 [추가] MyBatis 동적 쿼리와 연동되는 통합 검색 폼 -->
+        <form name="searchForm" method="get" action="<c:url value='investments/history.do'/>" style="margin-bottom: 20px;">
+            <!-- 페이징 상태 유지용 히든 필드 -->
+            <input type="hidden" name="pageIndex" value="${investmentDTO.pageIndex}" />
+            
+            <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); background: #f9f9f9; padding: 15px; border-radius: 8px; gap: 10px;">
+                <div class="form-item">
+                    <label>종목명</label>
+                    <input type="text" name="assetName" value="${investmentDTO.assetName}" readonly style="background: #e9e9e9;">
+                </div>
+                <div class="form-item">
+                    <label>구분</label>
+                    <select name="txType">
+                        <option value="">전체</option>
+                        <option value="BUY" ${investmentDTO.txType == 'BUY' ? 'selected' : ''}>매수</option>
+                        <option value="SELL" ${investmentDTO.txType == 'SELL' ? 'selected' : ''}>매도</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label>메모 검색</label>
+                    <input type="text" name="memo" value="${investmentDTO.memo}" placeholder="메모 내용 입력">
+                </div>
+                <div class="form-item" style="display: flex; align-items: flex-end;">
+                    <button type="button" class="btn-ui" onclick="fn_search();" style="width: 100%; height: 38px; background: #4A90E2;">검색</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- 테이블 데이터 영역 -->
         <table>
             <thead>
                 <tr>
@@ -165,6 +198,7 @@
             </tbody>
         </table>
 
+        <!-- 전자정부프레임워크 페이징 네비게이션 -->
         <div class="page-nav">
             <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_link_page" />
         </div>
@@ -173,8 +207,18 @@
 </div>
 
 <script>
+    // 💡 [수정] 404 에러 해결 및 다중 조건 검색 유지를 위한 폼 전송 방식 페이징
     function fn_link_page(pageNo) {
-        location.href = "<c:url value='/history.do'/>?assetName=${investmentDTO.assetName}&pageIndex=" + pageNo;
+        document.searchForm.pageIndex.value = pageNo;
+        document.searchForm.action = "<c:url value='/investments/history.do'/>"; // 컨트롤러 매핑 주소(/history.do)로 정확히 매칭
+        document.searchForm.submit();
+    }
+
+    // 💡 [추가] 신규 조건 검색 시 무조건 1페이지로 강제 초기화하는 함수
+    function fn_search() {
+        document.searchForm.pageIndex.value = 1;
+        document.searchForm.action = "<c:url value='/investments/history.do'/>";
+        document.searchForm.submit();
     }
 
     function fn_show_edit(data) {
@@ -196,4 +240,3 @@
 </script>
 
 </body>
-</html>
