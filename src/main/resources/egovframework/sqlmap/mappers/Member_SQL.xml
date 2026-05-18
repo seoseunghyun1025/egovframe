@@ -15,13 +15,11 @@
     	INSERT INTO MEMBER(
     		EMAIL,
             PASSWORD,
-            NAME,
-            REGISTER_DATE_TIME
+            NAME
     	) VALUES(
     		#{email},
     		#{password},
-    		#{name},
-    		SYSDATE
+    		#{name}
     	)
     </insert>
     
