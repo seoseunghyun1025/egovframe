@@ -5,6 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import egovframework.member.dto.Register;
+import egovframework.member.dto.Login;
+import egovframework.member.dto.Member;
 import egovframework.member.exception.DuplicateMemberException;
 import egovframework.member.service.MemberService;
 import jakarta.annotation.Resource;
@@ -13,13 +15,13 @@ import jakarta.annotation.Resource;
 public class MemberServiceImpl extends EgovAbstractServiceImpl implements MemberService {
 	
 	@Resource(name = "bcryptPasswordEncoder")
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
+    private BCryptPasswordEncoder encoder;
 	
 	@Resource(name="memberMapper")
     private MemberMapper memberMapper;
 	
 	@Override
-	public Long regist(Register req) throws Exception {
+	public String regist(Register req) throws Exception {
 		// TODO Auto-generated method stub
 		String member = memberMapper.select(req.getEmail());
 		
@@ -27,9 +29,24 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			throw new DuplicateMemberException("dup email" + req.getEmail());
 		}
 		
-		req.setPassword(bcryptPasswordEncoder.encode(req.getPassword()));
+		req.setPassword(encoder.encode(req.getPassword()));
 		
 		return memberMapper.regist(req);
 	}
 
+	@Override
+	public boolean login(Login dto) throws Exception {
+		// TODO Auto-generated method stub
+		String password = memberMapper.password(dto.getEmail());
+		
+		if(password == null) {
+			throw new Exception("존재하지 않는 회원입니다.");
+		}
+		
+		if(!encoder.matches(dto.getPassword(), password)) {
+			throw new Exception("비밀번호가 일치하지 않습니다.");
+		}
+		
+		return true;
+	}
 }
