@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.member.dto.Login;
+import egovframework.member.dto.Member;
 import egovframework.member.dto.Register;
 import egovframework.member.service.MemberService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
@@ -36,13 +38,23 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	public String loginCheckPage(Login dto) throws Exception {
-		boolean pnp = memberService.login(dto);
+	public String loginCheckPage(Login dto, HttpServletRequest request) throws Exception {
+		Member member = memberService.login(dto);
 		
-		if(pnp != true) {
+		if(member == null) {
 			return "redirect:/member/login.do";
 		}
 		
+		HttpSession session = request.getSession();
+		session.setAttribute("loginMember", member);
+		session.setMaxInactiveInterval(60 * 30);
+		
 		return "redirect:/investments/list.do";
+	}
+	
+	@RequestMapping(value="/logout.do")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/member/login.do";
 	}
 }

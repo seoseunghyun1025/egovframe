@@ -29,8 +29,8 @@
     	WHERE EMAIL = #{email}
     </select>
     
-    <select id="password" parameterType="String" resultType="String">
-    	SELECT PASSWORD
+    <select id="password" parameterType="String" resultMap="MemberMap">
+    	SELECT EMAIL, PASSWORD, NAME, REGISTER_DATE_TIME
     	FROM MEMBER
     	WHERE EMAIL = #{email}
     </select>

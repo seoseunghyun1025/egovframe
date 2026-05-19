@@ -34,10 +34,19 @@
 		<property name="validator" ref="validator"/>
 	</bean>
 
+	<mvc:interceptors>
+    	<mvc:interceptor>
+        	<mvc:mapping path="/investments/**"/>
+        	<mvc:mapping path="/main/**"/>
+        
+ 	       	<bean class="egovframework.config.SessionInterceptor" />
+  	  	</mvc:interceptor>
+	</mvc:interceptors>
+<!-- 
     <mvc:interceptors>
         <ref bean="localeChangeInterceptor" />
     </mvc:interceptors>
-
+-->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
     <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
     <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">

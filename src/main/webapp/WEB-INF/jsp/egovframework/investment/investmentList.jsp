@@ -7,8 +7,52 @@
     <meta charset="UTF-8">
     <title>나의 투자 기록</title>
     <link rel="stylesheet" href="<c:url value='/css/egovframework/investment/investment.css'/>">
+    <style>
+        /* 로그아웃 헤더 스타일 추가 */
+        .user-header {
+            max-width: 1200px;
+            margin: 20px auto 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info {
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        .user-info strong {
+            color: #2d3748;
+        }
+        .btn-logout {
+            background-color: #fff;
+            color: #e53e3e;
+            border: 1px solid #e2e8f0;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-logout:hover {
+            background-color: #fff5f5;
+            border-color: #feb2b2;
+        }
+    </style>
 </head>
 <body>
+
+<div class="user-header">
+    <div class="user-info">
+        👤 <strong>${loginMember.email}</strong>님 로그인 중
+    </div>
+   	<button type="button" class="btn-logout" onclick="if(confirm('로그아웃 하시겠습니까?')) location.href='<c:url value="/member/logout.do"/>';">
+       	로그아웃
+   	</button>
+</div>
 
 <div class="container">
     <section id="portfolioSection">
@@ -21,12 +65,10 @@
                 <c:when test="${not empty summaryList}">
                     <c:forEach var="summary" items="${summaryList}">
                         
-                        <%-- 💡 1. 여기에 특수문자(&)를 %26으로 자동 인코딩해주는 태그를 추가합니다 --%>
                         <c:url value='/investments/history.do' var='safeHistoryUrl'>
                             <c:param name='assetName' value='${summary.assetName}' />
                         </c:url>
 
-                        <%-- 💡 2. 기존 onclick의 복잡한 c:url 대신 위에서 만든 safeHistoryUrl 변수를 넣어줍니다 --%>
                         <div class="summary-card" 
      						onclick="location.href='${safeHistoryUrl}';" 
      						style="cursor: pointer;">

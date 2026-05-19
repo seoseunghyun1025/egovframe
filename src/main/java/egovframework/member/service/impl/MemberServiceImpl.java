@@ -21,7 +21,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     private MemberMapper memberMapper;
 	
 	@Override
-	public String regist(Register req) throws Exception {
+	public void regist(Register req) throws Exception {
 		// TODO Auto-generated method stub
 		String member = memberMapper.select(req.getEmail());
 		
@@ -31,22 +31,22 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		
 		req.setPassword(encoder.encode(req.getPassword()));
 		
-		return memberMapper.regist(req);
+		memberMapper.regist(req);
 	}
 
 	@Override
-	public boolean login(Login dto) throws Exception {
+	public Member login(Login dto) throws Exception {
 		// TODO Auto-generated method stub
-		String password = memberMapper.password(dto.getEmail());
+		Member member = memberMapper.password(dto.getEmail());
 		
-		if(password == null) {
+		if(member == null) {
 			throw new Exception("존재하지 않는 회원입니다.");
 		}
 		
-		if(!encoder.matches(dto.getPassword(), password)) {
+		if(!encoder.matches(dto.getPassword(), member.getPassword())) {
 			throw new Exception("비밀번호가 일치하지 않습니다.");
 		}
 		
-		return true;
+		return member;
 	}
 }

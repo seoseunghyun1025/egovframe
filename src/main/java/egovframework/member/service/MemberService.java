@@ -2,9 +2,10 @@ package egovframework.member.service;
 
 import egovframework.member.dto.Register;
 import egovframework.member.dto.Login;
+import egovframework.member.dto.Member;
 
 public interface MemberService {
-	String regist(Register req) throws Exception;
+	void regist(Register req) throws Exception;
 	
-	boolean login(Login dto) throws Exception;
+	Member login(Login dto) throws Exception;
 }
