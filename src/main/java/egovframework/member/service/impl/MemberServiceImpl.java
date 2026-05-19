@@ -1,6 +1,7 @@
 package egovframework.member.service.impl;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import egovframework.member.dto.Register;
@@ -10,7 +11,10 @@ import jakarta.annotation.Resource;
 
 @Service("memberService")
 public class MemberServiceImpl extends EgovAbstractServiceImpl implements MemberService {
-
+	
+	@Resource(name = "bcryptPasswordEncoder")
+    private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	@Resource(name="memberMapper")
     private MemberMapper memberMapper;
 	
@@ -19,13 +23,11 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		// TODO Auto-generated method stub
 		String member = memberMapper.select(req.getEmail());
 		
-		System.out.println();
-		System.out.println("success");
-		System.out.println();
-		
 		if(member != null) {
 			throw new DuplicateMemberException("dup email" + req.getEmail());
 		}
+		
+		req.setPassword(bcryptPasswordEncoder.encode(req.getPassword()));
 		
 		return memberMapper.regist(req);
 	}
