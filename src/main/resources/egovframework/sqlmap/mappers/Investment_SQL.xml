@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.investment.service.impl.InvestmentMapper">
-
+	
 	<resultMap id="investmentMap" type="egovframework.investment.service.InvestmentDTO">
     	<result property="id" column="ID"/>
     	<result property="assetName" column="ASSET_NAME"/>
@@ -29,7 +29,7 @@
     <insert id="insertInvestment" parameterType="egovframework.investment.service.InvestmentDTO">
         INSERT INTO INVESTMENT (
             ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
-            COMMISSION, CURRENCY, EXCHANGE, BUY_DATE, MEMO
+            COMMISSION, CURRENCY, EXCHANGE, BUY_DATE, MEMO, MEMBER_ID
         ) VALUES (
             #{assetName}, #{txType}, #{buyPrice}, #{quantity}, 
             #{commission}, #{currency}, #{exchange}, 
@@ -41,7 +41,7 @@
                 	SYSDATE
             	</otherwise>
         	</choose>,
-            #{memo}
+            #{memo}, #{memberId}
         )
     </insert>
     

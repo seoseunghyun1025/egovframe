@@ -3,7 +3,9 @@ package egovframework.member.dto;
 import java.time.LocalDateTime;
 
 import egovframework.member.exception.WrongIdPasswordException;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class Member {
 	
 	private Long memberId;
@@ -11,16 +13,7 @@ public class Member {
 	private String password;
 	private String name;
 	private LocalDateTime registerDateTime;
-	
-	public Member(String email, String password, String name, LocalDateTime registerDateTime) {
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.registerDateTime = registerDateTime;
-	}
-	
-	
-	
+		
 	public Long getMemberId() {
 		return memberId;
 	}
@@ -60,5 +53,29 @@ public class Member {
 	public void changePassword(String oldPassword, String newPassword) {
 		if(!password.equals(oldPassword)) throw new WrongIdPasswordException();
 		this.password = newPassword;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public void setRegisterDateTime(LocalDateTime registerDateTime) {
+		this.registerDateTime = registerDateTime;
 	}
 }

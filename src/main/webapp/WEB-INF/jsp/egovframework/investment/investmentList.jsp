@@ -88,7 +88,6 @@
         </div>
     </section>
 </div>
-
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
@@ -133,4 +132,7 @@
     </section>
 </div>
 </body>
+<script>
+console.log('${loginMember.memberId}');
+</script>
 </html>

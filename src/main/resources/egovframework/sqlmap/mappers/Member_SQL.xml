@@ -6,8 +6,8 @@
 	<resultMap id="MemberMap" type="egovframework.member.dto.Member">
     	<result property="memberId" column="MEMBER_ID"/>
     	<result property="email" column="EMAIL"/>
-    	<result property="password" column="TX_TYPE"/>
-    	<result property="name" column="BUY_PRICE"/>
+    	<result property="password" column="PASSWORD"/>
+    	<result property="name" column="NAME"/>
     	<result property="registerDateTime" column="REGISTER_DATE_TIME"/>
 	</resultMap>
 
@@ -30,7 +30,12 @@
     </select>
     
     <select id="password" parameterType="String" resultMap="MemberMap">
-    	SELECT EMAIL, PASSWORD, NAME, REGISTER_DATE_TIME
+    	SELECT 
+    		MEMBER_ID,
+    		EMAIL, 
+    		PASSWORD, 
+    		NAME, 
+    		REGISTER_DATE_TIME
     	FROM MEMBER
     	WHERE EMAIL = #{email}
     </select>

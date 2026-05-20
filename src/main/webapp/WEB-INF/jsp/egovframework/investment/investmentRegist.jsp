@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -22,6 +23,8 @@
     		
     <form id="investmentForm" action="<c:url value='/investments/regist.do'/>" method="post">
     	<input type="hidden" name="id" value="${investmentDTO.id}">
+    	<input type="hidden" name="memberId" value="${loginMember.memberId}">
+    	
         <div class="form-group">
             <label>종목명</label>
             <input type="text" name="assetName" value="${investmentDTO.assetName}" required placeholder="예: 나스닥100">
@@ -78,6 +81,7 @@
 		</form>
 </div>
 </body>
+	<script>console.log('${loginMember.memberId}');</script>
 	<script type="text/javascript">
 	window.onload = function() {
         var mainForm = document.getElementById("investmentForm");
