@@ -11,9 +11,11 @@ public interface MemberMapper {
 
 	void regist(Register req) throws Exception;
 	
-	String select(String email) throws Exception;
+	Member select(String email) throws Exception;
 	
 	boolean login(Login dto) throws Exception;
 	
 	Member password(String password) throws Exception;
+	
+	void update(Member dto) throws Exception;
 }

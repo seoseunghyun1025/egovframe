@@ -23,8 +23,8 @@
     	)
     </insert>
     
-    <select id="select" parameterType="egovframework.member.dto.Member" resultMap="MemberMap">
-    	SELECT EMAIL
+    <select id="select" parameterType="String" resultMap="MemberMap">
+    	SELECT EMAIL, PASSWORD
     	FROM MEMBER
     	WHERE EMAIL = #{email}
     </select>
@@ -39,5 +39,12 @@
     	FROM MEMBER
     	WHERE EMAIL = #{email}
     </select>
+    
+    <update id="update" parameterType="egovframework.member.dto.Member">
+		UPDATE MEMBER
+		SET			
+			PASSWORD = #{password}
+		WHERE EMAIL = #{email}
+	</update>
 
 </mapper>

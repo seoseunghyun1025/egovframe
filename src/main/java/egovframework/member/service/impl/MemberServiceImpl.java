@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import egovframework.member.dto.Register;
+import egovframework.email.dto.PasswordChangeRequest;
 import egovframework.member.dto.Login;
 import egovframework.member.dto.Member;
 import egovframework.member.exception.DuplicateMemberException;
@@ -23,7 +24,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 	@Override
 	public void regist(Register req) throws Exception {
 		// TODO Auto-generated method stub
-		String member = memberMapper.select(req.getEmail());
+		Member member = memberMapper.select(req.getEmail());
 		
 		if(member != null) {
 			throw new DuplicateMemberException("dup email" + req.getEmail());
@@ -48,5 +49,33 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}
 		
 		return member;
+	}
+
+	@Override
+	public boolean existsByEmail(String email) throws Exception {
+		// TODO Auto-generated method stub
+		Member member = memberMapper.select(email);
+		if(member == null) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updatePassword(PasswordChangeRequest dto) throws Exception {
+		// TODO Auto-generated method stub
+		if(!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+			return false;
+		}
+		Member member = memberMapper.select(dto.getEmail());
+		
+		if(member == null) {
+			return false;
+		}
+		
+		member.setPassword(encoder.encode(dto.getNewPassword()));
+		memberMapper.update(member);
+		
+		return true;
 	}
 }
