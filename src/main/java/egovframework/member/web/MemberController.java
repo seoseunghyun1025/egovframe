@@ -1,5 +1,8 @@
 package egovframework.member.web;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.email.dto.EmailRequest;
+import egovframework.email.dto.EmailVerificationRequest;
 import egovframework.email.dto.PasswordChangeRequest;
 import egovframework.email.dto.PasswordVerificationRequest;
 import egovframework.email.serivce.EmailService;
@@ -18,6 +22,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+@EnableAsync
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -35,7 +40,10 @@ public class MemberController {
     public String regist(Register dto) throws Exception {
 		memberService.regist(dto);
 		
-        return "redirect:/investments/list.do";
+		//인증번호 발송
+		emailService.createEmail(dto.getEmail());
+		
+        return "redirect:/member/key-alter.do?email=" + dto.getEmail();
     }
 	
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
@@ -119,4 +127,21 @@ public class MemberController {
             return "redirect:/member/change-password.do?email=" + dto.getEmail() + "&error=fail";
         }
     }
+	
+	/**
+	 * 인증번호 검증 메소드
+	 */
+	@RequestMapping(value = "/verify-code.do", method = RequestMethod.POST)
+	public String verifyCode(EmailVerificationRequest verificationRequest) {
+		boolean isVerified = emailService.verifyCode(verificationRequest.getEmail(), verificationRequest.getCode());
+		return isVerified ? 
+				"redirect:/member/login.do": 
+				"redirect:/member/key-alter.do?email=" + verificationRequest.getEmail();
+	}
+	
+	@RequestMapping(value = "/key-alter.do", method = RequestMethod.GET)
+	public String keyAlter(@RequestParam(value="email", required=false) String email, Model model) throws Exception {
+		model.addAttribute("email",email);
+		return "member/verify-code";
+	}
 }
