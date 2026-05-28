@@ -28,7 +28,15 @@
 		<property name="validationMessageSource" ref="messageSource"/>
 	</bean>
 
-    <mvc:annotation-driven validator="validator"/>
+    <mvc:annotation-driven validator="validator" conversion-service="conversionService"/>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="egovframework.role.enums.StringToRoleConverter" />
+            </set>
+        </property>
+    </bean>
 
 	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
 		<property name="validator" ref="validator"/>

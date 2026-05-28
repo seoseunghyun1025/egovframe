@@ -9,17 +9,20 @@
     	<result property="password" column="PASSWORD"/>
     	<result property="name" column="NAME"/>
     	<result property="registerDateTime" column="REGISTER_DATE_TIME"/>
+    	<result property="role" column="ROLE"/>
 	</resultMap>
 
     <insert id="regist" parameterType="egovframework.member.dto.Register">
     	INSERT INTO MEMBER(
     		EMAIL,
             PASSWORD,
-            NAME
+            NAME,
+            ROLE
     	) VALUES(
     		#{email},
     		#{password},
-    		#{name}
+    		#{name},
+    		#{role}
     	)
     </insert>
     

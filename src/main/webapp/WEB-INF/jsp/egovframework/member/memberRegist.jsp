@@ -39,6 +39,7 @@
     <h3>📝 회원가입</h3>
     
     <form action="<c:url value='/member/regist.do'/>" method="POST" onsubmit="return validateForm();">
+    	<input type="hidden" id="role" name="role" value="ROLE_USER">
         <div class="form-group">
             <label for="email">이메일</label>
             <input type="email" id="email" name="email" placeholder="example@email.com" required>

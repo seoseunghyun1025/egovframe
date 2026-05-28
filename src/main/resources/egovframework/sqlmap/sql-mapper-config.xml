@@ -7,4 +7,8 @@
 		
 		<typeAlias alias="investmentDTO" type="egovframework.investment.service.InvestmentDTO"/>
     </typeAliases>
+    
+    <typeHandlers>
+        <typeHandler handler="egovframework.role.enums.RoleTypeHandler"/>
+    </typeHandlers>
 </configuration>

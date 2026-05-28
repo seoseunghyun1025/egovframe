@@ -1,10 +1,14 @@
 package egovframework.member.dto;
 
+import egovframework.role.enums.Role;
+
 public class Register {
 	private String email;
 	private String password;
 	private String confirmPassword;
 	private String name;
+	private Role role;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -33,5 +37,12 @@ public class Register {
 	public boolean isPasswordEqualToConfirmPassword() {
 		return password.equals(confirmPassword);
 	}
-
+	
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	
 }
