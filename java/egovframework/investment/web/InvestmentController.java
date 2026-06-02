@@ -104,7 +104,7 @@ public class InvestmentController {
     }
     
     @RequestMapping(value="/delete.do", method=RequestMethod.POST)
-    public String deleteAction(@RequestParam("id") int id) throws Exception{
+    public String Action(@RequestParam("id") int id) throws Exception{
     	investmentService.deleteInvestment(id);
     	return "redirect:/investments/list.do";
     }

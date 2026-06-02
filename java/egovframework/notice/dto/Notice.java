@@ -6,15 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Notice {
-	private static final Logger logger = LoggerFactory.getLogger(Notice.class);
 	private int rowNum;
-	private String postUuid;
+	private String noticeUuid;
 	private String writeId;
-	private String postTitle;
-	private String postContent;
+	private String noticeTitle;
+	private String noticeContent;
 	private LocalDateTime registryDate;
-	public Notice() {}
 }

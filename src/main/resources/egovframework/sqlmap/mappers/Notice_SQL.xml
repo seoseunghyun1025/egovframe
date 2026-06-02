@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.notice.service.impl.NoticeMapper">
+	
+	<resultMap id="NoticeMap" type="egovframework.notice.dto.Notice">
+    	<result property="rowNum" column="ROW_NUM"/>
+    	<result property="noticeUuid" column="NOTICE_UUID"/>
+    	<result property="writeId" column="WRITE_ID"/>
+    	<result property="noticeTitle" column="NOTICE_TITLE"/>
+    	<result property="noticeContent" column="NOTICE_CONTENT"/>
+    	<result property="registryDate" column="REGISTRY_DATE"/>
+	</resultMap>
+
+    <select id="selectNoticeInfo">
+        SELECT
+            NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT, REGISTRY_DATE
+        FROM NOTICE
+        WHERE 1 = 1
+        <if test="noticeUuid != null and noticeUuid.isBlank() == false">
+            AND NOTICE_UUID = #{noticeUuid}
+        </if>
+        ORDER BY REGISTRY_DATE DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectNoticeCount" resultType="int">
+        SELECT COUNT(NOTICE_UUID) AS noticeCount FROM NOTICE WHERE 1 = 1
+    </select>
+
+    <select id="selectNoticeList" parameterType="int">
+        SELECT * FROM (
+    		SELECT 
+        		ROW_NUMBER() OVER (ORDER BY REGISTRY_DATE DESC) AS row_num,
+        		NOTICE_UUID, 
+        		WRITE_ID, 
+        		NOTICE_TITLE, 
+        		NOTICE_CONTENT, 
+        		REGISTRY_DATE
+    		FROM NOTICE
+    		WHERE 1 = 1
+			) T
+		WHERE T.row_num &gt; ${offset} AND T.row_num &lt;= (${offset} + ${limitRow})
+    </select>
+
+    <insert id="insertNotice" useGeneratedKeys="true" keyProperty="noticeUuid">
+        INSERT INTO NOTICE(NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT)
+        VALUES(#{noticeUuid}, #{writeId}, #{noticeTitle}, #{noticeContent})
+    </insert>
+
+    <update id="updateNotice">
+        UPDATE NOTICE SET
+              NOTICE_TITLE = #{noticeTitle}
+            , NOTICE_CONTENT = #{noticeContent}
+        WHERE 1 = 1
+          AND NOTICE_UUID = #{noticeUuid}
+          AND WRITE_ID = #{writeId}
+    </update>
+
+    <delete id="deleteNotice">
+        DELETE FROM NOTICE
+        WHERE 1 = 1
+          AND NOTICE_UUID = #{noticeUuid}
+    </delete>
+</mapper>
