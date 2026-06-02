@@ -14,14 +14,9 @@
 
     <select id="selectNoticeInfo" resultMap="noticeMap">
         SELECT
-            NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT, REGISTRY_DATE
-        FROM NOTICE
-        WHERE 1 = 1
-        <if test="noticeUuid != null and noticeUuid.isBlank() == false">
-            AND NOTICE_UUID = #{noticeUuid}
-        </if>
-        ORDER BY REGISTRY_DATE DESC
-        LIMIT 1
+        	NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT, REGISTRY_DATE
+    	FROM NOTICE
+    	WHERE NOTICE_UUID = #{noticeUuid}
     </select>
 
     <select id="selectNoticeCount" resultType="int">
@@ -49,9 +44,10 @@
     </insert>
 
     <update id="updateNotice">
-        UPDATE NOTICE SET
-              NOTICE_TITLE = #{noticeTitle}
-            , NOTICE_CONTENT = #{noticeContent}
+        UPDATE NOTICE 
+        SET
+              NOTICE_TITLE = #{noticeTitle},
+              NOTICE_CONTENT = #{noticeContent}
         WHERE 1 = 1
           AND NOTICE_UUID = #{noticeUuid}
           AND WRITE_ID = #{writeId}

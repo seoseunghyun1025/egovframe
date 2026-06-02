@@ -33,9 +33,10 @@ public class NoticeController {
 			notice.setNoticeUuid(request.getParameter("uuid"));
 			Notice noticeInfo = noticeService.noticeInfo(notice);
 			
-			model.addAttribute("writeId", notice.getWriteId());
-			model.addAttribute("postTitle", notice.getNoticeTitle());
-			model.addAttribute("postContent", notice.getRegistryDate());
+			model.addAttribute("writeId", noticeInfo.getWriteId());
+			model.addAttribute("noticeTitle", noticeInfo.getNoticeTitle());
+			model.addAttribute("noticeContent", noticeInfo.getNoticeContent());
+			model.addAttribute("registryDate", noticeInfo.getRegistryDate());
 		}
 		return "notice/noticeInfo";
 	}

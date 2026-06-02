@@ -25,11 +25,15 @@
         </tr>
         <tr>
             <th>제목</th>
-            <td>${postTitle}</td>
+            <td>${noticeTitle}</td>
         </tr>
         <tr>
-            <th>내용/등록일</th>
-            <td>${postContent}</td>
+            <th>내용</th>
+            <td>${noticeContent}</td>
+        </tr>
+        <tr>
+        	<th>등록일</th>
+        	<td>${registryDate}</td>
         </tr>
     </table>
 

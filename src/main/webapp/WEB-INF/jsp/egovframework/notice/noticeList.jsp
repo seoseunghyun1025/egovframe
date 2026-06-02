@@ -33,7 +33,7 @@
                     <td>${notice.registryDate}</td>
                 </tr>
             </c:forEach>
-            <c:if var="isEmpty" test="${empty noticeList}">
+            <c:if test="${empty noticeList}">
                 <tr>
                     <td colspan="3">등록된 공지사항이 없습니다.</td>
                 </tr>
@@ -50,8 +50,4 @@
     <br>
     <a href="${pageContext.request.contextPath}/notice/insertNotice.do">글쓰기</a>
 </body>
-<script> 
-	console.log("${notice.noticeTitle}")
-	console.log("${notice.registryDate}")
-</script>
 </html>
