@@ -50,4 +50,8 @@
     <br>
     <a href="${pageContext.request.contextPath}/notice/insertNotice.do">글쓰기</a>
 </body>
+<script> 
+	console.log("${notice.noticeTitle}")
+	console.log("${notice.registryDate}")
+</script>
 </html>

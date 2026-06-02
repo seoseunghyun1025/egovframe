@@ -3,7 +3,7 @@
 
 <mapper namespace="egovframework.notice.service.impl.NoticeMapper">
 	
-	<resultMap id="NoticeMap" type="egovframework.notice.dto.Notice">
+	<resultMap id="noticeMap" type="egovframework.notice.dto.Notice">
     	<result property="rowNum" column="ROW_NUM"/>
     	<result property="noticeUuid" column="NOTICE_UUID"/>
     	<result property="writeId" column="WRITE_ID"/>
@@ -12,7 +12,7 @@
     	<result property="registryDate" column="REGISTRY_DATE"/>
 	</resultMap>
 
-    <select id="selectNoticeInfo">
+    <select id="selectNoticeInfo" resultMap="noticeMap">
         SELECT
             NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT, REGISTRY_DATE
         FROM NOTICE
@@ -28,7 +28,7 @@
         SELECT COUNT(NOTICE_UUID) AS noticeCount FROM NOTICE WHERE 1 = 1
     </select>
 
-    <select id="selectNoticeList" parameterType="int">
+    <select id="selectNoticeList" parameterType="int" resultMap="noticeMap">
         SELECT * FROM (
     		SELECT 
         		ROW_NUMBER() OVER (ORDER BY REGISTRY_DATE DESC) AS row_num,
