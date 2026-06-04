@@ -57,7 +57,7 @@ import egovframework.investment.service.InvestmentSummaryDTO;
 import jakarta.annotation.Resource;
 
 @Controller
-@RequestMapping("/investments")
+@RequestMapping("/investment")
 public class InvestmentController {
 
     @Resource(name = "investmentService")

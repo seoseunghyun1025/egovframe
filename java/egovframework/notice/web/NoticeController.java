@@ -120,7 +120,7 @@ public class NoticeController {
 	    model.addAttribute("registryDate", noticeInfo.getRegistryDate());
 	    }
 	    
-	    return "/notice/noticeModify.do";
+	    return "/notice/noticeModify";
 	 }
 	 
 	@RequestMapping(value = "/noticeUpdate.do", method=RequestMethod.POST)
@@ -144,20 +144,7 @@ public class NoticeController {
 	        notice.setNoticeContent(request.getParameter("noticeContent"));
 	    }
 
-	    int resultNumber = noticeService.updatePost(notice);
-
-	    if(resultNumber > 0) {
-	        response.sendRedirect("./noticeInfo?uuid=" + notice.getNoticeUuid());
-	    } else {
-	        response.setCharacterEncoding("UTF-8");
-	        response.setContentType("text/html;charset=utf-8");
-	        PrintWriter out = response.getWriter();
-	        out.println("<script type='text/javascript'>");
-	        out.println("alert('해당 글을 수정하는데 실패하였습니다.');");
-	        out.println("window.history.back();");
-	        out.println("</script>");
-	        out.flush();
-	    }
+	    noticeService.updatePost(notice);
 	    
 	    return "redirect:/notice/noticeList.do";
 	}
@@ -178,7 +165,7 @@ public class NoticeController {
                 PrintWriter out = response.getWriter();
                 out.println("<script type='text/javascript'>");
                 out.println("alert('해당 글이 삭제되었습니다.');");
-                out.println("window.location.href='/investment/investmentList';");
+                out.println("window.location.href='/Study/notice/noticeList.do';");
                 out.println("</script>");
                 out.flush();
             } else {

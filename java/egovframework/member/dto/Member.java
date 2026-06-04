@@ -2,8 +2,9 @@ package egovframework.member.dto;
 
 import java.time.LocalDateTime;
 
+
 import egovframework.member.exception.WrongIdPasswordException;
-import egovframework.role.enums.Role;
+import egovframework.role.enums.Auth;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -14,7 +15,7 @@ public class Member {
 	private String password;
 	private String name;
 	private LocalDateTime registerDateTime;
-	private Role role;
+	private Auth role;
 		
 	
 	public Long getMemberId() {
@@ -84,13 +85,13 @@ public class Member {
 
 
 
-	public Role getRole() {
+	public Auth getRole() {
 		return role;
 	}
 
 
 
-	public void setRole(Role role) {
+	public void setRole(Auth role) {
 		this.role = role;
 	}
 }

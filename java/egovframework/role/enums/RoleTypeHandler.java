@@ -9,6 +9,8 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
 
+import egovframework.role.enums.Auth.Role;
+
 @MappedTypes(Role.class)
 public class RoleTypeHandler implements TypeHandler<Role> {
 

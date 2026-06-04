@@ -18,7 +18,7 @@ public interface NoticeMapper {
 
     int insertNotice(Notice notice) throws Exception;
 
-    int updateNotice(Notice notice) throws Exception;
+    void updateNotice(Notice notice) throws Exception;
 
     int deleteNotice(Notice notice) throws Exception;
 

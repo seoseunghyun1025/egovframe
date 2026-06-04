@@ -45,9 +45,9 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int updatePost(Notice notice) throws Exception {
+	public void updatePost(Notice notice) throws Exception {
 		// TODO Auto-generated method stub
-		return noticeMapper.updateNotice(notice);
+		noticeMapper.updateNotice(notice);
 	}
 
 	@Override

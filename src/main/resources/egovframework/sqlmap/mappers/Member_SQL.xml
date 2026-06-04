@@ -9,7 +9,7 @@
     	<result property="password" column="PASSWORD"/>
     	<result property="name" column="NAME"/>
     	<result property="registerDateTime" column="REGISTER_DATE_TIME"/>
-    	<result property="role" column="ROLE"/>
+    	<result property="role" column="ROLE" typeHandler="roleHandler"/>
 	</resultMap>
 
     <insert id="regist" parameterType="egovframework.member.dto.Register">
@@ -22,7 +22,7 @@
     		#{email},
     		#{password},
     		#{name},
-    		#{role}
+    		#{role, typeHandler=roleHandler}
     	)
     </insert>
     

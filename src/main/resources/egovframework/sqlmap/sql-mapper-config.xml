@@ -6,6 +6,8 @@
 		<typeAlias alias="egovMap" type="org.egovframe.rte.psl.dataaccess.util.EgovMap"/>
 		
 		<typeAlias alias="investmentDTO" type="egovframework.investment.service.InvestmentDTO"/>
+		
+		<typeAlias alias="roleHandler" type="egovframework.role.enums.RoleTypeHandler"/>
     </typeAliases>
     
     <typeHandlers>
