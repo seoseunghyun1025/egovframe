@@ -12,7 +12,7 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
-
+	
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
@@ -42,15 +42,21 @@
 		<property name="validator" ref="validator"/>
 	</bean>
 
+
 	<mvc:interceptors>
     	<mvc:interceptor>
-        	<mvc:mapping path="/investments/**"/>
+        	<mvc:mapping path="/investment/**"/>
         	<mvc:mapping path="/main/**"/>
         	<mvc:mapping path="/notice/**"/>
+        
+        	<mvc:exclude-mapping path="/notice/noticeList.do"/>
+        	<mvc:exclude-mapping path="/notice/noticeInfo.do"/>
+        	<mvc:exclude-mapping path="/member/login.do"/>
         
  	       	<bean class="egovframework.config.SessionInterceptor" />
   	  	</mvc:interceptor>
 	</mvc:interceptors>
+
 <!-- 
     <mvc:interceptors>
         <ref bean="localeChangeInterceptor" />
