@@ -3,7 +3,7 @@ package egovframework.member.dto;
 import java.time.LocalDateTime;
 
 import egovframework.member.exception.WrongIdPasswordException;
-import egovframework.role.enums.Role;
+import egovframework.role.enums.Auth.Role;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

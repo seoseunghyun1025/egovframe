@@ -65,14 +65,14 @@ public class NoticeController {
 		return "notice/noticeList";
 	}
 	
-	@Auth(role = {Auth.Role.ADMIN})
+	@Auth
 	@RequestMapping(value="/insertNotice.do", method=RequestMethod.GET)
 	public String noticeInsertView() {
 		
 		return "notice/insertNotice";
 	}
 	
-	@Auth(role = {Auth.Role.ADMIN})
+	@Auth
 	@RequestMapping(value = "/insertNotice.do", method = RequestMethod.POST)
 	public String noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		Notice notice = new Notice();
@@ -109,7 +109,7 @@ public class NoticeController {
 		
 	}
 	
-	@Auth(role = {Auth.Role.ADMIN})
+	@Auth
 	@RequestMapping(value = "/noticeModify.do", method = RequestMethod.GET)
 	public String postModify(HttpServletRequest request, Model model) throws Exception {
 		if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
@@ -128,7 +128,7 @@ public class NoticeController {
 	    return "/notice/noticeModify";
 	 }
 	 
-	@Auth(role = {Auth.Role.ADMIN})
+	@Auth
 	@RequestMapping(value = "/noticeUpdate.do", method=RequestMethod.POST)
 	public String updatePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -155,7 +155,7 @@ public class NoticeController {
 	    return "redirect:/notice/noticeList.do";
 	}
 	
-	@Auth(role = {Auth.Role.ADMIN})
+	@Auth
 	@RequestMapping(value = "/deleteNotice.do",method = RequestMethod.POST)
     public void deletePost(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 

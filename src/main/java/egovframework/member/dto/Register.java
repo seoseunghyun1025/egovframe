@@ -1,6 +1,6 @@
 package egovframework.member.dto;
 
-import egovframework.role.enums.Role;
+import egovframework.role.enums.Auth.Role;
 
 public class Register {
 	private String email;
