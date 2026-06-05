@@ -24,7 +24,7 @@ public class AdminAccountInitializer {
             
             Member member = memberMapper.select(adminEmail);
             
-            if (member != null) {
+            if (member == null) {
                 Register admin = new Register();
                 admin.setEmail(adminEmail);
                 admin.setPassword(encoder.encode("admin1234")); // 비밀번호 암호화

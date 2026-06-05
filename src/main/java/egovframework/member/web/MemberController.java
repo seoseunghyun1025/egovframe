@@ -40,7 +40,6 @@ public class MemberController {
     public String regist(Register dto) throws Exception {
 		memberService.regist(dto);
 		
-		//인증번호 발송
 		emailService.createEmail(dto.getEmail());
 		
         return "redirect:/member/key-alter.do?email=" + dto.getEmail();
@@ -63,7 +62,7 @@ public class MemberController {
 		session.setAttribute("loginMember", member);
 		session.setMaxInactiveInterval(60 * 30);
 		
-		return "redirect:/investments/list.do";
+		return "redirect:/investment/list.do";
 	}
 	
 	@RequestMapping(value="/logout.do")
