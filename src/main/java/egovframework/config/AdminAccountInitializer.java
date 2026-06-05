@@ -32,12 +32,9 @@ public class AdminAccountInitializer {
                 admin.setRole(Role.ADMIN); 
                 
                 memberMapper.regist(admin);
-            } else {
-                System.out.println("ℹ️ [Init] 이미 관리자 계정이 존재하여 생성을 건너뜁니다.");
             }
             
         } catch(Exception e) {
-            System.err.println("❌ [Init] 관리자 초기화 중 에러 발생");
             e.printStackTrace();
         }
     }
