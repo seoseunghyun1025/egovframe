@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Auth {
+	Role role() default Role.USER;
 	@Getter
 	@RequiredArgsConstructor
 	public enum Role{

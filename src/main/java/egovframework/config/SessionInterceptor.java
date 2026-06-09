@@ -12,8 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 public class SessionInterceptor implements HandlerInterceptor{
 	@Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         
         if (!(handler instanceof HandlerMethod)) {
             return true;
@@ -35,7 +34,7 @@ public class SessionInterceptor implements HandlerInterceptor{
         Member loginMember = (Member) session.getAttribute("loginMember");
         
         if (loginMember.getRole() == null || loginMember.getRole() != Role.ADMIN) {
-            response.sendRedirect(request.getContextPath() + "/index.do?error=unauthorized");
+            response.sendRedirect(request.getContextPath() + "/member/login.do");
             return false;
         }
         

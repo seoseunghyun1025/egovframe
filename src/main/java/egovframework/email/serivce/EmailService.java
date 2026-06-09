@@ -1,7 +1,5 @@
 package egovframework.email.serivce;
 
-import java.util.concurrent.CompletableFuture;
-
 import jakarta.mail.internet.MimeMessage;
 
 public interface EmailService {

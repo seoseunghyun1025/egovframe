@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.notice.dto.Notice;
 import egovframework.notice.service.NoticeService;
 import egovframework.role.enums.Auth;
+import egovframework.role.enums.Auth.Role;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,14 +66,14 @@ public class NoticeController {
 		return "notice/noticeList";
 	}
 	
-	@Auth
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value="/insertNotice.do", method=RequestMethod.GET)
 	public String noticeInsertView() {
 		
 		return "notice/insertNotice";
 	}
 	
-	@Auth
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/insertNotice.do", method = RequestMethod.POST)
 	public String noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		Notice notice = new Notice();
@@ -109,7 +110,7 @@ public class NoticeController {
 		
 	}
 	
-	@Auth
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/noticeModify.do", method = RequestMethod.GET)
 	public String postModify(HttpServletRequest request, Model model) throws Exception {
 		if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
@@ -128,7 +129,7 @@ public class NoticeController {
 	    return "/notice/noticeModify";
 	 }
 	 
-	@Auth
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/noticeUpdate.do", method=RequestMethod.POST)
 	public String updatePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -155,7 +156,7 @@ public class NoticeController {
 	    return "redirect:/notice/noticeList.do";
 	}
 	
-	@Auth
+	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/deleteNotice.do",method = RequestMethod.POST)
     public void deletePost(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
