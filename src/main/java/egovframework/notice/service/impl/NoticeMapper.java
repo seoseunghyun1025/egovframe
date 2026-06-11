@@ -10,7 +10,7 @@ import egovframework.notice.dto.Notice;
 
 @EgovMapper("noticeMapper")
 public interface NoticeMapper {
-	Notice selectNoticeInfo(Notice notice) throws DataAccessException;
+	Notice selectNoticeInfo(String notice) throws DataAccessException;
 
     int selectNoticeCount(Notice notice) throws DataAccessException;
 

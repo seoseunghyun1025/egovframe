@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import egovframework.investment.service.InvestmentDTO;
 import egovframework.notice.dto.Notice;
 import egovframework.notice.service.NoticeService;
 import egovframework.role.enums.Auth;
@@ -28,19 +29,13 @@ public class NoticeController {
 	@Resource(name="noticeService")
 	private NoticeService noticeService;
 	
-	
-	@RequestMapping(value="/noticeInfo.do", method=RequestMethod.GET)
-	public String noticeInfo(HttpServletRequest request, Model model) throws Exception {
-		if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
-			Notice notice = new Notice();
-			notice.setNoticeUuid(request.getParameter("uuid"));
-			Notice noticeInfo = noticeService.noticeInfo(notice);
-			
-			model.addAttribute("writeId", noticeInfo.getWriteId());
-			model.addAttribute("noticeTitle", noticeInfo.getNoticeTitle());
-			model.addAttribute("noticeContent", noticeInfo.getNoticeContent());
-			model.addAttribute("registryDate", noticeInfo.getRegistryDate());
-		}
+	@RequestMapping(value="/noticeInfo.do", method=RequestMethod.POST)
+	public String noticeInfo(Notice dto, Model model) throws Exception {
+		String noticeId = dto.getNoticeUuid();
+		Notice notice = noticeService.noticeInfo(noticeId);
+		
+	    model.addAttribute("notice",notice);
+	    
 		return "notice/noticeInfo";
 	}
 	
@@ -111,20 +106,17 @@ public class NoticeController {
 	}
 	
 	@Auth(role = Role.ADMIN)
-	@RequestMapping(value = "/noticeModify.do", method = RequestMethod.GET)
-	public String postModify(HttpServletRequest request, Model model) throws Exception {
-		if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
+	@RequestMapping(value = "/noticeModify.do", method = RequestMethod.POST)
+	public String postModify(Notice dto, Model model) throws Exception {
 
-	    Notice notice = new Notice();
-	    notice.setNoticeUuid(request.getParameter("uuid"));
-	    Notice noticeInfo = noticeService.noticeInfo(notice);
+	    String noticeId = dto.getNoticeUuid() ;
+	    Notice noticeInfo = noticeService.noticeInfo(noticeId);
 	            
 	    model.addAttribute("noticeUuid", noticeInfo.getNoticeUuid());
 	    model.addAttribute("writeId", noticeInfo.getWriteId());
 	    model.addAttribute("noticeTitle", noticeInfo.getNoticeTitle());
 	    model.addAttribute("noticeContent", noticeInfo.getNoticeContent());
 	    model.addAttribute("registryDate", noticeInfo.getRegistryDate());
-	    }
 	    
 	    return "/notice/noticeModify";
 	 }

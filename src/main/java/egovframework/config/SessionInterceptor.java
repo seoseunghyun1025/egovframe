@@ -18,23 +18,23 @@ public class SessionInterceptor implements HandlerInterceptor{
             return true;
         }
         
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loginMember") == null) {
+            response.sendRedirect(request.getContextPath() + "/member/loginForm.do");
+            return false;
+        }
+        
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-         
         Auth authAnnotation = handlerMethod.getMethodAnnotation(Auth.class);
         
         if (authAnnotation == null) {
             return true;
         }
         
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loginMember") == null) {
-            response.sendRedirect(request.getContextPath() + "/member/login.do");
-            return false;
-        }
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        
         if (loginMember.getRole() == null || loginMember.getRole() != Role.ADMIN) {
-            response.sendRedirect(request.getContextPath() + "/member/login.do");
+            response.sendRedirect(request.getContextPath() + "/member/loginForm.do");
             return false;
         }
         

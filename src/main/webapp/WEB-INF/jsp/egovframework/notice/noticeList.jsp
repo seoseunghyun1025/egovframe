@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항 목록</title>
+<script src="/js/jquery.min.js"></script>
 </head>
 <body>
 	<h2>공지사항 목록</h2>
@@ -26,11 +27,9 @@
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
                     <td>${status.count}</td>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/notice/noticeInfo.do?uuid=${notice.noticeUuid}">
-                            ${notice.noticeTitle}
-                        </a>
-                    </td>
+                    <td class="notice-link" data-uuid="${notice.noticeUuid}">
+    					${notice.noticeTitle}
+					</td>
                     <td>${notice.registryDate}</td>
                     <td>${notice.writeId}</td>
                 </tr>
@@ -51,5 +50,18 @@
 
     <br>
     <a href="${pageContext.request.contextPath}/notice/insertNoticeForm.do">글쓰기</a>
+    <form id="uuidForm" method="post" action="/notice/noticeInfo.do">
+    	<input type="hidden" id="uuid" name="noticeUuid" value="" />
+	</form>
+	<script>
+		$(document).ready(function() {
+	    	$(".notice-link").on("click", function() {
+	       		var uuid = $(this).data("uuid");
+	       		$("#uuid").val(uuid);
+	        	$("#uuidForm").submit();
+	    	});
+	    
+		});
+	</script>
 </body>
 </html>

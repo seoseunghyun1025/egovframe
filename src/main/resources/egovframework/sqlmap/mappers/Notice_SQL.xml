@@ -16,7 +16,7 @@
         SELECT
         	NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT, REGISTRY_DATE
     	FROM NOTICE
-    	WHERE NOTICE_UUID = #{noticeUuid}
+    	WHERE NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
     </select>
 
     <select id="selectNoticeCount" resultType="int">
@@ -40,7 +40,7 @@
 
     <insert id="insertNotice" useGeneratedKeys="true" keyProperty="noticeUuid">
         INSERT INTO NOTICE(NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT)
-        VALUES(#{noticeUuid}, #{writeId}, #{noticeTitle}, #{noticeContent})
+        VALUES(#{noticeUuid, jdbcType=VARCHAR}, #{writeId}, #{noticeTitle}, #{noticeContent})
     </insert>
 
     <update id="updateNotice">
@@ -49,13 +49,13 @@
               NOTICE_TITLE = #{noticeTitle},
               NOTICE_CONTENT = #{noticeContent}
         WHERE 1 = 1
-          AND NOTICE_UUID = #{noticeUuid}
+          AND NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
           AND WRITE_ID = #{writeId}
     </update>
 
     <delete id="deleteNotice">
         DELETE FROM NOTICE
         WHERE 1 = 1
-          AND NOTICE_UUID = #{noticeUuid}
+          AND NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
     </delete>
 </mapper>

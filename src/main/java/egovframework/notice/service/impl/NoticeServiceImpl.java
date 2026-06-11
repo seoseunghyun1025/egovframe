@@ -21,7 +21,7 @@ public class NoticeServiceImpl implements NoticeService{
     private NoticeMapper noticeMapper;
 	
 	@Override
-	public Notice noticeInfo(Notice notice) {
+	public Notice noticeInfo(String notice) {
 		// TODO Auto-generated method stub
 		return noticeMapper.selectNoticeInfo(notice);
 	}

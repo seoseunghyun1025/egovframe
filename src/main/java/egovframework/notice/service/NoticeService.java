@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import egovframework.notice.dto.Notice;
 
 public interface NoticeService {
-	Notice noticeInfo(Notice notice);
+	Notice noticeInfo(String notice);
 	
 	int noticeCount(Notice notice);
 	

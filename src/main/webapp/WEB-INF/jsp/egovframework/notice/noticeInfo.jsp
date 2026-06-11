@@ -14,6 +14,7 @@
             }
         }
     </script>
+    <script src="/js/jquery.min.js"></script>
 </head>
 <body>
 	<h2>공지사항 상세 보기</h2>
@@ -21,29 +22,44 @@
     <table border="1">
         <tr>
             <th>작성자 ID</th>
-            <td>${writeId}</td>
+            <td>${notice.writeId}</td>
         </tr>
         <tr>
             <th>제목</th>
-            <td>${noticeTitle}</td>
+            <td>${notice.noticeTitle}</td>
         </tr>
         <tr>
             <th>내용</th>
-            <td>${noticeContent}</td>
+            <td>${notice.noticeContent}</td>
         </tr>
         <tr>
         	<th>등록일</th>
-        	<td>${registryDate}</td>
+        	<td>${notice.registryDate}</td>
         </tr>
     </table>
 
     <br>
-    <a href="${pageContext.request.contextPath}/notice/noticeList.do">목록으로</a>
-    <a href="${pageContext.request.contextPath}/notice/noticeModify.do?uuid=${param.uuid}">수정하기</a>
+    <a href="/notice/noticeList.do">목록으로</a>
+    <button type="button" class="notice-link" data-uuid="${notice.noticeUuid}">
+    	수정하기
+	</button>
     
-    <form name="deleteForm" action="${pageContext.request.contextPath}/notice/deleteNotice.do" method="POST" style="display:inline;">
+    <form name="deleteForm" action="/notice/deleteNotice.do" method="POST" style="display:inline;">
         <input type="hidden" name="uuid" value="${param.uuid}">
         <button type="button" onclick="deletePost()">삭제하기</button>
     </form>
+    
+    <form id="uuidForm" method="post" action="/notice/noticeModify.do">
+    	<input type="hidden" id="uuid" name="noticeUuid" value="" />
+	</form>
 </body>
+<script>
+	$(document).ready(function() {
+		$(".notice-link").on("click", function() {
+   			var uuid = $(this).data("uuid");
+   			$("#uuid").val(uuid);
+    		$("#uuidForm").submit();
+		});
+	});
+</script>
 </html>
