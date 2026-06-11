@@ -67,7 +67,7 @@ public class NoticeController {
 	}
 	
 	@Auth(role = Role.ADMIN)
-	@RequestMapping(value="/insertNotice.do", method=RequestMethod.GET)
+	@RequestMapping(value="/insertNoticeForm.do", method=RequestMethod.GET)
 	public String noticeInsertView() {
 		
 		return "notice/insertNotice";
@@ -105,7 +105,7 @@ public class NoticeController {
 			out.println("<script type='text/javascript'>alert('해당 글을 등록하는데 실패하였습니다.');</script>");
 			out.flush();
 			
-			return "redirect:/notice/insertNotice.do";
+			return "redirect:/notice/insertNoticeForm.do";
 		}
 		
 	}

@@ -31,6 +31,9 @@ tr:hover { background-color: #f8faff; cursor: pointer; }
 .btn-ui { padding: 10px 20px; border-radius: 6px; border: 1px solid #ddd; background: #f8f9fa; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .btn-ui:hover { background: #eee; }
 .btn-primary { background: #4485f4; color: white; border: none; }
+.btn-link {
+	cursor: pointer;
+}
 
 /* [전용] 5. 상단 요약 카드 (메인/상세 공통 활용) */
 .summary-card-box { display: flex; padding: 0; overflow: hidden; height: 120px; }
@@ -39,3 +42,37 @@ tr:hover { background-color: #f8faff; cursor: pointer; }
 .stat-item { display: flex; flex-direction: column; }
 .stat-label { font-size: 0.85em; color: #999; margin-bottom: 5px; }
 .stat-value { font-size: 1.4em; font-weight: bold; }
+
+/* 로그아웃 css 추가 */
+.user-header {
+    max-width: 1200px;
+    margin: 20px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+.user-info {
+	font-size: 14px;
+	color: #4a5568;
+	font-weight: 500;
+}
+.user-info strong {
+	color: #2d3748;
+}
+.btn-logout {
+	background-color: #fff;
+	color: #e53e3e;
+	border: 1px solid #e2e8f0;
+	padding: 6px 12px;
+	font-size: 13px;
+	font-weight: 600;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+.btn-logout:hover {
+	background-color: #fff5f5;
+	border-color: #feb2b2;
+}

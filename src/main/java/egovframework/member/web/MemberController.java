@@ -31,7 +31,7 @@ public class MemberController {
 	@Resource(name = "emailService")
 	private EmailService emailService;
 	
-	@RequestMapping(value="/regist.do", method=RequestMethod.GET)
+	@RequestMapping(value="/registForm.do", method=RequestMethod.GET)
     public String registView() throws Exception {
     	return "member/memberRegist"; 
     }
@@ -45,7 +45,7 @@ public class MemberController {
         return "redirect:/member/key-alter.do?email=" + dto.getEmail();
     }
 	
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/loginForm.do", method = RequestMethod.GET)
 	public String loginPage(){  
 		return "member/login";
 	}
@@ -55,20 +55,20 @@ public class MemberController {
 		Member member = memberService.login(dto);
 		
 		if(member == null) {
-			return "redirect:/member/login.do";
+			return "redirect:/member/loginForm.do";
 		}
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("loginMember", member);
 		session.setMaxInactiveInterval(60 * 30);
 		
-		return "redirect:/investment/list.do";
+		return "redirect:/investment/listForm.do";
 	}
 	
 	@RequestMapping(value="/logout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/member/login.do";
+		return "redirect:/member/loginForm.do";
 	}
 	
 	@RequestMapping(value = "/reset-password.do", method = RequestMethod.POST)
@@ -93,22 +93,22 @@ public class MemberController {
 		boolean isVerified = emailService.verifyTemporaryPassword(request.getEmail(), request.getTempPassword());
         return isVerified ? 
         		"redirect:/member/change-password.do?email=" + request.getEmail() : 
-        		"redirect:/member/verify.do?email=" + request.getEmail();
+        		"redirect:/member/verify.doForm?email=" + request.getEmail();
 	}
 	
-	@RequestMapping(value = "/reset-password.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/reset-passwordForm.do", method = RequestMethod.GET)
 	public String resetPasswordView() throws Exception{
 		return "member/resetPassword";
 	}
 
-	@RequestMapping(value = "/verify.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/verifyForm.do", method = RequestMethod.GET)
     public String verifyTemporaryPasswordView(@RequestParam(value="email", required=false) String email, Model model) throws Exception {
         model.addAttribute("email",email);
 		
 		return "member/verifyPassword";
     }
 	
-	@RequestMapping(value = "/change-password.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/change-passwordForm.do", method = RequestMethod.GET)
 	public String changePasswordView(@RequestParam(value="email", required=false) String email, Model model) throws Exception {
 	    model.addAttribute("email", email);
 		return "member/changePassword";
@@ -120,10 +120,10 @@ public class MemberController {
         
         if (isUpdated) {
             System.out.println("success\n");
-            return "redirect:/member/login.do";
+            return "redirect:/member/loginForm.do";
         } else {
             System.out.println("\nfailed\n");
-            return "redirect:/member/change-password.do?email=" + dto.getEmail() + "&error=fail";
+            return "redirect:/member/change-passwordForm.do?email=" + dto.getEmail() + "&error=fail";
         }
     }
 	
@@ -134,7 +134,7 @@ public class MemberController {
 	public String verifyCode(EmailVerificationRequest verificationRequest) {
 		boolean isVerified = emailService.verifyCode(verificationRequest.getEmail(), verificationRequest.getCode());
 		return isVerified ? 
-				"redirect:/member/login.do": 
+				"redirect:/member/loginForm.do": 
 				"redirect:/member/key-alter.do?email=" + verificationRequest.getEmail();
 	}
 	

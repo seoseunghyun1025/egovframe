@@ -64,7 +64,7 @@ public class InvestmentController {
     @Resource(name = "investmentService")
     private InvestmentService investmentService;
     
-    @RequestMapping(value="/list.do", method=RequestMethod.GET)
+    @RequestMapping(value="/listForm.do", method=RequestMethod.GET)
     public ModelAndView selectInvestmentListView() throws Exception {
         ModelAndView mav = new ModelAndView();
         
@@ -81,7 +81,7 @@ public class InvestmentController {
         return mav; 
     }
     
-    @RequestMapping(value="/regist.do", method=RequestMethod.GET)
+    @RequestMapping(value="/registForm.do", method=RequestMethod.GET)
     public String registView(@RequestParam(value="id", required=false) Integer id, Model model) throws Exception {
     	InvestmentDTO dto = null;
     	
@@ -102,13 +102,13 @@ public class InvestmentController {
         } else {
             investmentService.insertInvestment(dto);
         }
-        return "redirect:/investment/list.do";
+        return "redirect:/investment/listForm.do";
     }
     
     @RequestMapping(value="/delete.do", method=RequestMethod.POST)
     public String deleteAction(@RequestParam("id") int id) throws Exception{
     	investmentService.deleteInvestment(id);
-    	return "redirect:/investment/list.do";
+    	return "redirect:/investment/listForm.do";
     }
     
     @RequestMapping(value="/history.do", method=RequestMethod.GET)

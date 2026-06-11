@@ -7,41 +7,7 @@
     <meta charset="UTF-8">
     <title>나의 투자 기록</title>
     <link rel="stylesheet" href="<c:url value='/css/egovframework/investment/investment.css'/>">
-    <style>
-        /* 로그아웃 헤더 스타일 추가 */
-        .user-header {
-            max-width: 1200px;
-            margin: 20px auto 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 15px;
-        }
-        .user-info {
-            font-size: 14px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-        .user-info strong {
-            color: #2d3748;
-        }
-        .btn-logout {
-            background-color: #fff;
-            color: #e53e3e;
-            border: 1px solid #e2e8f0;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-logout:hover {
-            background-color: #fff5f5;
-            border-color: #feb2b2;
-        }
-    </style>
+    <script src="/js/jquery.min.js"></script>
 </head>
 <body>
 
@@ -49,14 +15,15 @@
     <div class="user-info">
         👤 <strong>${loginMember.email}</strong>님 로그인 중
     </div>
-   	<button type="button" class="btn-logout" onclick="if(confirm('로그아웃 하시겠습니까?')) location.href='<c:url value="/member/logout.do"/>';">
+   	<button type="button" id="logout" class="btn-logout" >
        	로그아웃
    	</button>
 </div>
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
-        <a onclick="location.href='<c:url value="/investment/regist.do"></c:url>';"style="cursor: pointer;">투자 작성</a>
+        <button type="button" id="newRegistInvestment" class="btn-link" >투자 작성</button> 
+        <button type="button" id="notice" class="btn-link" >공지 사항</button> <br> <br>
         <table>
             <thead>
                 <tr>
@@ -73,14 +40,13 @@
                 <c:choose>
                     <c:when test="${not empty list}">
                         <c:forEach var="item" items="${list}">
-                            <tr onclick="location.href='<c:url value="/investment/regist.do"><c:param name="id" value="${item.id}"/></c:url>';" 
-    style="cursor: pointer;">
+                            <tr id="registInvestment" name="id" value="${item.id}" class="btn-link">
                                 <td>${item.id}</td>
                                 <td><strong>${item.assetName}</strong></td>
                                 <td>
                                     <span class="${item.txType == 'BUY' ? 'type-buy' : 'type-sell'}">
                                         ${item.txType}
-                                    </span>
+                                    </span>	
                                 </td>
                                 <td><fmt:formatNumber value="${item.buyPrice}" pattern="#,###"/></td>
                                 <td>${item.quantity}</td>
@@ -97,8 +63,32 @@
         </table>
     </section>
 </div>
-</body>
 <script>
-console.log('${loginMember.memberId}');
+    $(document).ready(function(){
+    	// 로그아웃
+        $("#logout").click(function() {
+    		window.location = "/member/loginForm.do";
+        })
+         
+        // 투자 작성
+        $("#newRegistInvestment").click(function() {
+    		window.location = "/investment/registForm.do";
+        })
+        
+        //공지사항
+        $("#notice").click(function() {
+    		window.location = "/notice/noticeList.do";
+        })
+        
+        $("registInvestment").click(function() {
+			$.ajax({
+				url : "/investment/registFrom.do",
+				type: "GET",
+				data: ("#registInvestment").serialize(),
+				dataType: 'JSON'
+			});
+    	})
+    });
 </script>
+</body>
 </html>

@@ -48,6 +48,6 @@
     </div>
 
     <br>
-    <a href="${pageContext.request.contextPath}/notice/insertNotice.do">글쓰기</a>
+    <a href="${pageContext.request.contextPath}/notice/insertNoticeForm.do">글쓰기</a>
 </body>
 </html>

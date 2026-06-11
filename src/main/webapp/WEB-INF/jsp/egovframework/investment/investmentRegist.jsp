@@ -77,10 +77,10 @@
             <label>거래소</label>
             <select id="exchange" name="exchange" size="1">
             	<option value="">선택</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '한국투자증권'}">selected</c:if>>한국투자증권</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '토스증권'}">selected</c:if>>토스증권</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '카카오증권'}">selected</c:if>>카카오증권</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '나무증권'}">selected</c:if>>나무증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '한국투자증권'}">selected</c:if>>한국투자증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '토스증권'}">selected</c:if>>토스증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '카카오증권'}">selected</c:if>>카카오증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '나무증권'}">selected</c:if>>나무증권</option>
             </select>
         </div>
         
@@ -94,7 +94,7 @@
             		<button type="submit" class="btn-save">저장하기</button>
         		</c:otherwise>
     		</c:choose>
-    		<button type="button" class="btn-cancel" onclick="location.href='<c:url value='/investment/list.do'/>'">취소</button>
+    		<button type="button" id="list">취소</button>
 		</div>
     </form>
     <form id="deleteForm" action="<c:url value='/investment/delete.do'/>" method="post">
@@ -122,5 +122,9 @@
 		document.getElementById("investmentForm").onsubmit = function(){
 			return confirm("입력하신 정보로 저장하시겠습니까?");
 		}
+		
+		$("#list").click(function() {
+    		window.location = "/investment/listForm.do";
+        })
 	</script>
 </html>

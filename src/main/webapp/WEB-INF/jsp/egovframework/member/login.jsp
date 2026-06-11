@@ -54,7 +54,7 @@
                 </div>
             </c:if>
 
-            <form action="${pageContext.request.contextPath}/member/login.do" method="POST">
+            <form action="${pageContext.request.contextPath}/member/loginForm.do" method="POST">
                 
                 <div class="mb-3">
                     <label for="email" class="form-label small fw-semibold text-secondary">이메일 주소</label>
@@ -71,10 +71,10 @@
                 </div>
                 
                 <div class="text-center mt-3">
-    				<a href="${pageContext.request.contextPath}/member/reset-password.do" class="small text-decoration-none fw-semibold" style="color: #4e73df;">비밀번호 찾기</a>
+    				<a href="${pageContext.request.contextPath}/member/reset-passwordForm.do" class="small text-decoration-none fw-semibold" style="color: #4e73df;">비밀번호 찾기</a>
     				<span class="text-muted small mx-2">|</span>
     				<span class="small text-muted">아직 계정이 없으신가요?</span>
-    				<a href="${pageContext.request.contextPath}/member/regist.do" class="small text-decoration-none fw-semibold ms-1" style="color: #4e73df;">회원가입</a>
+    				<a href="${pageContext.request.contextPath}/member/registForm.do" class="small text-decoration-none fw-semibold ms-1" style="color: #4e73df;">회원가입</a>
 				</div>
             </form>
         </div>

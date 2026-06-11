@@ -43,7 +43,7 @@ public class MemberController {
 		//인증번호 발송
 		emailService.createEmail(dto.getEmail());
 		
-        return "redirect:/member/key-alter.do?email=" + dto.getEmail();
+        return "redirect:/member/key-alterForm.do?email=" + dto.getEmail();
     }
 	
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
@@ -80,7 +80,7 @@ public class MemberController {
 		if(exists == true) {
 			String tempPassword = emailService.createTemoraryPassword(email);
 			emailService.sendTemporaryPasswordEmail(email, tempPassword);
-			return "redirect:/member/verify.do?email=" + email;
+			return "redirect:/member/verifyForm.do?email=" + email;
 		}else {
 			System.out.println();
 			System.out.println("아이디가 존재하지 않습니다.");
@@ -93,8 +93,8 @@ public class MemberController {
 	public String verifyTemporaryPassword(PasswordVerificationRequest request) throws Exception{
 		boolean isVerified = emailService.verifyTemporaryPassword(request.getEmail(), request.getTempPassword());
         return isVerified ? 
-        		"redirect:/member/change-password.do?email=" + request.getEmail() : 
-        		"redirect:/member/verify.do?email=" + request.getEmail();
+        		"redirect:/member/change-passwordForm.do?email=" + request.getEmail() : 
+        		"redirect:/member/verify.doForm?email=" + request.getEmail();
 	}
 	
 	@RequestMapping(value = "/reset-password.do", method = RequestMethod.GET)
@@ -102,14 +102,14 @@ public class MemberController {
 		return "member/resetPassword";
 	}
 
-	@RequestMapping(value = "/verify.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/verifyForm.do", method = RequestMethod.GET)
     public String verifyTemporaryPasswordView(@RequestParam(value="email", required=false) String email, Model model) throws Exception {
         model.addAttribute("email",email);
 		
 		return "member/verifyPassword";
     }
 	
-	@RequestMapping(value = "/change-password.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/change-passwordForm.do", method = RequestMethod.GET)
 	public String changePasswordView(@RequestParam(value="email", required=false) String email, Model model) throws Exception {
 	    model.addAttribute("email", email);
 		return "member/changePassword";
@@ -124,7 +124,7 @@ public class MemberController {
             return "redirect:/member/login.do";
         } else {
             System.out.println("\nfailed\n");
-            return "redirect:/member/change-password.do?email=" + dto.getEmail() + "&error=fail";
+            return "redirect:/member/change-passwordForm.do?email=" + dto.getEmail() + "&error=fail";
         }
     }
 	
@@ -136,10 +136,10 @@ public class MemberController {
 		boolean isVerified = emailService.verifyCode(verificationRequest.getEmail(), verificationRequest.getCode());
 		return isVerified ? 
 				"redirect:/member/login.do": 
-				"redirect:/member/key-alter.do?email=" + verificationRequest.getEmail();
+				"redirect:/member/key-alterForm.do?email=" + verificationRequest.getEmail();
 	}
 	
-	@RequestMapping(value = "/key-alter.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/key-alterForm.do", method = RequestMethod.GET)
 	public String keyAlter(@RequestParam(value="email", required=false) String email, Model model) throws Exception {
 		model.addAttribute("email",email);
 		return "member/verify-code";
