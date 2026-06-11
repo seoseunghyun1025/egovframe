@@ -38,7 +38,8 @@
     		EMAIL, 
     		PASSWORD, 
     		NAME, 
-    		REGISTER_DATE_TIME
+    		REGISTER_DATE_TIME,
+    		ROLE
     	FROM MEMBER
     	WHERE EMAIL = #{email}
     </select>

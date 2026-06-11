@@ -173,7 +173,7 @@ public class NoticeController {
                 PrintWriter out = response.getWriter();
                 out.println("<script type='text/javascript'>");
                 out.println("alert('해당 글이 삭제되었습니다.');");
-                out.println("window.location.href='/Study/notice/noticeList.do';");
+                out.println("window.location.href='/notice/noticeList.do';");
                 out.println("</script>");
                 out.flush();
             } else {

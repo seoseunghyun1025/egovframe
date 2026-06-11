@@ -6,6 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>나의 투자 기록</title>
+    <!--favicon 404 방지-->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" href="<c:url value='/css/egovframework/investment/investment.css'/>">
     <script src="/js/jquery.min.js"></script>
 </head>

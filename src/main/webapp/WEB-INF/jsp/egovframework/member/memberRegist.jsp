@@ -5,17 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<style>
-    body { font-family: 'Malgun Gothic', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
-    .container { max-width: 450px; margin: 60px auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    h3 { text-align: center; color: #333; margin-bottom: 30px; font-size: 24px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #495057; font-size: 14px; }
-    .form-group input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; transition: border-color 0.15s ease-in-out; }
-    .form-group input:focus { border-color: #007bff; outline: none; }
-    .btn-submit { width: 100%; padding: 12px; background-color: #007bff; border: none; color: white; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
-    .btn-submit:hover { background-color: #0056b3; }
-</style>
+<link rel="stylesheet" href="<c:url value='/css/egovframework/account/regist.css'/>">
 <script>
     function validateForm() {
         var password = document.getElementById("password").value;

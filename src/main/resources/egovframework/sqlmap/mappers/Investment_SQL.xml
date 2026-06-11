@@ -23,6 +23,16 @@
             COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
             MEMO
         FROM INVESTMENT
+        WHERE DEL_YN = 'N' AND MEMBER_ID = #{memberId, jdbcType=NUMERIC}
+        ORDER BY BUY_DATE DESC, ID DESC
+    </select>
+    
+    <select id="selectAllInvestmentList" resultMap="investmentMap">
+        SELECT 
+            ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
+            COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
+            MEMO
+        FROM INVESTMENT
         WHERE DEL_YN = 'N'
         ORDER BY BUY_DATE DESC, ID DESC
     </select>

@@ -45,12 +45,10 @@
 
 	<mvc:interceptors>
     	<mvc:interceptor>
+    	
         	<mvc:mapping path="/investment/**"/>
-        	<mvc:mapping path="/main/**"/>
         	<mvc:mapping path="/notice/**"/>
         
-        	<mvc:exclude-mapping path="/notice/noticeList.do"/>
-        	<mvc:exclude-mapping path="/notice/noticeInfo.do"/>
         	<mvc:exclude-mapping path="/member/login.do"/>
         
  	       	<bean class="egovframework.config.SessionInterceptor" />

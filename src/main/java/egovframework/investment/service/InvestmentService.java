@@ -2,9 +2,11 @@ package egovframework.investment.service;
 
 import java.util.List;
 
+import egovframework.role.enums.Auth.Role;
+
 public interface InvestmentService {
 	//투자리스트 조회
-	List<InvestmentDTO> selectInvestmentList() throws Exception;
+	List<InvestmentDTO> selectInvestmentList(Role role, Long memberId) throws Exception;
     
     //투자 내역 등록
     void insertInvestment(InvestmentDTO dto) throws Exception;

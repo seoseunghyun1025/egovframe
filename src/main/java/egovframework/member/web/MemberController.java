@@ -62,7 +62,7 @@ public class MemberController {
 		session.setAttribute("loginMember", member);
 		session.setMaxInactiveInterval(60 * 30);
 		
-		return "redirect:/investment/listForm.do";
+		return "redirect:/investment/list.do";
 	}
 	
 	@RequestMapping(value="/logout.do")

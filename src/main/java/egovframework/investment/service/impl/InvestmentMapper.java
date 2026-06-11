@@ -5,12 +5,15 @@ import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentSummaryDTO;
+import egovframework.role.enums.Auth.Role;
 
 @EgovMapper("investmentMapper")
 public interface InvestmentMapper {
 
     // 1. 투자 기록 전체 조회
-    List<InvestmentDTO> selectInvestmentList() throws Exception;
+    List<InvestmentDTO> selectInvestmentList(Long memberId) throws Exception;
+    
+    List<InvestmentDTO> selectAllInvestmentList() throws Exception;
 
     // 2. 새로운 투자 기록 등록
     void insertInvestment(InvestmentDTO dto) throws Exception;

@@ -43,10 +43,10 @@
 
 package egovframework.investment.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,8 +54,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentService;
-import egovframework.investment.service.InvestmentSummaryDTO;
+import egovframework.member.dto.Member;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/investment")
@@ -64,15 +66,21 @@ public class InvestmentController {
     @Resource(name = "investmentService")
     private InvestmentService investmentService;
     
-    @RequestMapping(value="/listForm.do", method=RequestMethod.GET)
-    public ModelAndView selectInvestmentListView() throws Exception {
+    @RequestMapping(value="/list.do", method=RequestMethod.GET)
+    public ModelAndView selectInvestmentListView(HttpServletRequest request) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	Member member = new Member();
+    	List<InvestmentDTO> list = null;
+    	
+    	if(session != null) {
+    		member = (Member)session.getAttribute("loginMember");
+    	}
+    	
         ModelAndView mav = new ModelAndView();
         
-        List<InvestmentDTO> list = investmentService.selectInvestmentList();
-        List<InvestmentSummaryDTO> summaryList = investmentService.selectInvestmentSummary();
+        list = investmentService.selectInvestmentList(member.getRole(), member.getMemberId());
         
         mav.addObject("list", list);
-        mav.addObject("summaryList", summaryList);
         
         mav.setViewName("investment/investmentList");
         
@@ -102,13 +110,13 @@ public class InvestmentController {
         } else {
             investmentService.insertInvestment(dto);
         }
-        return "redirect:/investment/listForm.do";
+        return "redirect:/investment/list.do";
     }
     
     @RequestMapping(value="/delete.do", method=RequestMethod.POST)
     public String deleteAction(@RequestParam("id") int id) throws Exception{
     	investmentService.deleteInvestment(id);
-    	return "redirect:/investment/listForm.do";
+    	return "redirect:/investment/list.do";
     }
     
     @RequestMapping(value="/history.do", method=RequestMethod.GET)
