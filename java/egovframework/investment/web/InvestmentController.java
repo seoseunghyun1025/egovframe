@@ -100,13 +100,13 @@ public class InvestmentController {
         } else {
             investmentService.insertInvestment(dto);
         }
-        return "redirect:/investments/list.do";
+        return "redirect:/investment/list.do";
     }
     
     @RequestMapping(value="/delete.do", method=RequestMethod.POST)
     public String Action(@RequestParam("id") int id) throws Exception{
     	investmentService.deleteInvestment(id);
-    	return "redirect:/investments/list.do";
+    	return "redirect:/investment/list.do";
     }
     
     @RequestMapping(value="/history.do", method=RequestMethod.GET)

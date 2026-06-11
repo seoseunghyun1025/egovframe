@@ -21,7 +21,7 @@
         </c:otherwise>
     </c:choose>
     		
-    <form id="investmentForm" action="<c:url value='/investments/regist.do'/>" method="post">
+    <form id="investmentForm" action="<c:url value='/investment/regist.do'/>" method="post">
     	<input type="hidden" name="id" value="${investmentDTO.id}">
     	<input type="hidden" name="memberId" value="${loginMember.memberId}">
     	
@@ -60,9 +60,30 @@
 
         <%-- 히든 필드들도 name 값을 DTO에 맞게 설정 --%>
         <input type="hidden" name="commission" value="0">
-        <input type="hidden" name="currency" value="KRW">
-        <input type="hidden" name="exchange" value="KOSPI">
-
+        <div class="form-group">
+            <label>수수료</label>
+            <input type="text" name="commission" value="${investmentDTO.commission}" placeholder="간단한 메모">
+        </div>
+        
+        <div class="form-group">
+            <label>통화</label>
+            <input type="radio" name="currency"  value="KRW" <c:if test="${investmentDTO.currency eq 'KRW'}">checked</c:if>>KRW
+            <input type="radio" name="currency"  value="USD" <c:if test="${investmentDTO.currency eq 'USD'}">checked</c:if>>USD
+            <input type="radio" name="currency"  value="EUR" <c:if test="${investmentDTO.currency eq 'EUR'}">checked</c:if>>EUR
+            <input type="radio" name="currency"  value="JPY" <c:if test="${investmentDTO.currency eq 'JPY'}">checked</c:if>>JPY
+        </div>
+        
+        <div class="form-group">
+            <label>거래소</label>
+            <select id="exchange" name="exchange" size="1">
+            	<option value="">선택</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '한국투자증권'}">selected</c:if>>한국투자증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '토스증권'}">selected</c:if>>토스증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '카카오증권'}">selected</c:if>>카카오증권</option>
+            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange== '나무증권'}">selected</c:if>>나무증권</option>
+            </select>
+        </div>
+        
         <div class="btn-box">
     		<c:choose>
         		<c:when test="${not empty investmentDTO.id && investmentDTO.id > 0}">
@@ -73,10 +94,10 @@
             		<button type="submit" class="btn-save">저장하기</button>
         		</c:otherwise>
     		</c:choose>
-    		<button type="button" class="btn-cancel" onclick="location.href='<c:url value='/investments/list.do'/>'">취소</button>
+    		<button type="button" class="btn-cancel" onclick="location.href='<c:url value='/investment/list.do'/>'">취소</button>
 		</div>
     </form>
-    <form id="deleteForm" action="<c:url value='/investments/delete.do'/>" method="post">
+    <form id="deleteForm" action="<c:url value='/investment/delete.do'/>" method="post">
     		<input type="hidden" name="id" id="deleteId">
 		</form>
 </div>

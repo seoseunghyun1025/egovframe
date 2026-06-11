@@ -96,6 +96,7 @@ public class InvestmentController {
     
     @RequestMapping(value="/regist.do", method=RequestMethod.POST)
     public String registAction(InvestmentDTO dto) throws Exception {
+    	System.out.println(dto.getMemberId());
     	if (dto.getId() > 0) {
             investmentService.updateInvestment(dto);
         } else {

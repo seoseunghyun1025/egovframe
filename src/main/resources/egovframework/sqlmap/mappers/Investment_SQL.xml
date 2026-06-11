@@ -13,6 +13,7 @@
     	<result property="commission" column="COMMISSION"/>
     	<result property="currency" column="CURRENCY"/>
     	<result property="exchange" column="EXCHANGE"/>
+    	<result property="memberId" column="MEMBER_ID"/>
 	</resultMap>
     <!-- resultmap을 쓰면 snake case와 camel case를 강제로 연결시켜주는 용도 -->
 
@@ -41,7 +42,7 @@
                 	SYSDATE
             	</otherwise>
         	</choose>,
-            #{memo}, #{memberId}
+            #{memo}, #{memberId, javaType=java.lang.Long, jdbcType=NUMERIC}
         )
     </insert>
     

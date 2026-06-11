@@ -53,44 +53,10 @@
        	로그아웃
    	</button>
 </div>
-
-<div class="container">
-    <section id="portfolioSection">
-        <h3>📊 종목별 보유 현황</h3>
-        <button type="button" style="margin-bottom: 20px;" onclick="location.href = '<c:url value='/investments/regist.do'/>';" class="btn-regist">
-                ➕ 새로운 투자 등록
-        </button>
-        <div id="portfolioList" style="display: flex; gap: 15px; flex-wrap: wrap;">
-            <c:choose>
-                <c:when test="${not empty summaryList}">
-                    <c:forEach var="summary" items="${summaryList}">
-                        
-                        <c:url value='/investments/history.do' var='safeHistoryUrl'>
-                            <c:param name='assetName' value='${summary.assetName}' />
-                        </c:url>
-
-                        <div class="summary-card" 
-     						onclick="location.href='${safeHistoryUrl}';" 
-     						style="cursor: pointer;">
-                            <div style="font-weight: bold;">${summary.assetName}</div>
-                            <div>수량: ${summary.totalQuantity}주</div>
-                            <div style="color: #007bff;">
-                                평단: <fmt:formatNumber value="${summary.avgPrice}" pattern="#,###"/>원
-                            </div>
-                        </div>
-                        
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <p>보유 내역이 없습니다.</p>
-                </c:otherwise>
-            </c:choose>
-        </div>
-    </section>
-</div>
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
+        <a onclick="location.href='<c:url value="/investment/regist.do"></c:url>';"style="cursor: pointer;">투자 작성</a>
         <table>
             <thead>
                 <tr>
@@ -107,7 +73,7 @@
                 <c:choose>
                     <c:when test="${not empty list}">
                         <c:forEach var="item" items="${list}">
-                            <tr onclick="location.href='<c:url value="/investments/regist.do"><c:param name="id" value="${item.id}"/></c:url>';" 
+                            <tr onclick="location.href='<c:url value="/investment/regist.do"><c:param name="id" value="${item.id}"/></c:url>';" 
     style="cursor: pointer;">
                                 <td>${item.id}</td>
                                 <td><strong>${item.assetName}</strong></td>
