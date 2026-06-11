@@ -57,7 +57,13 @@
 - 톰캣이 뒤에서 조용히 화면 결과물을 긁어온 뒤 현재 JSP 화면에 합쳐서 보여줌
 - 웹사이트의 공통 메뉴(header), 푸터(footer), 사이드바처럼 여러 페이지에서 재사용하는 껍데기 화면들을 내 페이지에 조립할 때 사용
 
-- <c:import url="URL값" var="변수명" scope="범위" varReader="변수명"? context="context명" charEncoding="인코딩값">
+- <c:import url="URL값" var="변수명" scope=“영역” charEncoding=“인코딩”>
+    - var: 가져온 데이터를 내가 원하는 시점이나 위치에 꺼내 쓰고 싶을 때 사용
+    - scope: page, request, session, application
+        - page: 현재 JSP 파일 안에서만 변수를 사용
+        - request: 하나의 요청 단위까지 공유
+        - session: 사용자가 웹 사이트를 사용하는 내내 
+        - application: 모든 사용자가 이 변수를 다 같이 공유, 서버가 켜져 있는 동안 유지
 
 ### <c:redirect />
 - 지정된 URL 페이지로 이동시키는 기능
