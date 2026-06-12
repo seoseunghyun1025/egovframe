@@ -11,6 +11,9 @@
 </head>
 <body>
 	<h2>공지사항 목록</h2>
+	<button type="button" id="logout" class="btn-logout" >
+       	로그아웃
+   	</button>
     
     <p>총 게시글 수: ${totalRow} / 현재 페이지: ${pageNum}</p>
     
@@ -62,7 +65,10 @@
 	       		$("#uuid").val(uuid);
 	        	$("#uuidForm").submit();
 	    	});
-	    
+	    	
+	    	$("#logout").click(function() {
+	    		window.location = "/member/logout.do";
+	        })
 		});
 	</script>
 </body>

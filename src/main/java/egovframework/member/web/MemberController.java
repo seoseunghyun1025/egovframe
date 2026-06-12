@@ -1,7 +1,5 @@
 package egovframework.member.web;
 
-import java.util.concurrent.CompletableFuture;
-
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

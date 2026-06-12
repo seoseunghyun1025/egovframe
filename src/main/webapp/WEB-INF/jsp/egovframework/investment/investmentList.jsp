@@ -72,7 +72,7 @@
     $(document).ready(function(){
     	// 로그아웃
         $("#logout").click(function() {
-    		window.location = "/member/loginForm.do";
+    		window.location = "/member/logout.do";
         })
          
         // 투자 작성

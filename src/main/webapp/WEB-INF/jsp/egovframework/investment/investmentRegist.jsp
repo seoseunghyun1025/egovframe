@@ -78,10 +78,10 @@
             <label>거래소</label>
             <select id="exchange" name="exchange" size="1">
             	<option value="">선택</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '한국투자증권'}">selected</c:if>>한국투자증권</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '토스증권'}">selected</c:if>>토스증권</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '카카오증권'}">selected</c:if>>카카오증권</option>
-            	<option value="${investmentDTO.exchange}"<c:if test="${investmentDTO.exchange eq '나무증권'}">selected</c:if>>나무증권</option>
+            	<option value="1"<c:if test="${investmentDTO.exchange eq '1'}">selected</c:if>>한국투자증권</option>
+            	<option value="2"<c:if test="${investmentDTO.exchange eq '2'}">selected</c:if>>토스증권</option>
+            	<option value="3"<c:if test="${investmentDTO.exchange eq '3'}">selected</c:if>>카카오증권</option>
+            	<option value="4"<c:if test="${investmentDTO.exchange eq '4'}">selected</c:if>>나무증권</option>
             </select>
         </div>
         
@@ -134,7 +134,7 @@
 			})
 			
 			$("#list").click(function() {
-    			window.location = "/investment/listForm.do";
+    			window.location = "/investment/list.do";
         	})
         })
 
