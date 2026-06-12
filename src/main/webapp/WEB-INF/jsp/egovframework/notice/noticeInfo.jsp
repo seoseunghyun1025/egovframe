@@ -40,25 +40,37 @@
 
     <br>
     <a href="/notice/noticeList.do">목록으로</a>
-    <button type="button" class="notice-link" data-uuid="${notice.noticeUuid}">
-    	수정하기
-	</button>
-    
-    <form name="deleteForm" action="/notice/deleteNotice.do" method="POST" style="display:inline;">
-        <input type="hidden" name="uuid" value="${param.uuid}">
-        <button type="button" onclick="deletePost()">삭제하기</button>
+   	<c:if test="${loginMember.role.name() eq 'ADMIN'}">   	
+	    <button type="button" class="notice-link" data-uuid="${notice.noticeUuid}">
+	    	수정하기
+		</button>
+		
+		<button type="button" class="notice-delete" data-uuid="${notice.noticeUuid}">
+	        삭제하기
+	    </button>
+   	</c:if> 
+            
+    <form id="deleteForm" action="/notice/deleteNotice.do" method="POST">
+        <input type="hidden" id="deleteNotice" name="noticeUuid" value="">
     </form>
     
-    <form id="uuidForm" method="post" action="/notice/noticeModify.do">
+    <form id="updateForm" method="post" action="/notice/noticeModify.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
 	</form>
+	
 </body>
 <script>
 	$(document).ready(function() {
 		$(".notice-link").on("click", function() {
    			var uuid = $(this).data("uuid");
    			$("#uuid").val(uuid);
-    		$("#uuidForm").submit();
+    		$("#updateForm").submit();
+		});
+		
+		$(".notice-delete").on("click", function() {
+			var uuid = $(this).data("uuid");
+			$("#deleteNotice").val(uuid);
+			$("#deleteForm").submit();
 		});
 	});
 </script>

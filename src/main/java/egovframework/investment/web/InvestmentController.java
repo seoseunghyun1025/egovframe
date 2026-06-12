@@ -112,6 +112,14 @@ public class InvestmentController {
         return "redirect:/investment/list.do";
     }
     
+    @RequestMapping(value="/update.do", method=RequestMethod.POST)
+    public String update(HttpServletRequest request, Model model) throws Exception{
+    	String id = request.getParameter("id");
+    	InvestmentDTO dto = investmentService.selectInvestmentDetail(Integer.parseInt(id));
+    	model.addAttribute("investmentDTO",dto);
+    	return "investment/investmentRegist";
+    }
+    
     @RequestMapping(value="/delete.do", method=RequestMethod.POST)
     public String deleteAction(@RequestParam("id") int id) throws Exception{
     	investmentService.deleteInvestment(id);

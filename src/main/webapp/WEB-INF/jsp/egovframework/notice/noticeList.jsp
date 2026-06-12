@@ -49,7 +49,9 @@
     </div>
 
     <br>
-    <a href="${pageContext.request.contextPath}/notice/insertNoticeForm.do">글쓰기</a>
+    <c:if test="${loginMember.role.name() eq 'ADMIN'}">
+       <a href="${pageContext.request.contextPath}/notice/insertNoticeForm.do">글쓰기</a>
+    </c:if>
     <form id="uuidForm" method="post" action="/notice/noticeInfo.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
 	</form>

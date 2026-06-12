@@ -119,11 +119,11 @@ public class NoticeController {
 	    model.addAttribute("registryDate", noticeInfo.getRegistryDate());
 	    
 	    return "/notice/noticeModify";
-	 }
+	}
 	 
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/noticeUpdate.do", method=RequestMethod.POST)
-	public String updatePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String updatePost(HttpServletRequest request) throws Exception {
 
 		Notice notice= new Notice();
 
@@ -150,31 +150,16 @@ public class NoticeController {
 	
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/deleteNotice.do",method = RequestMethod.POST)
-    public void deletePost(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-
-        if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
-        	Notice notice = new Notice();
-        	
-            notice.setNoticeUuid(request.getParameter("uuid"));
-
-            int resultNumber = noticeService.deleteNotice(notice);
-
-            if(resultNumber > 0) {
-                response.setCharacterEncoding("UTF-8");
-                response.setContentType("text/html;charset=utf-8");
-                PrintWriter out = response.getWriter();
-                out.println("<script type='text/javascript'>");
-                out.println("alert('해당 글이 삭제되었습니다.');");
-                out.println("window.location.href='/notice/noticeList.do';");
-                out.println("</script>");
-                out.flush();
-            } else {
-                response.setCharacterEncoding("UTF-8");
-                response.setContentType("text/html;charset=utf-8");
-                PrintWriter out = response.getWriter();
-                out.println("<script type='text/javascript'>alert('해당 글을 삭제하는데 실패하였습니다.');</script>");
-                out.flush();
-            }
-        }
+    public String deletePost(HttpServletRequest request, Model model) throws Exception {
+		Notice notice = new Notice();
+		notice.setNoticeUuid(request.getParameter("noticeUuid"));
+		
+	    int result = noticeService.deleteNotice(notice);
+	    	    
+	    if(result > 0) {
+		    return "redirect:/notice/noticeList.do";
+	    }
+	    System.out.println("공지사항 삭제 실패");
+	    return "redirect:/notice/noticeList.do";
     }
 }

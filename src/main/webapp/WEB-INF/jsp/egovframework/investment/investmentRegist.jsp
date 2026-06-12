@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>투자 등록</title>
     <link rel="stylesheet" href="<c:url value='/css/egovframework/investment/investment.css'/>">
+    <script src="/js/jquery.min.js"></script>
 </head>
 <body>
 
@@ -88,7 +89,7 @@
     		<c:choose>
         		<c:when test="${not empty investmentDTO.id && investmentDTO.id > 0}">
             		<button type="submit" class="btn-update">수정하기</button>
-            		<button type="button" class="btn-delete" onclick="fn_delete('${investmentDTO.id}')">삭제하기</button>
+            		<button type="button" class="btn-delete" data-id="${investmentDTO.id}">삭제하기</button>
         		</c:when>
         		<c:otherwise>
             		<button type="submit" class="btn-save">저장하기</button>
@@ -97,9 +98,9 @@
     		<button type="button" id="list">취소</button>
 		</div>
     </form>
-    <form id="deleteForm" action="<c:url value='/investment/delete.do'/>" method="post">
-    		<input type="hidden" name="id" id="deleteId">
-		</form>
+    <form id="deleteForm" action="/investment/delete.do" method="post">
+    	<input type="hidden" name="id" id="deleteId" value="">
+	</form>
 </div>
 </body>
 	<script>console.log('${loginMember.memberId}');</script>
@@ -112,19 +113,30 @@
             };
         }
     };
-		function fn_delete(id){
+		/* function fn_delete(id){
 			if(confirm("정말로 이 투자 기록을 삭제하시겠습니까?\n(삭제된 데이터는 목록에서 제거됩니다.)")){
 				document.getElementById("deleteId").value = id;
 				document.getElementById("deleteForm").submit();
 			}
-		}
+		} */
 		
 		document.getElementById("investmentForm").onsubmit = function(){
 			return confirm("입력하신 정보로 저장하시겠습니까?");
 		}
 		
-		$("#list").click(function() {
-    		window.location = "/investment/listForm.do";
+		
+        
+        $(document).ready(function(){
+			$(".btn-delete").on("click", function(){
+				var id = $(this).data("id");
+				$("#deleteId").val(id);
+				$("#deleteForm").submit();
+			})
+			
+			$("#list").click(function() {
+    			window.location = "/investment/listForm.do";
+        	})
         })
+
 	</script>
 </html>

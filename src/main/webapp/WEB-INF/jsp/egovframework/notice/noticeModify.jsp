@@ -11,7 +11,7 @@
 <body>
     <h2>공지사항 수정</h2>
     
-    <form action="${pageContext.request.contextPath}/notice/noticeUpdate.do" method="POST">
+    <form action="/notice/noticeUpdate.do" method="POST">
         <input type="hidden" name="noticeUuid" value="${noticeUuid}">
         
         <table border="1">
@@ -34,7 +34,7 @@
         </table>
         <br>
         <button type="submit">수정 완료</button>
-        <a href="${pageContext.request.contextPath}/notice/noticeList.do">취소</a>
+        <a href="/notice/noticeList.do">취소</a>
     </form>
 </body>
 </html>

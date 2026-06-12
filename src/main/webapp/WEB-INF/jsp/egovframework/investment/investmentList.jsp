@@ -42,7 +42,7 @@
                 <c:choose>
                     <c:when test="${not empty list}">
                         <c:forEach var="item" items="${list}">
-                            <tr id="registInvestment" name="id" value="${item.id}" class="btn-link">
+                            <tr id="registInvestment" class="investment-row" data-id="${item.id}">
                                 <td>${item.id}</td>
                                 <td><strong>${item.assetName}</strong></td>
                                 <td>
@@ -64,6 +64,9 @@
             </tbody>
         </table>
     </section>
+    <form id="updateInvestmentForm" action="/investment/update.do" method="POST">
+    	<input type="hidden" id="update" name="id" value=""/>
+    </form>
 </div>
 <script>
     $(document).ready(function(){
@@ -82,14 +85,11 @@
     		window.location = "/notice/noticeList.do";
         })
         
-        $("registInvestment").click(function() {
-			$.ajax({
-				url : "/investment/registFrom.do",
-				type: "GET",
-				data: ("#registInvestment").serialize(),
-				dataType: 'JSON'
-			});
-    	})
+        $(".investment-row").on("click", function(){
+			var id = $(this).data("id");
+			$("#update").val(id);
+			$("#updateInvestmentForm").submit();
+        })
     });
 </script>
 </body>

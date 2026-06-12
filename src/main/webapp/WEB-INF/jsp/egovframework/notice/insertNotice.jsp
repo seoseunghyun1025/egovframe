@@ -11,7 +11,7 @@
 <body>
 	<h2>공지사항 작성</h2>
     
-    <form action="${pageContext.request.contextPath}/notice/insertNotice.do" method="POST">
+    <form action="/notice/insertNotice.do" method="POST">
         <table border="1">
             <tr>
                 <th>작성자 ID</th>
@@ -28,7 +28,7 @@
         </table>
         <br>
         <button type="submit">등록</button>
-        <a href="${pageContext.request.contextPath}/notice/noticeList.do">취소</a>
+        <a href="/notice/noticeList.do">취소</a>
     </form>
 </body>
 </html>

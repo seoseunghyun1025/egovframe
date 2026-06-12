@@ -35,6 +35,10 @@ tr:hover { background-color: #f8faff; cursor: pointer; }
 	cursor: pointer;
 }
 
+.investment-row{
+	cursor: pointer;
+}
+
 /* [전용] 5. 상단 요약 카드 (메인/상세 공통 활용) */
 .summary-card-box { display: flex; padding: 0; overflow: hidden; height: 120px; }
 .blue-label { background: #4485f4; color: white; width: 220px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
