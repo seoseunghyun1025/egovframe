@@ -1,6 +1,8 @@
 package egovframework.notice.web;
 
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -11,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import egovframework.investment.service.InvestmentDTO;
 import egovframework.notice.dto.Notice;
 import egovframework.notice.service.NoticeService;
 import egovframework.role.enums.Auth;
 import egovframework.role.enums.Auth.Role;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,7 +34,9 @@ public class NoticeController {
 	public String noticeInfo(Notice dto, Model model) throws Exception {
 		String noticeId = dto.getNoticeUuid();
 		Notice notice = noticeService.noticeInfo(noticeId);
+		List<Map<String, Object>> fileList = noticeService.selectFileList(noticeId);
 		
+		model.addAttribute("fileList", fileList);
 	    model.addAttribute("notice",notice);
 	    
 		return "notice/noticeInfo";
@@ -77,7 +79,6 @@ public class NoticeController {
 		UUID uuid = UUID.randomUUID();
 		String noticeUuid = uuid.toString();
 		notice.setNoticeUuid(noticeUuid);
-		
 		if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
 			notice.setWriteId(request.getParameter("writeId"));
 		}
@@ -89,8 +90,8 @@ public class NoticeController {
 		if(request.getParameter("noticeContent") != null && request.getParameter("noticeContent").isBlank() == false) {
 			notice.setNoticeContent(request.getParameter("noticeContent"));
 		}
-		
-		int resultNumber = noticeService.insertNotice(notice, mpRequest);
+				
+		int resultNumber = noticeService.insertNotice(notice, mpRequest, noticeUuid);
 		
 		if(resultNumber > 0) {
 			return "redirect:/notice/noticeList.do";

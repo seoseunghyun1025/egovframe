@@ -74,4 +74,14 @@
     		SYSDATE
     	)
     </insert>
+    
+    <select id="selectFileList" parameterType="String" resultType="hashMap">
+    	SELECT 
+    		FILE_ID,
+    		ORIGINAL_NAME,
+    		ROUND(FILE_SIZE/1024, 1) AS FILE_SIZE
+    	FROM NOTICE_FILE
+    	WHERE NOTICE_UUID = #{noticeUuid}
+    	ORDER BY FILE_ID ASC
+    </select>
 </mapper>

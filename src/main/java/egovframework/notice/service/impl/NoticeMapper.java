@@ -24,4 +24,6 @@ public interface NoticeMapper {
     int deleteNotice(Notice notice) throws Exception;
     
     void insertFile(Map<String, Object> map) throws Exception;
+    
+    List<Map<String, Object>> selectFileList(String noticeUuid) throws Exception;
 }

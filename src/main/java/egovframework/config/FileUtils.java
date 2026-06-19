@@ -18,7 +18,7 @@ import egovframework.notice.dto.Notice;
 public class FileUtils {
 	private static final String filePath = "C:\\mp\\file\\";
 	
-	public List<Map<String, Object>> parseInsertFileInfo(Notice notice,
+	public List<Map<String, Object>> parseInsertFileInfo(String noticeUuid,
 			MultipartHttpServletRequest request) throws Exception{
 		
 		Iterator<String> iterator = request.getFileNames();
@@ -31,8 +31,6 @@ public class FileUtils {
 		
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Map<String, Object> listMap = null;
-		
-		String noticeUuid = notice.getNoticeUuid();
 		
 		File file = new File(filePath);
 		if(file.exists() == false) {

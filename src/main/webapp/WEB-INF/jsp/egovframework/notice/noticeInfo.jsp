@@ -36,6 +36,13 @@
         	<th>등록일</th>
         	<td>${notice.registryDate}</td>
         </tr>
+        <tr>
+        	<td>
+        		<c:forEach var="file" items="${fileList}">
+        			<a href="#" onclick="fn_fileDown('${file.FILE_ID}'); return false;">${file.ORIGINAL_NAME}</a>(${file.FILE_SIZE}kb)<br>
+        		</c:forEach>
+        	</td>
+        </tr>
     </table>
 
     <br>
@@ -56,6 +63,10 @@
     
     <form id="updateForm" method="post" action="/notice/noticeModify.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
+	</form>
+	
+	<form id="fileDownForm" action="" method="POST">
+		<input type="hidden" id="FILE_ID" name="FILE_ID" value="">
 	</form>
 	
 </body>

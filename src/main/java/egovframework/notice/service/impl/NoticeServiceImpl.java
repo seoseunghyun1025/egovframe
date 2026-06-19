@@ -6,11 +6,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.config.FileUtils;
-import egovframework.member.service.impl.MemberMapper;
 import egovframework.notice.dto.Notice;
 import egovframework.notice.service.NoticeService;
 import jakarta.annotation.Resource;
@@ -45,11 +43,12 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int insertNotice(Notice notice, MultipartHttpServletRequest request) throws Exception {
+	public int insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception {
 		// TODO Auto-generated method stub
 		int result = noticeMapper.insertNotice(notice);
-		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(notice, request);
+		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(noticeUuid, request);
 		int size = list.size();
+		System.out.println("2. " + noticeUuid);
 		for(int i = 0; i<size; i++) {
 			noticeMapper.insertFile(list.get(i));
 		}
@@ -66,6 +65,12 @@ public class NoticeServiceImpl implements NoticeService{
 	public int deleteNotice(Notice notice) throws Exception {
 		// TODO Auto-generated method stub
 		return noticeMapper.deleteNotice(notice);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectFileList(String noticeUuid) throws Exception {
+		// TODO Auto-generated method stub
+		return noticeMapper.selectFileList(noticeUuid);
 	}
 
 }
