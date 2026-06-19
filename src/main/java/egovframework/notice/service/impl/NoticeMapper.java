@@ -1,6 +1,7 @@
 package egovframework.notice.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
@@ -21,5 +22,6 @@ public interface NoticeMapper {
     void updateNotice(Notice notice) throws Exception;
 
     int deleteNotice(Notice notice) throws Exception;
-
+    
+    void insertFile(Map<String, Object> map) throws Exception;
 }

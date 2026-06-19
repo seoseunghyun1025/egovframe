@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.notice.dto.Notice;
@@ -70,7 +71,7 @@ public class NoticeController {
 	
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/insertNotice.do", method = RequestMethod.POST)
-	public String noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model, MultipartHttpServletRequest mpRequest) throws Exception {
 		Notice notice = new Notice();
 		
 		UUID uuid = UUID.randomUUID();
@@ -89,7 +90,7 @@ public class NoticeController {
 			notice.setNoticeContent(request.getParameter("noticeContent"));
 		}
 		
-		int resultNumber = noticeService.insertNotice(notice);
+		int resultNumber = noticeService.insertNotice(notice, mpRequest);
 		
 		if(resultNumber > 0) {
 			return "redirect:/notice/noticeList.do";

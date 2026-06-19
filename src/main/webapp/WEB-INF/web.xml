@@ -50,6 +50,12 @@
 			<param-value>/WEB-INF/config/egovframework/springmvc/dispatcher-servlet.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		
+		<multipart-config>
+			<max-file-size>52428800</max-file-size>
+			<max-request-size>524288000</max-request-size>
+			<file-size-threshold>0</file-size-threshold>
+		</multipart-config>
 	</servlet>
     
 	<servlet-mapping>
@@ -77,5 +83,4 @@
 		<error-code>500</error-code>
 		<location>/common/error.jsp</location>
 	</error-page>
-    
 </web-app>

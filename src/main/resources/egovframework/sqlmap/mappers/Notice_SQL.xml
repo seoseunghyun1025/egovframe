@@ -58,4 +58,20 @@
         WHERE 1 = 1
           AND NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
     </delete>
+    
+    <insert id="insertFile" parameterType="java.util.HashMap">
+    	INSERT INTO notice_file(
+    		NOTICE_UUID,
+    		ORIGINAL_NAME,
+    		STORED_FILE_NAME,
+    		FILE_SIZE,
+    		REGISTRY_DATE
+    	) VALUES (
+    		#{NOTICE_UUID, jdbcType=VARCHAR},
+    		#{ORIGINAL_NAME},
+    		#{STORED_FILE_NAME},
+    		#{FILE_SIZE},
+    		SYSDATE
+    	)
+    </insert>
 </mapper>

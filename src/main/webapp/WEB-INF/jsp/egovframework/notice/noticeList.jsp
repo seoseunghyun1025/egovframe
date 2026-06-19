@@ -39,7 +39,7 @@
             </c:forEach>
             <c:if test="${empty noticeList}">
                 <tr>
-                    <td colspan="3">등록된 공지사항이 없습니다.</td>
+                    <td colspan="4">등록된 공지사항이 없습니다.</td>
                 </tr>
             </c:if>
         </tbody>
@@ -47,13 +47,13 @@
 
     <br>
     <div>
-        <a href="${pageContext.request.contextPath}/notice/noticeList.do?page=${pageNum - 1}">이전</a>
-        <a href="${pageContext.request.contextPath}/notice/noticeList.do?page=${pageNum + 1}">다음</a>
+        <a href="/notice/noticeList.do?page=${pageNum - 1}">이전</a>
+        <a href="/notice/noticeList.do?page=${pageNum + 1}">다음</a>
     </div>
 
     <br>
     <c:if test="${loginMember.role.name() eq 'ADMIN'}">
-       <a href="${pageContext.request.contextPath}/notice/insertNoticeForm.do">글쓰기</a>
+       <a href="/notice/insertNoticeForm.do">글쓰기</a>
     </c:if>
     <form id="uuidForm" method="post" action="/notice/noticeInfo.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />

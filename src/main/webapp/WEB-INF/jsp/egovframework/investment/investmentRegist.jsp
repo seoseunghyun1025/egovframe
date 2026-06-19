@@ -112,14 +112,7 @@
                 return confirm("저장하시겠습니까?");
             };
         }
-    };
-		/* function fn_delete(id){
-			if(confirm("정말로 이 투자 기록을 삭제하시겠습니까?\n(삭제된 데이터는 목록에서 제거됩니다.)")){
-				document.getElementById("deleteId").value = id;
-				document.getElementById("deleteForm").submit();
-			}
-		} */
-		
+    };		
 		document.getElementById("investmentForm").onsubmit = function(){
 			return confirm("입력하신 정보로 저장하시겠습니까?");
 		}

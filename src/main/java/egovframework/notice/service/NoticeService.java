@@ -3,6 +3,8 @@ package egovframework.notice.service;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import egovframework.notice.dto.Notice;
 
 public interface NoticeService {
@@ -12,7 +14,7 @@ public interface NoticeService {
 	
 	List<Notice> noticeList(Notice notice, int offset, int limitRow);
 	
-	int insertNotice(Notice notice) throws Exception;
+	int insertNotice(Notice notice, MultipartHttpServletRequest request) throws Exception;
 	
 	void updatePost(Notice notice) throws Exception;
 	

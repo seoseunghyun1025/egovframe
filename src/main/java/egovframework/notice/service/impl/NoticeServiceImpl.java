@@ -1,12 +1,15 @@
 package egovframework.notice.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import egovframework.config.FileUtils;
 import egovframework.member.service.impl.MemberMapper;
 import egovframework.notice.dto.Notice;
 import egovframework.notice.service.NoticeService;
@@ -19,6 +22,9 @@ public class NoticeServiceImpl implements NoticeService{
 
 	@Resource(name="noticeMapper")
     private NoticeMapper noticeMapper;
+	
+	@Resource(name="fileUtils")
+	private FileUtils fileUtils;
 	
 	@Override
 	public Notice noticeInfo(String notice) {
@@ -39,9 +45,15 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int insertNotice(Notice notice) throws Exception {
+	public int insertNotice(Notice notice, MultipartHttpServletRequest request) throws Exception {
 		// TODO Auto-generated method stub
-		return noticeMapper.insertNotice(notice);
+		int result = noticeMapper.insertNotice(notice);
+		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(notice, request);
+		int size = list.size();
+		for(int i = 0; i<size; i++) {
+			noticeMapper.insertFile(list.get(i));
+		}
+		return result;
 	}
 
 	@Override
