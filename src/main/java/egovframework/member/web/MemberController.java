@@ -77,12 +77,12 @@ public class MemberController {
 		if(exists == true) {
 			String tempPassword = emailService.createTemoraryPassword(email);
 			emailService.sendTemporaryPasswordEmail(email, tempPassword);
-			return "redirect:/member/verify.do?email=" + email;
+			return "redirect:/member/verifyForm.do?email=" + email;
 		}else {
 			System.out.println();
 			System.out.println("아이디가 존재하지 않습니다.");
 			System.out.println();
-            return "redirect:/member/reset-password.do?error=notfound ";
+            return "redirect:/member/reset-passwordForm.do?error=notfound ";
         }
 	}
 	
@@ -90,8 +90,8 @@ public class MemberController {
 	public String verifyTemporaryPassword(PasswordVerificationRequest request) throws Exception{
 		boolean isVerified = emailService.verifyTemporaryPassword(request.getEmail(), request.getTempPassword());
         return isVerified ? 
-        		"redirect:/member/change-password.do?email=" + request.getEmail() : 
-        		"redirect:/member/verify.doForm?email=" + request.getEmail();
+        		"redirect:/member/change-passwordForm.do?email=" + request.getEmail() : 
+        		"redirect:/member/verifyForm.do?email=" + request.getEmail();
 	}
 	
 	@RequestMapping(value = "/reset-passwordForm.do", method = RequestMethod.GET)
