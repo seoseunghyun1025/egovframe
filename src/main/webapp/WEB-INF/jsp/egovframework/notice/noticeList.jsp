@@ -27,9 +27,10 @@
             </tr>
         </thead>
         <tbody>
+        <c:set var="index" value="${(pageNum - 1) * 5}"></c:set>
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
-                    <td>${status.count}</td>
+                    <td>${index + status.count}</td>
                     <td class="notice-link" data-uuid="${notice.noticeUuid}">
     					${notice.noticeTitle}
 					</td>

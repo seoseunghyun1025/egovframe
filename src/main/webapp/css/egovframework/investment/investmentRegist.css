@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.container.mx-auto.my-5{
+	max-width: 600px;
+}
+
+#situation{
+	background-color: #6f42c1
+}
