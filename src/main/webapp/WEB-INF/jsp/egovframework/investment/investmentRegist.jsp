@@ -105,14 +105,14 @@
 </body>
 	<script>console.log('${loginMember.memberId}');</script>
 	<script type="text/javascript">
-	window.onload = function() {
-        var mainForm = document.getElementById("investmentForm");
-        if (mainForm) {
-            mainForm.onsubmit = function() {
-                return confirm("저장하시겠습니까?");
-            };
-        }
-    };		
+		window.onload = function() {
+        	var mainForm = document.getElementById("investmentForm");
+        	if (mainForm) {
+         	   mainForm.onsubmit = function() {
+          	      return confirm("저장하시겠습니까?");
+          	   };
+       	 	}
+   	 	};		
 		document.getElementById("investmentForm").onsubmit = function(){
 			return confirm("입력하신 정보로 저장하시겠습니까?");
 		}

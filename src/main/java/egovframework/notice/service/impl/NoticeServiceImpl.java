@@ -73,4 +73,18 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeMapper.selectFileList(noticeUuid);
 	}
 
+	@Override
+	public Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		return noticeMapper.selectFileInfo(map);
+	}
+
+	
+	 @Override 
+	 public void deleteNoticeFile(String uuid) throws Exception { 
+		 // TODOAuto-generated method stub 
+		 noticeMapper.deleteNoticeFile(uuid); 	 
+	 }
+	 
+
 }

@@ -33,7 +33,10 @@
                     <td class="notice-link" data-uuid="${notice.noticeUuid}">
     					${notice.noticeTitle}
 					</td>
-                    <td>${notice.registryDate}</td>
+                    <td>
+                    	<fmt:parseDate value="${notice.registryDate}" pattern="yyyy-MM-dd" var="parsedDateTime" type="both"/>
+        				<fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
+                    </td>
                     <td>${notice.writeId}</td>
                 </tr>
             </c:forEach>

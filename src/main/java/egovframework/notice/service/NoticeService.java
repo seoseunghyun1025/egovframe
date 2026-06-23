@@ -21,4 +21,8 @@ public interface NoticeService {
 	int deleteNotice(Notice notice) throws Exception;
 
 	List<Map<String, Object>> selectFileList(String noticeUuid) throws Exception;	
+	
+	Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception;
+	
+	void deleteNoticeFile(String uuid) throws Exception; 
 }

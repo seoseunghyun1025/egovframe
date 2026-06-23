@@ -1,6 +1,8 @@
 package egovframework.notice.web;
 
+import java.io.File;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.notice.dto.Notice;
@@ -48,7 +51,7 @@ public class NoticeController {
 		int totalRow = noticeService.noticeCount(notice);
 		int pageNum = 0;
 		int offset = 0;
-		int limitRow = 10;
+		int limitRow = 5;
 		
 		if(request.getParameter("page") != null && Integer.parseInt(request.getParameter("page")) > 0) {
 			pageNum = Integer.parseInt(request.getParameter("page"));
@@ -79,6 +82,8 @@ public class NoticeController {
 		UUID uuid = UUID.randomUUID();
 		String noticeUuid = uuid.toString();
 		notice.setNoticeUuid(noticeUuid);
+		
+		//스크립트에서 체크 후 컨트롤러로 넘어오게 구현
 		if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
 			notice.setWriteId(request.getParameter("writeId"));
 		}
@@ -151,17 +156,34 @@ public class NoticeController {
 	}
 	
 	@Auth(role = Role.ADMIN)
-	@RequestMapping(value = "/deleteNotice.do",method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteNotice.do", method = RequestMethod.POST)
     public String deletePost(HttpServletRequest request, Model model) throws Exception {
 		Notice notice = new Notice();
 		notice.setNoticeUuid(request.getParameter("noticeUuid"));
-		
+		String uuid = request.getParameter("noticeUuid");
+		noticeService.deleteNoticeFile(uuid);
 	    int result = noticeService.deleteNotice(notice);
-	    	    
+	    
 	    if(result > 0) {
 		    return "redirect:/notice/noticeList.do";
 	    }
 	    System.out.println("공지사항 삭제 실패");
 	    return "redirect:/notice/noticeList.do";
     }
+	
+	@RequestMapping(value="/fileDown.do", method = RequestMethod.POST)
+	public void fileDown(@RequestParam Map<String, Object> map, HttpServletResponse response) throws Exception{
+		Map<String, Object> resultMap = noticeService.selectFileInfo(map);
+		String storedFileName = (String) resultMap.get("STORED_FILE_NAME");
+		String originalFileName = (String) resultMap.get("ORIGINAL_NAME");
+		
+		byte fileByte[] = org.apache.commons.io.FileUtils.readFileToByteArray(new File("C:\\mp\\file\\" + storedFileName));
+		
+		response.setContentType("application/octet-stream");
+		response.setContentLength(fileByte.length);
+		response.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(originalFileName, "UTF-8").replaceAll("\\+","%20")+ "\";");
+		response.getOutputStream().write(fileByte);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+	}
 }

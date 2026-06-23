@@ -59,16 +59,15 @@
             
     <form id="deleteForm" action="/notice/deleteNotice.do" method="POST">
         <input type="hidden" id="deleteNotice" name="noticeUuid" value="">
+        <input type="hidden" id="deleteNoticeFile" name="fileId" value="">
     </form>
     
     <form id="updateForm" method="post" action="/notice/noticeModify.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
 	</form>
-	
-	<form id="fileDownForm" action="" method="POST">
+	<form name="readForm" method="post">
 		<input type="hidden" id="FILE_ID" name="FILE_ID" value="">
 	</form>
-	
 </body>
 <script>
 	$(document).ready(function() {
@@ -84,5 +83,12 @@
 			$("#deleteForm").submit();
 		});
 	});
+	
+	function fn_fileDown(fileId){
+		var formObj = $("form[name='readForm']");
+		$("#FILE_ID").attr("value", fileId);
+		formObj.attr("action", "/notice/fileDown.do");
+		formObj.submit();
+	}
 </script>
 </html>

@@ -41,6 +41,7 @@
             <tbody id="investmentTableBody">
                 <c:choose>
                     <c:when test="${not empty list}">
+                    <!--  -->
                         <c:forEach var="item" items="${list}">
                             <tr id="registInvestment" class="investment-row" data-id="${item.id}">
                                 <td>${item.id}</td>
@@ -51,6 +52,7 @@
                                     </span>	
                                 </td>
                                 <td><fmt:formatNumber value="${item.buyPrice}" pattern="#,###"/></td>
+                                <!-- format의 종류 공부 -->
                                 <td>${item.quantity}</td>
                                 <td>${item.buyDate}</td>
                                 <td><c:out value="${item.memo}" default="-"/></td>

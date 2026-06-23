@@ -16,7 +16,7 @@
         SELECT
         	NOTICE_UUID, WRITE_ID, NOTICE_TITLE, NOTICE_CONTENT, REGISTRY_DATE
     	FROM NOTICE
-    	WHERE NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
+    	WHERE NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR} AND DEL_YN = 'N'
     </select>
 
     <select id="selectNoticeCount" resultType="int">
@@ -24,6 +24,7 @@
     </select>
 
     <select id="selectNoticeList" parameterType="int" resultMap="noticeMap">
+    <!-- 페이징 -->
         SELECT * FROM (
     		SELECT 
         		ROW_NUMBER() OVER (ORDER BY REGISTRY_DATE DESC) AS row_num,
@@ -33,7 +34,7 @@
         		NOTICE_CONTENT, 
         		REGISTRY_DATE
     		FROM NOTICE
-    		WHERE 1 = 1
+    		WHERE 1 = 1 AND DEL_YN = 'N'
 			) T
 		WHERE T.row_num &gt; ${offset} AND T.row_num &lt;= (${offset} + ${limitRow})
     </select>
@@ -53,11 +54,17 @@
           AND WRITE_ID = #{writeId}
     </update>
 
-    <delete id="deleteNotice">
-        DELETE FROM NOTICE
-        WHERE 1 = 1
-          AND NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
-    </delete>
+    <update id="deleteNotice">
+        UPDATE NOTICE
+        SET DEL_YN = 'Y'
+        WHERE NOTICE_UUID = #{noticeUuid, jdbcType=VARCHAR}
+    </update>
+    
+    <update id="deleteNoticeFile">
+    	UPDATE NOTICE_FILE
+        SET DEL_YN = 'Y'
+        WHERE NOTICE_UUID = #{NOTICE_UUID}
+    </update>
     
     <insert id="insertFile" parameterType="java.util.HashMap">
     	INSERT INTO notice_file(
@@ -83,5 +90,13 @@
     	FROM NOTICE_FILE
     	WHERE NOTICE_UUID = #{noticeUuid}
     	ORDER BY FILE_ID ASC
+    </select>
+    
+    <select id="selectFileInfo" parameterType="hashMap" resultType="hashMap">
+    	SELECT
+    		STORED_FILE_NAME,
+    		ORIGINAL_NAME
+    	FROM NOTICE_FILE
+    	WHERE FILE_ID = #{FILE_ID}
     </select>
 </mapper>
