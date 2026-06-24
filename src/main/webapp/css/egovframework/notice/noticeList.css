@@ -7,3 +7,7 @@
 .decoration{
 	text-decoration: none;
 }
+
+.container.mx-auto.my-5{
+	max-width: 800px;
+}

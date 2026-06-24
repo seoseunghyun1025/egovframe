@@ -16,15 +16,15 @@
 
 <div class="my-3 p-3 bg-body rounded shadow-sm d-flex gap-2">
 	<a class="btn btn-primary" href="/investment/list.do">투자 내역</a>
-	<c:if test="${loginMember.role.name() eq 'ADMIN'}">
-       <a class="btn btn-outline-secondary" href="/notice/insertNoticeForm.do">글쓰기</a>
-    </c:if>
 	<button type="button" id="logout" class="btn btn-light ms-auto" >
        	로그아웃
    	</button >
 </div>
 	<h2 class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm" id="situation">
 		공지사항 목록
+		<c:if test="${loginMember.role.name() eq 'ADMIN'}">
+       		<a class="btn btn-outline-light ms-auto" href="/notice/insertNoticeForm.do">글쓰기</a>
+    	</c:if>
 	</h2>
 	
 <div class="my-3 p-3 bg-body rounded shadow-sm">

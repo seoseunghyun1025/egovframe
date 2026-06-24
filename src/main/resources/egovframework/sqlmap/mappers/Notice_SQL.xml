@@ -20,7 +20,7 @@
     </select>
 
     <select id="selectNoticeCount" resultType="int">
-        SELECT COUNT(NOTICE_UUID) AS noticeCount FROM NOTICE WHERE 1 = 1
+        SELECT COUNT(NOTICE_UUID) AS noticeCount FROM NOTICE WHERE 1 = 1 AND DEL_YN = 'N'
     </select>
 
     <select id="selectNoticeList" parameterType="int" resultMap="noticeMap">
