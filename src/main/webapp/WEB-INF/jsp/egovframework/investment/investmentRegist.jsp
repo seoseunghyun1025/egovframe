@@ -143,7 +143,6 @@
 	</div>
 </main>
 </body>
-	<script>console.log('${loginMember.memberId}');</script>
 	<script type="text/javascript">        
         $(document).ready(function(){
 			$("#btn-delete").on("click", function(){

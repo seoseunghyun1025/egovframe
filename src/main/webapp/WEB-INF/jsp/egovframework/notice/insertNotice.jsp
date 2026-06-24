@@ -7,36 +7,51 @@
 <head>
 	<meta charset="UTF-8">
 	<title>공지사항 작성</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="/js/jquery.min.js"></script>
+	<link href="/css/egovframework/notice/notice.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
+<main class="container mx-auto my-5">
+<div class="my-3 p-3 bg-body rounded shadow-sm d-flex gap-2">
 	<h2>공지사항 작성</h2>
-    
-    <form action="/notice/insertNotice.do" method="POST" enctype="multipart/form-data">
-        <table border="1">
-            <tr>
-                <th>작성자 ID</th>
-                <td><input type="text" name="writeId" required></td>
-            </tr>
-            <tr>
-                <th>제목</th>
-                <td><input type="text" name="noticeTitle" required></td>
-            </tr>
-            <tr>
-                <th>내용</th>
-                <td><textarea name="noticeContent" rows="10" cols="50" required></textarea></td>
-            </tr>
-            <tr><td id="fileIndex">
-				<input type="file" name="file" />
-			<div>  
-			 <button id="fileAdd_btn" class="btn btn-primary" type="button">파일추가+</button>
+</div>    
+	<div class="my-3 p-3 bg-body rounded shadow-sm">
+    <form class="needs-validation" action="/notice/insertNotice.do" method="POST" enctype="multipart/form-data" novalidate>
+    	<div class="row g-3">
+    		<div class="col-12">
+    			<label for="title" class="form-label">제목</label>
+    			<div class="input-group has-validation">
+        			<input class="form-control" type="text" id="title" name="noticeTitle" required>
+        			<div class="invalid-feedback">
+						제목을 입력하세요
+					</div>
+				</div>
 			</div>
-			</td></tr>
-        </table>
-        <br>
-        <button type="submit">등록</button>
-        <a href="/notice/noticeList.do">취소</a>
+			<div class="col-12">
+				<label for="content" class="form-label">내용</label>
+				<textarea class="form-control" name="noticeContent" id="content" rows="10" cols="50" required></textarea>
+				<div class="invalid-feedback">
+					내용을 입력하세요
+				</div>
+			</div>
+			<div class="btn-box">
+				<div id="fileIndex"></div>
+				<input type="file" name="file"/>
+			</div>
+			<div class="btn-box">
+				<button id="fileAdd_btn" class="w-20 btn btn-dark" type="button">파일추가+</button>
+			</div>
+			<div class="btn-box">
+        		<button type="submit" class="w-20 btn btn-primary">등록</button>
+        		<a class="btn btn-outline-dark" href="/notice/noticeList.do">취소</a>
+        	</div>
+        	<input type="hidden" name="writeId" value="${loginMember.name}"required>
+    	</div>
     </form>
+    </div>
+   	
+   
    	<script type="text/javascript">
         $(document).ready(function() {
             var fileIndex = 1;
@@ -56,5 +71,7 @@
             });
         });
     </script>
+	<script src="/js/Bootstrap/form-validation.js"></script>
+</main>
 </body>
 </html>
