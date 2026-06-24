@@ -13,9 +13,9 @@
 </head>
 <body class="bg-light">
 <main class="container mx-auto my-5">
-<div class="my-3 p-3 bg-body rounded shadow-sm d-flex gap-2">
-	<h2>공지사항 작성</h2>
-</div>    
+	<div id="situation" class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm">
+		<h2>공지사항 작성</h2>
+	</div>    
 	<div class="my-3 p-3 bg-body rounded shadow-sm">
     <form class="needs-validation" action="/notice/insertNotice.do" method="POST" enctype="multipart/form-data" novalidate>
     	<div class="row g-3">

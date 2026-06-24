@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 	<title>공지사항 상세 보기</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/egovframework/notice/notice.css" rel="stylesheet">
     <script type="text/javascript">
         function deletePost() {
             if(confirm("정말 삭제하시겠습니까?")) {
@@ -16,46 +18,52 @@
     </script>
     <script src="/js/jquery.min.js"></script>
 </head>
-<body>
-	<h2>공지사항 상세 보기</h2>
+<body class="bg-light">
+<main class="container mx-auto my-5">
+	<div id="situation" class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm">
+		<h2>공지사항 상세 보기</h2>
+	</div>
     
-    <table border="1">
-        <tr>
-            <th>작성자 ID</th>
-            <td>${notice.writeId}</td>
-        </tr>
-        <tr>
-            <th>제목</th>
-            <td>${notice.noticeTitle}</td>
-        </tr>
-        <tr>
-            <th>내용</th>
-            <td>${notice.noticeContent}</td>
-        </tr>
-        <tr>
-        	<th>등록일</th>
-        	<td>${notice.registryDate}</td>
-        </tr>
-        <tr>
-        	<td>
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    	<h6 class="border-bottom pb-2 mb-0">
+    		${notice.noticeTitle}
+    	</h6>
+    	<div class="border-bottom pb-2 mb-0">
+    		<p class="pb-3 mb-0 small lh-sm border-bottom">
+    			<strong class="d-block text-gray-dark">작성자:</strong>
+    			${notice.writeId}
+        		등록일: ${notice.registryDate}
+        	</p>
+        </div>
+        <div class="border-bottom pb-2 mb-0">
+        	<p class="pb-3 mb-0 small lh-sm border-bottom">
+        		<strong class="d-block text-gray-dark">첨부파일</strong>
         		<c:forEach var="file" items="${fileList}">
         			<a href="#" onclick="fn_fileDown('${file.FILE_ID}'); return false;">${file.ORIGINAL_NAME}</a>(${file.FILE_SIZE}kb)<br>
         		</c:forEach>
-        	</td>
-        </tr>
-    </table>
-
-    <br>
-    <a href="/notice/noticeList.do">목록으로</a>
+        	</p>
+        </div>
+        
+        <div class="border-bottom pb-2 mb-0">
+        	<p class="pb-3 mb-0 small lh-sm border-bottom">
+            	${notice.noticeContent}
+            </p>
+        </div>
+        
+    </div>
+    
+	<div class="my-3 p-3 bg-body rounded shadow-sm">
+	<a class="w-20 btn btn-primary" href="/notice/noticeList.do">목록으로</a>
    	<c:if test="${loginMember.role.name() eq 'ADMIN'}">   	
-	    <button type="button" class="notice-link" data-uuid="${notice.noticeUuid}">
+	    <button class="w-20 btn btn-secondary" type="button" id="notice-link" data-uuid="${notice.noticeUuid}">
 	    	수정하기
 		</button>
 		
-		<button type="button" class="notice-delete" data-uuid="${notice.noticeUuid}">
+		<button class="w-20 btn btn-danger" type="button" id="notice-delete" data-uuid="${notice.noticeUuid}">
 	        삭제하기
 	    </button>
    	</c:if> 
+	</div>
             
     <form id="deleteForm" action="/notice/deleteNotice.do" method="POST">
         <input type="hidden" id="deleteNotice" name="noticeUuid" value="">
@@ -68,16 +76,17 @@
 	<form name="readForm" method="post">
 		<input type="hidden" id="FILE_ID" name="FILE_ID" value="">
 	</form>
+</main>
 </body>
 <script>
 	$(document).ready(function() {
-		$(".notice-link").on("click", function() {
+		$("#notice-link").on("click", function() {
    			var uuid = $(this).data("uuid");
    			$("#uuid").val(uuid);
     		$("#updateForm").submit();
 		});
 		
-		$(".notice-delete").on("click", function() {
+		$("#notice-delete").on("click", function() {
 			var uuid = $(this).data("uuid");
 			$("#deleteNotice").val(uuid);
 			$("#deleteForm").submit();
