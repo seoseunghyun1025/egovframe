@@ -8,17 +8,30 @@
 <meta charset="UTF-8">
 <title>공지사항 목록</title>
 <script src="/js/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/egovframework/notice/noticeList.css" rel="stylesheet">
 </head>
-<body>
-	<h2>공지사항 목록</h2>
-	<button type="button" id="logout" class="btn-logout" >
+<body class="bg-light">
+<main class="container mx-auto my-5">
+
+<div class="my-3 p-3 bg-body rounded shadow-sm d-flex gap-2">
+	<a class="btn btn-primary" href="/investment/list.do">투자 내역</a>
+	<c:if test="${loginMember.role.name() eq 'ADMIN'}">
+       <a class="btn btn-outline-secondary" href="/notice/insertNoticeForm.do">글쓰기</a>
+    </c:if>
+	<button type="button" id="logout" class="btn btn-light ms-auto" >
        	로그아웃
-   	</button>
-    
+   	</button >
+</div>
+	<h2 class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm" id="situation">
+		공지사항 목록
+	</h2>
+	
+<div class="my-3 p-3 bg-body rounded shadow-sm">
     <p>총 게시글 수: ${totalRow} / 현재 페이지: ${pageNum}</p>
     
-    <table border="1">
-        <thead>
+    <table border="1" class="table">
+        <thead class="table-light">
             <tr>
                 <th>번호</th>
                 <th>제목</th>
@@ -26,7 +39,7 @@
                 <th>작성자</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
         <c:set var="index" value="${(pageNum - 1) * 5}"></c:set>
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
@@ -51,14 +64,11 @@
 
     <br>
     <div>
-        <a href="/notice/noticeList.do?page=${pageNum - 1}">이전</a>
-        <a href="/notice/noticeList.do?page=${pageNum + 1}">다음</a>
+        <a class="decoration" href="/notice/noticeList.do?page=${pageNum - 1}">이전</a>
+        <a class="decoration" href="/notice/noticeList.do?page=${pageNum + 1}">다음</a>
     </div>
 
     <br>
-    <c:if test="${loginMember.role.name() eq 'ADMIN'}">
-       <a href="/notice/insertNoticeForm.do">글쓰기</a>
-    </c:if>
     <form id="uuidForm" method="post" action="/notice/noticeInfo.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
 	</form>
@@ -75,5 +85,7 @@
 	        })
 		});
 	</script>
+</div>
+</main>
 </body>
 </html>
