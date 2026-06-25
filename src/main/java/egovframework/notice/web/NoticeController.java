@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.notice.dto.Notice;
+import egovframework.notice.dto.SearchType;
 import egovframework.notice.service.NoticeService;
 import egovframework.role.enums.Auth;
 import egovframework.role.enums.Auth.Role;
@@ -46,24 +47,19 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value="/noticeList.do", method=RequestMethod.GET)
-	public String noticeList(HttpServletRequest request, Model model) throws Exception{
+	public String noticeList(HttpServletRequest request, Model model, 
+			@RequestParam(value="type", required=false) SearchType type,
+			@RequestParam(value="keyword", required=false) String keyword,
+			@RequestParam(value="page", defaultValue="1") int page) throws Exception{
+				
 		Notice notice = new Notice();
-		int totalRow = noticeService.noticeCount(notice);
-		int pageNum = 0;
-		int offset = 0;
-		int limitRow = 5;
 		
-		if(request.getParameter("page") != null && Integer.parseInt(request.getParameter("page")) > 0) {
-			pageNum = Integer.parseInt(request.getParameter("page"));
-			offset = (pageNum - 1) * limitRow;
+		if(type != null && keyword != null) {
+			noticeService.selectSeach(model, type, keyword, page);
 		}else {
-			pageNum = 1;
-			offset = 0;
+			noticeService.noticeList(model, notice, page);
 		}
-		model.addAttribute("noticeList", noticeService.noticeList(notice, offset, limitRow));
-		model.addAttribute("totalRow", totalRow);
-		model.addAttribute("pageNum", pageNum);
-		
+					
 		return "notice/noticeList";
 	}
 	
@@ -118,7 +114,9 @@ public class NoticeController {
 
 	    String noticeId = dto.getNoticeUuid() ;
 	    Notice noticeInfo = noticeService.noticeInfo(noticeId);
-	            
+	    List<Map<String, Object>> fileList = noticeService.selectFileList(noticeId);
+		
+		model.addAttribute("fileList", fileList);
 	    model.addAttribute("noticeUuid", noticeInfo.getNoticeUuid());
 	    model.addAttribute("writeId", noticeInfo.getWriteId());
 	    model.addAttribute("noticeTitle", noticeInfo.getNoticeTitle());

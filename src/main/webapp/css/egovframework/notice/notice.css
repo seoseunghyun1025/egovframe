@@ -11,3 +11,7 @@
 .container.mx-auto.my-5{
 	max-width: 800px;
 }
+
+.board-content{
+	min-height: 200px;
+}

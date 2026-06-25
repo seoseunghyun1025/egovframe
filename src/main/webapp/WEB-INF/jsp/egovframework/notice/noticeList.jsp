@@ -14,7 +14,7 @@
 <body class="bg-light">
 <main class="container mx-auto my-5">
 
-<div class="my-3 p-3 bg-body rounded shadow-sm d-flex gap-2">
+<div class="my-3 p-2 bg-body rounded shadow-sm d-flex gap-2">
 	<a class="btn btn-primary" href="/investment/list.do">투자 내역</a>
 	<button type="button" id="logout" class="btn btn-light ms-auto" >
        	로그아웃
@@ -26,6 +26,16 @@
        		<a class="btn btn-outline-light ms-auto" href="/notice/insertNoticeForm.do">글쓰기</a>
     	</c:if>
 	</h2>
+	<div class="my-3 p-2 bg-body rounded shadow-sm">
+		<form action="/notice/noticeList.do" method="get" id="searchForm" name="search-form">
+	        <select name="type" class="type-box">
+				<option value="TITLE">제목</option>
+				<option value="WRITER">작성자</option>
+			</select>
+	          <input class="inputId" type="text" name="keyword" placeholder="검색어 입력">
+	          <input class="submitBtn" type="submit" value="검색하기">
+		</form>
+	</div>
 	
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     <p>총 게시글 수: ${totalRow} / 현재 페이지: ${pageNum}</p>

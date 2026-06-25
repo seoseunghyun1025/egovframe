@@ -25,31 +25,37 @@
 	</div>
     
     <div class="my-3 p-3 bg-body rounded shadow-sm">
-    	<h6 class="border-bottom pb-2 mb-0">
-    		${notice.noticeTitle}
-    	</h6>
-    	<div class="border-bottom pb-2 mb-0">
-    		<p class="pb-3 mb-0 small lh-sm border-bottom">
-    			<strong class="d-block text-gray-dark">작성자:</strong>
-    			${notice.writeId}
-        		등록일: ${notice.registryDate}
-        	</p>
+    	<div class="row g-3">
+	    		<div class="col-12">
+	    			<h4 class="pb-2 mb-0 border-bottom">
+	    				<strong class="d-block text-gray-dark">
+	    					${notice.noticeTitle}
+	    				</strong>
+	    			</h4>
+	    		</div>
+	    		<div class="col-sm-6 border-bottom">
+	    				<strong class="d-block text-gray-dark">작성자:</strong>
+	    				${notice.writeId} 
+	    		</div>
+	    		<div class="col-sm-6 border-bottom">
+	        			<strong class="d-block text-gray-dark">등록일:</strong>
+	        			${notice.registryDate}
+	        	</div>
+	        	<c:if test="${not empty fileList}">
+	                <div class="col-12 border-bottom">
+	        		<strong class="d-block text-gray-dark">첨부파일</strong>
+	        		<c:forEach var="file" items="${fileList}">
+	        			<a href="#" onclick="fn_fileDown('${file.FILE_ID}'); return false;">${file.ORIGINAL_NAME}</a>(${file.FILE_SIZE}kb)<br>
+	        		</c:forEach>
+	        	</div>
+	            </c:if>
+	        
+	        	<div class="col-12 border-bottom">
+	        		<p class="pb-3 mb-0 small lh-sm border-bottom board-content">
+	            		${notice.noticeContent}
+	            	</p>
+	        	</div>
         </div>
-        <div class="border-bottom pb-2 mb-0">
-        	<p class="pb-3 mb-0 small lh-sm border-bottom">
-        		<strong class="d-block text-gray-dark">첨부파일</strong>
-        		<c:forEach var="file" items="${fileList}">
-        			<a href="#" onclick="fn_fileDown('${file.FILE_ID}'); return false;">${file.ORIGINAL_NAME}</a>(${file.FILE_SIZE}kb)<br>
-        		</c:forEach>
-        	</p>
-        </div>
-        
-        <div class="border-bottom pb-2 mb-0">
-        	<p class="pb-3 mb-0 small lh-sm border-bottom">
-            	${notice.noticeContent}
-            </p>
-        </div>
-        
     </div>
     
 	<div class="my-3 p-3 bg-body rounded shadow-sm">

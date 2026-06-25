@@ -23,7 +23,7 @@
         SELECT COUNT(NOTICE_UUID) AS noticeCount FROM NOTICE WHERE 1 = 1 AND DEL_YN = 'N'
     </select>
 
-    <select id="selectNoticeList" parameterType="int" resultMap="noticeMap">
+    <select id="selectNoticeList" resultMap="noticeMap">
     <!-- 페이징 -->
         SELECT * FROM (
     		SELECT 
@@ -37,6 +37,25 @@
     		WHERE 1 = 1 AND DEL_YN = 'N'
 			) T
 		WHERE T.row_num &gt; ${offset} AND T.row_num &lt;= (${offset} + ${limitRow})
+    </select>
+    
+    <select id="selectSearch" resultMap="noticeMap">
+    	SELECT * FROM (
+    		SELECT
+    			ROW_NUMBER() OVER (ORDER BY REGISTRY_DATE DESC) AS row_num,
+    			NOTICE_UUID,
+    			WRITE_ID,
+    			NOTICE_TITLE,
+    			NOTICE_CONTENT,
+    			REGISTRY_DATE
+    		FROM NOTICE
+    		WHERE 1 = 1 AND DEL_YN = 'N'
+    		
+    		<if test="keyword != null and keyword != ''">
+    			AND ${type.column} LIKE '%'||#{keyword}||'%'
+    		</if>
+    	) T
+    	WHERE T.row_num &gt; ${offset} AND T.row_num &lt; = (${offset} + ${limitRow})
     </select>
 
     <insert id="insertNotice" useGeneratedKeys="true" keyProperty="noticeUuid">
@@ -99,4 +118,15 @@
     	FROM NOTICE_FILE
     	WHERE FILE_ID = #{FILE_ID}
     </select>
+    
+    <select id="selectSeachCount" resultType="int">
+    	SELECT count(*)
+    	FROM NOTICE
+    	WHERE #{type} like '%'||#{keyword}||'%'
+    	AND DEL_YN = 'N'
+    </select>
 </mapper>
+
+
+
+

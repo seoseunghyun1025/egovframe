@@ -8,6 +8,7 @@ import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 import org.springframework.dao.DataAccessException;
 
 import egovframework.notice.dto.Notice;
+import egovframework.notice.dto.SearchType;
 
 @EgovMapper("noticeMapper")
 public interface NoticeMapper {
@@ -15,7 +16,7 @@ public interface NoticeMapper {
 
     int selectNoticeCount(Notice notice) throws DataAccessException;
 
-    List<Notice> selectNoticeList(@Param("notice") Notice notice,@Param("offset") int offset,@Param("limitRow") int limitRow) throws DataAccessException;
+    List<Notice> selectNoticeList(@Param("offset") int offset,@Param("limitRow") int limitRow) throws DataAccessException;
 
     int insertNotice(Notice notice) throws Exception;
 
@@ -30,4 +31,8 @@ public interface NoticeMapper {
     Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception;
     
     void deleteNoticeFile(String uuid) throws Exception;
+
+	int selectSeachCount(Notice notice, SearchType type, String keyword) throws Exception;
+	
+	int selectSearch(@Param("type") SearchType type, @Param("keyword") String keyword, @Param("offset") int offset, @Param("limitRow") int limitRow) throws Exception;
 }

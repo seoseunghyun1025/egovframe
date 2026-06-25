@@ -6,10 +6,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.config.FileUtils;
 import egovframework.notice.dto.Notice;
+import egovframework.notice.dto.SearchType;
 import egovframework.notice.service.NoticeService;
 import jakarta.annotation.Resource;
 
@@ -37,9 +39,39 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public List<Notice> noticeList(Notice notice, int offset, int limitRow) {
+	public void noticeList(Model model, Notice notice, int page) {
 		// TODO Auto-generated method stub
-		return noticeMapper.selectNoticeList(notice, offset, limitRow);
+		
+		int offset = 0;
+		int limitRow = 5;
+		int pageNum = 0;
+		
+		pageNum = page;
+		offset = (pageNum - 1) * limitRow;
+		
+		int totalRow = noticeMapper.selectNoticeCount(notice);
+		
+		model.addAttribute("totalRow", totalRow);
+		model.addAttribute("noticeList", noticeMapper.selectNoticeList(offset, limitRow));
+		model.addAttribute("pageNum", pageNum);
+	}
+	
+	@Override
+	public void selectSeach(Model model, SearchType type, String keyword, int page) throws Exception{
+		// TODO Auto-generated method stub
+		
+		Notice notice = new Notice();
+		int totalRow = noticeMapper.selectSeachCount(notice, type, keyword);
+		int pageNum = 0;
+		int offset = 0;
+		int limitRow = 5;
+		
+		pageNum = page;
+		offset = (pageNum - 1) * limitRow;
+		
+		model.addAttribute("noticeList", noticeMapper.selectSearch(type, keyword, offset, limitRow));
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("totalRow", totalRow);
 	}
 
 	@Override
@@ -85,6 +117,4 @@ public class NoticeServiceImpl implements NoticeService{
 		 // TODOAuto-generated method stub 
 		 noticeMapper.deleteNoticeFile(uuid); 	 
 	 }
-	 
-
 }

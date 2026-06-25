@@ -3,16 +3,20 @@ package egovframework.notice.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.notice.dto.Notice;
+import egovframework.notice.dto.SearchType;
 
 public interface NoticeService {
 	Notice noticeInfo(String notice);
 	
 	int noticeCount(Notice notice);
 	
-	List<Notice> noticeList(Notice notice, int offset, int limitRow);
+	void noticeList(Model model, Notice notice, int page);
+	
+	void selectSeach(Model model, SearchType type, String keyword, int page) throws Exception;
 	
 	int insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception;
 	
