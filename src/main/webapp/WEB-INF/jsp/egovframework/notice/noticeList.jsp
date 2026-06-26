@@ -27,13 +27,13 @@
     	</c:if>
 	</h2>
 	<div class="my-3 p-2 bg-body rounded shadow-sm">
-		<form action="/notice/noticeList.do" method="get" id="searchForm" name="search-form">
+		<form class="d-flex" action="/notice/noticeList.do" method="get" id="searchForm" name="search-form">
 	        <select name="type" class="type-box">
 				<option value="TITLE">제목</option>
 				<option value="WRITER">작성자</option>
 			</select>
-	          <input class="inputId" type="text" name="keyword" placeholder="검색어 입력">
-	          <input class="submitBtn" type="submit" value="검색하기">
+	          <input class="form-control me-2" aria-label="Search" type="text" name="keyword" placeholder="Search">
+	          <input class="btn btn-outline-success" type="submit" value="검색하기">
 		</form>
 	</div>
 	
@@ -50,7 +50,7 @@
         <tbody class="table-group-divider">
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
-                    <td>${(start + status.count) - 1}</td>
+                    <td>${start + status.count}</td>
                     <td class="notice-link" data-uuid="${notice.noticeUuid}">
     					${notice.noticeTitle}
 					</td>
@@ -68,15 +68,15 @@
             </c:if>
         </tbody>
     </table>
-
-    <br>
-    <div class="paging">
-	<c:forEach var="page" begin="1" end="${repeat}">
-		<a href="/notice/noticeList.do?page=${page}&type=${type}&keyword=${keyword}">${page}</a>
-	</c:forEach>
-	</div>
-
-    <br>
+	
+	<nav aria-label="Page navigation example">
+		<ul class="pagination">
+			<c:forEach var="page" begin="1" end="${repeat}">
+				<li class="page-item"><a class="page-link" href="/notice/noticeList.do?page=${page}&type=${type}&keyword=${keyword}">${page}</a></li>
+			</c:forEach>
+		</ul>
+	</nav> 
+	
     <form id="uuidForm" method="post" action="/notice/noticeInfo.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
 	</form>

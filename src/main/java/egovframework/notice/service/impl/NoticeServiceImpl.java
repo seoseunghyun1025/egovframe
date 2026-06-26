@@ -49,6 +49,7 @@ public class NoticeServiceImpl implements NoticeService{
 		
 		model.addAttribute("repeat", repeat);
 		model.addAttribute("noticeList", noticeMapper.selectNoticeList(start, end));
+		model.addAttribute("start",start - 1);
 	}
 	
 	@Override
@@ -71,8 +72,7 @@ public class NoticeServiceImpl implements NoticeService{
 		model.addAttribute("noticeList", noticeMapper.selectSearch(column, keyword, start, end));
 		model.addAttribute("type", type);  
 	    model.addAttribute("keyword", keyword);
-	    model.addAttribute("end", end);
-	    model.addAttribute("start",start);
+	    model.addAttribute("start",start - 1);
 	}
 
 	@Override
