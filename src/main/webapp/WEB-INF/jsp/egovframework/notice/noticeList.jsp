@@ -70,7 +70,7 @@
     </table>
 	
 	<nav aria-label="Page navigation example">
-		<ul class="pagination">
+		<ul class="pagination justify-content-center">
 			<c:forEach var="page" begin="1" end="${repeat}">
 				<li class="page-item"><a class="page-link" href="/notice/noticeList.do?page=${page}&type=${type}&keyword=${keyword}">${page}</a></li>
 			</c:forEach>

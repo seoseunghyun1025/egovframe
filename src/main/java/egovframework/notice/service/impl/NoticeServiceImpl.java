@@ -81,7 +81,6 @@ public class NoticeServiceImpl implements NoticeService{
 		int result = noticeMapper.insertNotice(notice);
 		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(noticeUuid, request);
 		int size = list.size();
-		System.out.println("2. " + noticeUuid);
 		for(int i = 0; i<size; i++) {
 			noticeMapper.insertFile(list.get(i));
 		}

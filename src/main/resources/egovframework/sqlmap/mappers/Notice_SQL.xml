@@ -32,6 +32,7 @@
         SELECT B.* FROM(
         	SELECT ROWNUM AS rn, A.* FROM(
         		SELECT * FROM NOTICE
+        		WHERE DEL_YN = 'N'
         		ORDER BY NOTICE_ID DESC
         	)A
         )B
@@ -45,6 +46,7 @@
     			SELECT * 
     			FROM NOTICE 
     			WHERE ${type} like '%'||#{keyword}||'%'
+    				AND DEL_YN = 'N'
     			ORDER BY NOTICE_ID desc
     		)A
     	)B
@@ -53,7 +55,7 @@
     </select>
     
     <select id="selectSeachCount" resultType="int">
-    	SELECT count(NOTICE_UUID) AS noticeCount
+    	SELECT count(*)
     	FROM NOTICE
     	WHERE ${type} like '%'||#{keyword}||'%'
     	AND DEL_YN = 'N'

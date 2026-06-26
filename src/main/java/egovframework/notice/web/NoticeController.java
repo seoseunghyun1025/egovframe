@@ -163,7 +163,7 @@ public class NoticeController {
 	    if(result > 0) {
 		    return "redirect:/notice/noticeList.do";
 	    }
-	    System.out.println("공지사항 삭제 실패");
+	    
 	    return "redirect:/notice/noticeList.do";
     }
 	

@@ -75,8 +75,6 @@ public class InvestmentController {
         
         mav.setViewName("investment/investmentList");
         
-        System.out.println(">>> 조회된 내역 개수: " + (list != null ? list.size() : 0));
-        
         return mav; 
     }
     
