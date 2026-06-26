@@ -10,6 +10,7 @@
     	<result property="noticeTitle" column="NOTICE_TITLE"/>
     	<result property="noticeContent" column="NOTICE_CONTENT"/>
     	<result property="registryDate" column="REGISTRY_DATE"/>
+    	<result property="noticeId" column="NOTICE_ID"/>
 	</resultMap>
 
     <select id="selectNoticeInfo" resultMap="noticeMap">
@@ -20,42 +21,42 @@
     </select>
 
     <select id="selectNoticeCount" resultType="int">
-        SELECT COUNT(NOTICE_UUID) AS noticeCount FROM NOTICE WHERE 1 = 1 AND DEL_YN = 'N'
+        SELECT COUNT(NOTICE_UUID) AS noticeCount 
+        FROM NOTICE 
+        WHERE 1 = 1
+        	AND DEL_YN = 'N'
     </select>
 
     <select id="selectNoticeList" resultMap="noticeMap">
     <!-- 페이징 -->
-        SELECT * FROM (
-    		SELECT 
-        		ROW_NUMBER() OVER (ORDER BY REGISTRY_DATE DESC) AS row_num,
-        		NOTICE_UUID, 
-        		WRITE_ID, 
-        		NOTICE_TITLE, 
-        		NOTICE_CONTENT, 
-        		REGISTRY_DATE
-    		FROM NOTICE
-    		WHERE 1 = 1 AND DEL_YN = 'N'
-			) T
-		WHERE T.row_num &gt; ${offset} AND T.row_num &lt;= (${offset} + ${limitRow})
+        SELECT B.* FROM(
+        	SELECT ROWNUM AS rn, A.* FROM(
+        		SELECT * FROM NOTICE
+        		ORDER BY NOTICE_ID DESC
+        	)A
+        )B
+        WHERE rn between #{start} and #{end}
     </select>
     
     <select id="selectSearch" resultMap="noticeMap">
-    	SELECT * FROM (
-    		SELECT
-    			ROW_NUMBER() OVER (ORDER BY REGISTRY_DATE DESC) AS row_num,
-    			NOTICE_UUID,
-    			WRITE_ID,
-    			NOTICE_TITLE,
-    			NOTICE_CONTENT,
-    			REGISTRY_DATE
-    		FROM NOTICE
-    		WHERE 1 = 1 AND DEL_YN = 'N'
-    		
-    		<if test="keyword != null and keyword != ''">
-    			AND ${type.column} LIKE '%'||#{keyword}||'%'
-    		</if>
-    	) T
-    	WHERE T.row_num &gt; ${offset} AND T.row_num &lt; = (${offset} + ${limitRow})
+    	SELECT B.* FROM(
+    		SELECT ROWNUM AS rn, A.*
+    		FROM (
+    			SELECT * 
+    			FROM NOTICE 
+    			WHERE ${type} like '%'||#{keyword}||'%'
+    			ORDER BY NOTICE_ID desc
+    		)A
+    	)B
+    	WHERE 
+    		rn between #{start} and #{end}
+    </select>
+    
+    <select id="selectSeachCount" resultType="int">
+    	SELECT count(NOTICE_UUID) AS noticeCount
+    	FROM NOTICE
+    	WHERE ${type} like '%'||#{keyword}||'%'
+    	AND DEL_YN = 'N'
     </select>
 
     <insert id="insertNotice" useGeneratedKeys="true" keyProperty="noticeUuid">
@@ -119,12 +120,7 @@
     	WHERE FILE_ID = #{FILE_ID}
     </select>
     
-    <select id="selectSeachCount" resultType="int">
-    	SELECT count(*)
-    	FROM NOTICE
-    	WHERE #{type} like '%'||#{keyword}||'%'
-    	AND DEL_YN = 'N'
-    </select>
+    
 </mapper>
 
 

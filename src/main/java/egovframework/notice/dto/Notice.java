@@ -2,9 +2,6 @@ package egovframework.notice.dto;
 
 import java.time.LocalDateTime;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,4 +14,8 @@ public class Notice {
 	private String noticeTitle;
 	private String noticeContent;
 	private LocalDateTime registryDate;
+	private Long noticeId;
+	
+	private String keyword;
+	private SearchType type;
 }

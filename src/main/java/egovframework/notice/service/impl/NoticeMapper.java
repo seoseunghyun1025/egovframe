@@ -14,9 +14,9 @@ import egovframework.notice.dto.SearchType;
 public interface NoticeMapper {
 	Notice selectNoticeInfo(String notice) throws DataAccessException;
 
-    int selectNoticeCount(Notice notice) throws DataAccessException;
+    int selectNoticeCount() throws DataAccessException;
 
-    List<Notice> selectNoticeList(@Param("offset") int offset,@Param("limitRow") int limitRow) throws DataAccessException;
+    List<Notice> selectNoticeList(@Param("start") int start, @Param("end") int end) throws DataAccessException;
 
     int insertNotice(Notice notice) throws Exception;
 
@@ -32,7 +32,10 @@ public interface NoticeMapper {
     
     void deleteNoticeFile(String uuid) throws Exception;
 
-	int selectSeachCount(Notice notice, SearchType type, String keyword) throws Exception;
+	int selectSeachCount(@Param("type") String type, @Param("keyword") String keyword) throws Exception;
 	
-	int selectSearch(@Param("type") SearchType type, @Param("keyword") String keyword, @Param("offset") int offset, @Param("limitRow") int limitRow) throws Exception;
+	List<Notice> selectSearch(@Param("type") String type, 
+							  @Param("keyword") String keyword,
+							  @Param("start") int start, 
+							  @Param("end") int end) throws Exception;
 }

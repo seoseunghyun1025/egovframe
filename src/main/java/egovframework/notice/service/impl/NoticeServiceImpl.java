@@ -33,45 +33,46 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int noticeCount(Notice notice) {
+	public void noticeList(Model model, int page) {
 		// TODO Auto-generated method stub
-		return noticeMapper.selectNoticeCount(notice);
-	}
-
-	@Override
-	public void noticeList(Model model, Notice notice, int page) {
-		// TODO Auto-generated method stub
+		// 한 페이지에 5개씩
+		int pageLetter = 5;
+		int totalRow = noticeMapper.selectNoticeCount();
+		//페이지 수
+		int repeat = totalRow / pageLetter;
+		if(totalRow % pageLetter != 0) {
+			repeat += 1;
+		}
 		
-		int offset = 0;
-		int limitRow = 5;
-		int pageNum = 0;
+		int end = page * pageLetter;
+		int start = end + 1 -pageLetter;
 		
-		pageNum = page;
-		offset = (pageNum - 1) * limitRow;
-		
-		int totalRow = noticeMapper.selectNoticeCount(notice);
-		
-		model.addAttribute("totalRow", totalRow);
-		model.addAttribute("noticeList", noticeMapper.selectNoticeList(offset, limitRow));
-		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("repeat", repeat);
+		model.addAttribute("noticeList", noticeMapper.selectNoticeList(start, end));
 	}
 	
 	@Override
 	public void selectSeach(Model model, SearchType type, String keyword, int page) throws Exception{
 		// TODO Auto-generated method stub
+		String column = type.getColumn();
 		
-		Notice notice = new Notice();
-		int totalRow = noticeMapper.selectSeachCount(notice, type, keyword);
-		int pageNum = 0;
-		int offset = 0;
-		int limitRow = 5;
+		int pageLetter = 5;
+		int totalRow = noticeMapper.selectSeachCount(column, keyword);
+		//페이지 수
+		int repeat = totalRow / pageLetter;
+		if(totalRow % pageLetter != 0) {
+			repeat += 1;
+		}
 		
-		pageNum = page;
-		offset = (pageNum - 1) * limitRow;
+		int end = page * pageLetter;
+		int start = end + 1 -pageLetter;
 		
-		model.addAttribute("noticeList", noticeMapper.selectSearch(type, keyword, offset, limitRow));
-		model.addAttribute("pageNum", pageNum);
-		model.addAttribute("totalRow", totalRow);
+		model.addAttribute("repeat", repeat);
+		model.addAttribute("noticeList", noticeMapper.selectSearch(column, keyword, start, end));
+		model.addAttribute("type", type);  
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("end", end);
+	    model.addAttribute("start",start);
 	}
 
 	@Override
@@ -117,4 +118,5 @@ public class NoticeServiceImpl implements NoticeService{
 		 // TODOAuto-generated method stub 
 		 noticeMapper.deleteNoticeFile(uuid); 	 
 	 }
+
 }

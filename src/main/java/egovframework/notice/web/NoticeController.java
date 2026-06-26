@@ -51,13 +51,11 @@ public class NoticeController {
 			@RequestParam(value="type", required=false) SearchType type,
 			@RequestParam(value="keyword", required=false) String keyword,
 			@RequestParam(value="page", defaultValue="1") int page) throws Exception{
-				
-		Notice notice = new Notice();
-		
+						
 		if(type != null && keyword != null) {
 			noticeService.selectSeach(model, type, keyword, page);
 		}else {
-			noticeService.noticeList(model, notice, page);
+			noticeService.noticeList(model, page);
 		}
 					
 		return "notice/noticeList";

@@ -37,9 +37,7 @@
 		</form>
 	</div>
 	
-<div class="my-3 p-3 bg-body rounded shadow-sm">
-    <p>총 게시글 수: ${totalRow} / 현재 페이지: ${pageNum}</p>
-    
+<div class="my-3 p-3 bg-body rounded shadow-sm">    
     <table border="1" class="table">
         <thead class="table-light">
             <tr>
@@ -50,10 +48,9 @@
             </tr>
         </thead>
         <tbody class="table-group-divider">
-        <c:set var="index" value="${(pageNum - 1) * 5}"></c:set>
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
                 <tr>
-                    <td>${index + status.count}</td>
+                    <td>${(start + status.count) - 1}</td>
                     <td class="notice-link" data-uuid="${notice.noticeUuid}">
     					${notice.noticeTitle}
 					</td>
@@ -73,10 +70,11 @@
     </table>
 
     <br>
-    <div>
-        <a class="decoration" href="/notice/noticeList.do?page=${pageNum - 1}">이전</a>
-        <a class="decoration" href="/notice/noticeList.do?page=${pageNum + 1}">다음</a>
-    </div>
+    <div class="paging">
+	<c:forEach var="page" begin="1" end="${repeat}">
+		<a href="/notice/noticeList.do?page=${page}&type=${type}&keyword=${keyword}">${page}</a>
+	</c:forEach>
+	</div>
 
     <br>
     <form id="uuidForm" method="post" action="/notice/noticeInfo.do">

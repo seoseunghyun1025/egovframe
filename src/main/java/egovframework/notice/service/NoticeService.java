@@ -12,9 +12,7 @@ import egovframework.notice.dto.SearchType;
 public interface NoticeService {
 	Notice noticeInfo(String notice);
 	
-	int noticeCount(Notice notice);
-	
-	void noticeList(Model model, Notice notice, int page);
+	void noticeList(Model model, int page);
 	
 	void selectSeach(Model model, SearchType type, String keyword, int page) throws Exception;
 	
