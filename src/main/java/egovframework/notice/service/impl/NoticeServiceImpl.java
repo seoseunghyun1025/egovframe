@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.config.FileUtils;
@@ -90,9 +91,35 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public void updatePost(Notice notice) throws Exception {
+	public void updatePost(Notice notice, MultipartHttpServletRequest request) throws Exception {
 		// TODO Auto-generated method stub
 		noticeMapper.updateNotice(notice);
+		
+		System.out.println("==== 🕵️‍♂️ 기존 파일 삭제 요청 분석 ====");
+		String[] deleteFiles = request.getParameterValues("deleteFiles");
+
+		if(deleteFiles != null) {
+		    System.out.println("▶️ 넘어온 삭제 대상 개수: " + deleteFiles.length + "개");
+		    for(String fid : deleteFiles) {
+		        System.out.println("▶️ 삭제 대상 수집된 FILE_ID 값: [" + fid + "]");
+		        if(fid != null && !fid.isBlank()) {
+		            System.out.println("🚀 매퍼 쿼리 실행 직전! 보낼 값: " + fid);
+		            noticeMapper.deleteNoticeFile(fid); 
+		        } else {
+		            System.out.println("❌ FILE_ID 값이 공백 문자열이라 삭제를 스킵합니다.");
+		        }
+		    }
+		} else {
+		    System.out.println("❌ deleteFiles 파라미터가 null입니다. (화면에서 데이터가 안 넘어옴)");
+		}
+		System.out.println("=====================================");
+		
+		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(notice.getNoticeUuid(), request);
+		if(list != null && !list.isEmpty()) {
+			for(Map<String, Object> fileMap : list) {
+				noticeMapper.insertFile(fileMap);
+			}
+		}
 	}
 
 	@Override

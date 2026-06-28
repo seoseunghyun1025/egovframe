@@ -37,7 +37,7 @@
 				</div>
 				<div class="btn-box">
 					<label for="file" class="form-label">파일을 선택하세요</label>
-					<input class="form-control" type="file" id="file">
+					<input class="form-control" type="file" id="file" name="files">
 					<div id="fileIndex"></div>	
 				</div>
 				<div class="btn-box">
@@ -59,8 +59,8 @@
             $("#fileAdd_btn").on("click", function(e) {
                 e.preventDefault();
                 var fileHtml = "<div class='file-item'>" +
-                               "<input class='form-control' type='file' name='file_" + fileIndex + "' /> " +
-                               "<button type='button' class='btn btn-primary' id='fileDel_btn'>삭제</button>" +
+                			   "<input class='form-control' type='file' name='files' /> " +
+                			   "<button type='button' class='btn btn-danger' id='fileDel_btn'>삭제</button>" +
                                "</div>";
                 $("#fileIndex").append(fileHtml);
                 fileIndex++;

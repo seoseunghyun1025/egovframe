@@ -18,7 +18,7 @@ public interface NoticeService {
 	
 	int insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception;
 	
-	void updatePost(Notice notice) throws Exception;
+	void updatePost(Notice notice, MultipartHttpServletRequest request) throws Exception;
 	
 	int deleteNotice(Notice notice) throws Exception;
 
@@ -26,5 +26,5 @@ public interface NoticeService {
 	
 	Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception;
 	
-	void deleteNoticeFile(String uuid) throws Exception; 
+	void deleteNoticeFile(String uuid) throws Exception;
 }

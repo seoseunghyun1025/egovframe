@@ -150,7 +150,7 @@ public class NoticeController {
 	 
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/noticeUpdate.do", method=RequestMethod.POST)
-	public String updatePost(HttpServletRequest request) throws Exception {
+	public String updatePost(MultipartHttpServletRequest request) throws Exception {
 
 		Notice notice= new Notice();
 
@@ -170,7 +170,7 @@ public class NoticeController {
 	        notice.setNoticeContent(request.getParameter("noticeContent"));
 	    }
 
-	    noticeService.updatePost(notice);
+	    noticeService.updatePost(notice, request);
 	    
 	    return "redirect:/notice/noticeList.do";
 	}

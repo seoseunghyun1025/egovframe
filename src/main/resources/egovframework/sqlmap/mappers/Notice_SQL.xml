@@ -85,7 +85,7 @@
     <update id="deleteNoticeFile">
     	UPDATE NOTICE_FILE
         SET DEL_YN = 'Y'
-        WHERE NOTICE_UUID = #{NOTICE_UUID}
+        WHERE FILE_ID = #{fileId}
     </update>
     
     <insert id="insertFile" parameterType="java.util.HashMap">
@@ -111,6 +111,7 @@
     		ROUND(FILE_SIZE/1024, 1) AS FILE_SIZE
     	FROM NOTICE_FILE
     	WHERE NOTICE_UUID = #{noticeUuid}
+    		AND DEL_YN = 'N'
     	ORDER BY FILE_ID ASC
     </select>
     
@@ -120,6 +121,7 @@
     		ORIGINAL_NAME
     	FROM NOTICE_FILE
     	WHERE FILE_ID = #{FILE_ID}
+    		AND DEL_YN = 'N'
     </select>
     
     
