@@ -51,14 +51,38 @@ public class NoticeController {
 			@RequestParam(value="type", required=false) SearchType type,
 			@RequestParam(value="keyword", required=false) String keyword,
 			@RequestParam(value="page", defaultValue="1") int page) throws Exception{
-						
-		if(type != null && keyword != null) {
-			noticeService.selectSeach(model, type, keyword, page);
+		if(type != null && keyword != null && !keyword.trim().isEmpty()) {
+			noticeService.selectSearch(model, type, keyword, page);
 		}else {
 			noticeService.noticeList(model, page);
 		}
 					
 		return "notice/noticeList";
+	}
+	
+	@RequestMapping(value="/noticeListAjax.do", method=RequestMethod.POST)
+	public String noticeListAjax(HttpServletRequest request, Model model,
+			@RequestParam(value="type", required=false) String typeStr,
+			@RequestParam(value="keyword", required=false) String keyword,
+			@RequestParam(value="page", defaultValue="1") int page) throws Exception{
+	    
+		SearchType type = null;
+		if(typeStr != null && !typeStr.isEmpty()) {
+			try {
+				type = SearchType.valueOf(typeStr);
+	        } catch (IllegalArgumentException e) {
+	            type = null;
+			}
+		}
+		if(typeStr != null && !typeStr.trim().isEmpty() && keyword != null && !keyword.trim().isEmpty()) {
+			noticeService.selectSearch(model, type, keyword, page);
+		}else {
+			noticeService.noticeList(model, page);
+		}
+		
+		model.addAttribute("page", page);
+		
+		return "notice/noticeListResult";
 	}
 	
 	@Auth(role = Role.ADMIN)

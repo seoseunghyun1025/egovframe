@@ -45,7 +45,7 @@
     		FROM (
     			SELECT * 
     			FROM NOTICE 
-    			WHERE ${type} like '%'||#{keyword}||'%'
+    			WHERE ${column} like '%'||#{keyword}||'%'
     				AND DEL_YN = 'N'
     			ORDER BY NOTICE_ID desc
     		)A
@@ -57,7 +57,7 @@
     <select id="selectSeachCount" resultType="int">
     	SELECT count(*)
     	FROM NOTICE
-    	WHERE ${type} like '%'||#{keyword}||'%'
+    	WHERE ${column} like '%'||#{keyword}||'%'
     	AND DEL_YN = 'N'
     </select>
 

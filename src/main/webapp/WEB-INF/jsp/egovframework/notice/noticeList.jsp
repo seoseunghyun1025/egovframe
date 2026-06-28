@@ -14,12 +14,12 @@
 <body class="bg-light">
 <main class="container mx-auto my-5">
 
-<div class="my-3 p-2 bg-body rounded shadow-sm d-flex gap-2">
-	<a class="btn btn-primary" href="/investment/list.do">투자 내역</a>
-	<button type="button" id="logout" class="btn btn-light ms-auto" >
-       	로그아웃
-   	</button >
-</div>
+	<div class="my-3 p-2 bg-body rounded shadow-sm d-flex gap-2">
+		<a class="btn btn-primary" href="/investment/list.do">투자 내역</a>
+		<button type="button" id="logout" class="btn btn-light ms-auto" >
+	       	로그아웃
+	   	</button >
+	</div>
 	<h2 class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm" id="situation">
 		공지사항 목록
 		<c:if test="${loginMember.role.name() eq 'ADMIN'}">
@@ -27,62 +27,44 @@
     	</c:if>
 	</h2>
 	<div class="my-3 p-2 bg-body rounded shadow-sm">
-		<form class="d-flex" action="/notice/noticeList.do" method="get" id="searchForm" name="search-form">
+		<form class="d-flex" action="/notice/noticeListAjax.do" method="post" id="searchForm" name="search-form">
+			<input type="hidden" id="page" name="page" value="1" />
 	        <select name="type" class="type-box">
-				<option value="TITLE">제목</option>
-				<option value="WRITER">작성자</option>
+				<option value="TITLE" ${type eq 'TITLE' ? 'selected' : ''}>제목</option>
+				<option value="WRITER" ${type eq 'WRITER' ? 'selected' : ''}>작성자</option>
 			</select>
-	          <input class="form-control me-2" aria-label="Search" type="text" name="keyword" placeholder="Search">
-	          <input class="btn btn-outline-success" type="submit" value="검색하기">
+	          <input class="form-control me-2" id="keyword" aria-label="Search" type="text" name="keyword" placeholder="Search">
+	          <input class="btn btn-outline-success" id="btnSearch" type="button" value="검색하기">
 		</form>
 	</div>
 	
-<div class="my-3 p-3 bg-body rounded shadow-sm">    
-    <table border="1" class="table">
-        <thead class="table-light">
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>작성자</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            <c:forEach var="notice" items="${noticeList}" varStatus="status">
-                <tr>
-                    <td>${start + status.count}</td>
-                    <td class="notice-link" data-uuid="${notice.noticeUuid}">
-    					${notice.noticeTitle}
-					</td>
-                    <td>
-                    	<fmt:parseDate value="${notice.registryDate}" pattern="yyyy-MM-dd" var="parsedDateTime" type="both"/>
-        				<fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
-                    </td>
-                    <td>${notice.writeId}</td>
-                </tr>
-            </c:forEach>
-            <c:if test="${empty noticeList}">
-                <tr>
-                    <td colspan="4">등록된 공지사항이 없습니다.</td>
-                </tr>
-            </c:if>
-        </tbody>
-    </table>
-	
-	<nav aria-label="Page navigation example">
-		<ul class="pagination justify-content-center">
-			<c:forEach var="page" begin="1" end="${repeat}">
-				<li class="page-item"><a class="page-link" href="/notice/noticeList.do?page=${page}&type=${type}&keyword=${keyword}">${page}</a></li>
-			</c:forEach>
-		</ul>
-	</nav> 
-	
+	<div id="listContainer" class="my-3 p-3 bg-body rounded shadow-sm">    
+	</div>
+
     <form id="uuidForm" method="post" action="/notice/noticeInfo.do">
     	<input type="hidden" id="uuid" name="noticeUuid" value="" />
 	</form>
 	<script>
+		function fn_go_page(pageNo) {
+			$("#page").val(pageNo); 
+			var formData = $("#searchForm").serialize();
+						
+			$.ajax({
+				url: "/notice/noticeListAjax.do",
+			 	type: "POST",
+				data: formData,
+				dataType: "html",
+				success: function(response) {
+					$("#listContainer").html(response);
+				},
+				error: function() {
+					alert("목록을 불러오는 중 오류가 발생했습니다.");
+				}
+			});		
+		}
 		$(document).ready(function() {
-	    	$(".notice-link").on("click", function() {
+			fn_go_page(1);
+	    	$(document).on("click", ".notice-link",function() {
 	       		var uuid = $(this).data("uuid");
 	       		$("#uuid").val(uuid);
 	        	$("#uuidForm").submit();
@@ -91,9 +73,21 @@
 	    	$("#logout").click(function() {
 	    		window.location = "/member/logout.do";
 	        })
+	        
+	        $("#btnSearch").on("click", function(){
+				fn_go_page(1);
+	        })
+	        
+	        $("#keyword").on("keypress", function(e){
+				if(e.which == 13){
+					e.preventDefault();
+					fn_go_page(1);
+				}
+	        })
 		});
+		
+		
 	</script>
-</div>
 </main>
 </body>
 </html>

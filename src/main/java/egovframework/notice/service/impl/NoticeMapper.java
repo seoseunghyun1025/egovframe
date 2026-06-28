@@ -32,9 +32,9 @@ public interface NoticeMapper {
     
     void deleteNoticeFile(String uuid) throws Exception;
 
-	int selectSeachCount(@Param("type") String type, @Param("keyword") String keyword) throws Exception;
+	int selectSeachCount(@Param("column") String column, @Param("keyword") String keyword) throws Exception;
 	
-	List<Notice> selectSearch(@Param("type") String type, 
+	List<Notice> selectSearch(@Param("column") String column, 
 							  @Param("keyword") String keyword,
 							  @Param("start") int start, 
 							  @Param("end") int end) throws Exception;

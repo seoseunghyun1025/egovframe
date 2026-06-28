@@ -35,6 +35,7 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void noticeList(Model model, int page) {
 		// TODO Auto-generated method stub
+		System.out.println("noticeList!!");
 		// 한 페이지에 5개씩
 		int pageLetter = 5;
 		int totalRow = noticeMapper.selectNoticeCount();
@@ -53,8 +54,9 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	@Override
-	public void selectSeach(Model model, SearchType type, String keyword, int page) throws Exception{
+	public void selectSearch(Model model, SearchType type, String keyword, int page) throws Exception{
 		// TODO Auto-generated method stub
+		System.out.println("selectSearch!!");
 		String column = type.getColumn();
 		
 		int pageLetter = 5;
