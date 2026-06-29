@@ -58,7 +58,7 @@ public class MemberController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("loginMember", member);
-		session.setMaxInactiveInterval(60 * 30);
+		session.setMaxInactiveInterval(10 * 1);
 		
 		return "redirect:/investment/list.do";
 	}
@@ -117,10 +117,8 @@ public class MemberController {
         boolean isUpdated = memberService.updatePassword(dto);
         
         if (isUpdated) {
-            System.out.println("success\n");
             return "redirect:/member/loginForm.do";
         } else {
-            System.out.println("\nfailed\n");
             return "redirect:/member/change-passwordForm.do?email=" + dto.getEmail() + "&error=fail";
         }
     }

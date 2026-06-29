@@ -36,7 +36,6 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void noticeList(Model model, int page) {
 		// TODO Auto-generated method stub
-		System.out.println("noticeList!!");
 		// 한 페이지에 5개씩
 		int pageLetter = 5;
 		int totalRow = noticeMapper.selectNoticeCount();
@@ -57,7 +56,6 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void selectSearch(Model model, SearchType type, String keyword, int page) throws Exception{
 		// TODO Auto-generated method stub
-		System.out.println("selectSearch!!");
 		String column = type.getColumn();
 		
 		int pageLetter = 5;
@@ -95,24 +93,19 @@ public class NoticeServiceImpl implements NoticeService{
 		// TODO Auto-generated method stub
 		noticeMapper.updateNotice(notice);
 		
-		System.out.println("==== 🕵️‍♂️ 기존 파일 삭제 요청 분석 ====");
 		String[] deleteFiles = request.getParameterValues("deleteFiles");
 
 		if(deleteFiles != null) {
-		    System.out.println("▶️ 넘어온 삭제 대상 개수: " + deleteFiles.length + "개");
 		    for(String fid : deleteFiles) {
-		        System.out.println("▶️ 삭제 대상 수집된 FILE_ID 값: [" + fid + "]");
 		        if(fid != null && !fid.isBlank()) {
-		            System.out.println("🚀 매퍼 쿼리 실행 직전! 보낼 값: " + fid);
 		            noticeMapper.deleteNoticeFile(fid); 
 		        } else {
-		            System.out.println("❌ FILE_ID 값이 공백 문자열이라 삭제를 스킵합니다.");
+		            System.out.println("삭제 스킵");
 		        }
 		    }
 		} else {
-		    System.out.println("❌ deleteFiles 파라미터가 null입니다. (화면에서 데이터가 안 넘어옴)");
+		    System.out.println("deleteFiles 파라미터가 null입니다");
 		}
-		System.out.println("=====================================");
 		
 		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(notice.getNoticeUuid(), request);
 		if(list != null && !list.isEmpty()) {
@@ -142,9 +135,14 @@ public class NoticeServiceImpl implements NoticeService{
 
 	
 	 @Override 
-	 public void deleteNoticeFile(String uuid) throws Exception { 
+	 public void deleteNoticeFile(String id) throws Exception { 
 		 // TODOAuto-generated method stub 
-		 noticeMapper.deleteNoticeFile(uuid); 	 
+		 noticeMapper.deleteNoticeFile(id); 	 
+	 }
+	 
+	 @Override
+	 public void deleteNoticeFiles(String uuid) throws Exception{
+		 noticeMapper.deleteNoticeFiles(uuid);
 	 }
 
 }

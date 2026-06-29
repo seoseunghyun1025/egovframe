@@ -53,7 +53,6 @@
 	            
 	            <div id="fileIndex"></div>
 				
-				<div id="fileIndex"></div>
 	            <div class="btn-box">
 	        		<button id="fileAdd_btn" class="w-20 btn btn-dark" type="button">파일추가+</button>
 				</div>

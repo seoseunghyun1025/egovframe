@@ -82,9 +82,6 @@ public class MemberController {
 			emailService.sendTemporaryPasswordEmail(email, tempPassword);
 			return "redirect:/member/verifyForm.do?email=" + email;
 		}else {
-			System.out.println();
-			System.out.println("아이디가 존재하지 않습니다.");
-			System.out.println();
             return "redirect:/member/reset-password.do?error=notfound ";
         }
 	}
@@ -120,10 +117,8 @@ public class MemberController {
         boolean isUpdated = memberService.updatePassword(dto);
         
         if (isUpdated) {
-            System.out.println("success\n");
             return "redirect:/member/login.do";
         } else {
-            System.out.println("\nfailed\n");
             return "redirect:/member/change-passwordForm.do?email=" + dto.getEmail() + "&error=fail";
         }
     }

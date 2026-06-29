@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class SessionInterceptor implements HandlerInterceptor{
+	
+	private static final String AJAX_HEADER_NAME = "X-Requested-With";
+	private static final String AJAX_HEADER_VALUE = "XMLHttpRequest";
+	
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         
@@ -20,8 +24,12 @@ public class SessionInterceptor implements HandlerInterceptor{
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loginMember") == null) {
-            response.sendRedirect(request.getContextPath() + "/member/loginForm.do");
-            return false;
+        	 if (isAjaxRequest(request)) {
+        		 response.sendError(400);
+        		 return false;
+        	 }
+             response.sendRedirect(request.getContextPath() + "/member/loginForm.do");
+             return false;
         }
         
         Member loginMember = (Member) session.getAttribute("loginMember");
@@ -39,5 +47,14 @@ public class SessionInterceptor implements HandlerInterceptor{
         }
         
         return true; 
+    }
+	
+	private boolean isAjaxRequest(HttpServletRequest request) {
+		String header = request.getHeader("AJAX");
+		System.out.println("header: " + header);
+		if("true".equals(header)) {
+			return true;
+		}
+		return false;
     }
 }

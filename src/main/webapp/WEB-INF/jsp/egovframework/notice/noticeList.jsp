@@ -10,6 +10,7 @@
 <script src="/js/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="/css/egovframework/notice/notice.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 </head>
 <body class="bg-light">
 <main class="container mx-auto my-5">
@@ -27,7 +28,7 @@
     	</c:if>
 	</h2>
 	<div class="my-3 p-2 bg-body rounded shadow-sm">
-		<form class="d-flex" action="/notice/noticeListAjax.do" method="post" id="searchForm" name="search-form">
+		<form class="d-flex" method="post" id="searchForm" name="search-form">
 			<input type="hidden" id="page" name="page" value="1" />
 	        <select name="type" class="type-box">
 				<option value="TITLE" ${type eq 'TITLE' ? 'selected' : ''}>제목</option>
@@ -54,11 +55,24 @@
 			 	type: "POST",
 				data: formData,
 				dataType: "html",
-				success: function(response) {
+				beforeSend : function(xmlHttpRequest){
+					xmlHttpRequest.setRequestHeader("AJAX", "true");
+				},
+				success: function(response, e, status) {
+					if(e.status == 400){
+						moveToLoginPage()	
+					}
 					$("#listContainer").html(response);
 				},
-				error: function() {
-					alert("목록을 불러오는 중 오류가 발생했습니다.");
+				error: function(e) {
+					if(e.status == 400){
+						console.log("error 진입 성공");
+						
+						new Swal("", "session값이 존재하지 않습니다. 3초 후 로그인 페이지로 이동됩니다.", "error");
+						setTimeout(function(){
+							location.href = location.origin + "/member/loginForm.do";
+						}, 3000);				
+					}
 				}
 			});		
 		}
@@ -85,7 +99,6 @@
 				}
 	        })
 		});
-		
 		
 	</script>
 </main>

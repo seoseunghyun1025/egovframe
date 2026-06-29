@@ -102,6 +102,7 @@ public class NoticeController {
 		notice.setNoticeUuid(noticeUuid);
 		
 		//스크립트에서 체크 후 컨트롤러로 넘어오게 구현
+		//없을 때 에러 표시 화면으로 경고창 뜨게 구현
 		if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
 			notice.setWriteId(request.getParameter("writeId"));
 		}
@@ -113,12 +114,13 @@ public class NoticeController {
 		if(request.getParameter("noticeContent") != null && request.getParameter("noticeContent").isBlank() == false) {
 			notice.setNoticeContent(request.getParameter("noticeContent"));
 		}
-				
+
 		int resultNumber = noticeService.insertNotice(notice, mpRequest, noticeUuid);
 		
 		if(resultNumber > 0) {
 			return "redirect:/notice/noticeList.do";
 		}else {
+			// model로 성공, 실패 보내기 (response 제거)
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=utf-8");
 			PrintWriter out = response.getWriter();
@@ -127,7 +129,6 @@ public class NoticeController {
 			
 			return "redirect:/notice/insertNoticeForm.do";
 		}
-		
 	}
 	
 	@Auth(role = Role.ADMIN)
@@ -181,7 +182,7 @@ public class NoticeController {
 		Notice notice = new Notice();
 		notice.setNoticeUuid(request.getParameter("noticeUuid"));
 		String uuid = request.getParameter("noticeUuid");
-		noticeService.deleteNoticeFile(uuid);
+		noticeService.deleteNoticeFiles(uuid);
 	    int result = noticeService.deleteNotice(notice);
 	    
 	    if(result > 0) {

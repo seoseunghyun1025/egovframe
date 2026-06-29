@@ -30,7 +30,7 @@ public interface NoticeMapper {
     
     Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception;
     
-    void deleteNoticeFile(String uuid) throws Exception;
+    void deleteNoticeFile(String id) throws Exception;
 
 	int selectSeachCount(@Param("column") String column, @Param("keyword") String keyword) throws Exception;
 	
@@ -38,4 +38,6 @@ public interface NoticeMapper {
 							  @Param("keyword") String keyword,
 							  @Param("start") int start, 
 							  @Param("end") int end) throws Exception;
+	
+	void deleteNoticeFiles(String uuid) throws Exception;
 }
