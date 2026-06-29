@@ -58,7 +58,7 @@ public class MemberController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("loginMember", member);
-		session.setMaxInactiveInterval(10 * 1);
+		session.setMaxInactiveInterval(60 * 30);
 		
 		return "redirect:/investment/list.do";
 	}

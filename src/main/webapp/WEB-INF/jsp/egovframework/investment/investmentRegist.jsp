@@ -30,7 +30,7 @@
     	<input type="hidden" name="memberId" value="${loginMember.memberId}">
     	
         <div class="col-12 mb-3">
-            <label for="assetName" class="form-label">종목명</label>
+            <label for="assetName" class="form-label"><span class="text-danger fw-bold">*</span>종목명</label>
             <div class="input-group has-validation">
             <input type="text" class="form-control" name="assetName" id="assetName" value="${investmentDTO.assetName}" placeholder="예: 나스닥100" required>
             <div class="invalid-feedback" >종목명을 입력하세요</div>
@@ -38,9 +38,9 @@
         </div>
         
         <div class="col-12 mb-3">
-            <label for="txType" class="form-label">거래 구분</label>
+            <label for="txType" class="form-label"><span class="text-danger fw-bold">*</span>거래 구분</label>
             <select id="txType" name="txType" class="form-select" required>
-            	<option value>선택</option>
+            	<option value="">선택</option>
                 <option value="BUY" <c:if test="${investmentDTO.txType == 'BUY'}">selected</c:if>>매수</option>
                 <option value="SELL"  <c:if test="${investmentDTO.txType == 'SELL'}">selected</c:if>>매도</option>
             </select>
@@ -48,15 +48,15 @@
         </div>
 
         <div class="col-12 mb-3">
-            <label for="buyPrice" class="form-label">단가</label>
+            <label for="buyPrice" class="form-label"><span class="text-danger fw-bold">*</span>단가</label>
             <input id="buyPrice" class="form-control" type="number" name="buyPrice" value="${investmentDTO.buyPrice}" min="1" required>
             <div class="invalid-feedback" >단가를 입력하세요
             </div>
         </div>
 
         <div class="col-12 mb-3">
-            <label for="quantity" class="form-label">수량</label>
-            <input type="number" class="form-control" name="quantity" value="${investmentDTO.quantity}" min="1" required>
+            <label for="quantity" class="form-label"><span class="text-danger fw-bold">*</span>수량</label>
+            <input type="number" id="quantity" class="form-control" name="quantity" value="${investmentDTO.quantity}" min="1" required>
             <div class="invalid-feedback" >수량을 입력하세요
             </div>
         </div>
@@ -79,31 +79,32 @@
         <input type="hidden" name="commission" value="0">
         <div class="col-12 mb-3">
             <label for="commission" class="form-label">수수료</label>
+            <span class="text-muted">(선택)</span>
             <input class="form-control" type="text" id="commission" name="commission" value="${investmentDTO.commission}" placeholder="간단한 메모">
         </div>
         
         <div class="col-12 mb-3">
-            <h6>통화</h6>
+            <h6><span class="text-danger fw-bold">*</span>통화</h6>
             <div class="form-check">
-            	<input type="radio" name="currency"  value="KRW" class="form-check-input" <c:if test="${investmentDTO.currency eq 'KRW'}">checked</c:if> required>
+            	<input type="radio" name="currency"  value="KRW" class="form-check-input radionClass" <c:if test="${investmentDTO.currency eq 'KRW'}">checked</c:if> required>
             	<label class="form-check-label" for="KRW">
             		KRW
             	</label>
             </div>
             <div class="form-check">
-            	<input type="radio" name="currency"  value="USD" class="form-check-input" <c:if test="${investmentDTO.currency eq 'USD'}">checked</c:if> required>
+            	<input type="radio" name="currency"  value="USD" class="form-check-input radionClass" <c:if test="${investmentDTO.currency eq 'USD'}">checked</c:if> required>
             	<label class="form-check-label" for="USD">
             		USD
             	</label>
             </div>
             <div class="form-check">
-            <input type="radio" name="currency"  value="EUR" class="form-check-input" <c:if test="${investmentDTO.currency eq 'EUR'}">checked</c:if> required>
+            <input type="radio" name="currency"  value="EUR" class="form-check-input radionClass" <c:if test="${investmentDTO.currency eq 'EUR'}">checked</c:if> required>
             	<label class="form-check-label" for="USD">
             		EUR
             	</label>
             </div>
             <div class="form-check">
-            <input type="radio" name="currency"  value="JPY" class="form-check-input" <c:if test="${investmentDTO.currency eq 'JPY'}">checked</c:if> required>
+            <input type="radio" name="currency"  value="JPY" class="form-check-input radionClass" <c:if test="${investmentDTO.currency eq 'JPY'}">checked</c:if> required>
             	<label class="form-check-label" for="USD">
             		JPY
             	</label>
@@ -111,8 +112,7 @@
         </div>
         
         <div class="col-12 mb-3">
-            <label>거래소</label>
-            <label for="exchange" class="form-label">거래소</label>
+            <label><span class="text-danger fw-bold">*</span>거래소</label>
             <select id="exchange" name="exchange" size="1" class="form-select" required>
             	<option value="">선택</option>
             	<option value="1"<c:if test="${investmentDTO.exchange eq '1'}">selected</c:if>>한국투자증권</option>
@@ -149,10 +149,48 @@
 				var id = $(this).data("id");
 				$("#deleteId").val(id);
 				$("#deleteForm").submit();
-			})
+			});
 			
 			$("#list").click(function() {
     			window.location = "/investment/list.do";
+        	});
+        	
+        	//유효성 검사
+        	$("#investmentForm").submit(function(){
+				if($("#assetName").val() == ""){
+					alert("종목명을 입력하세요.");
+					$("#assetName").focus();
+					return false;
+				}
+				
+				if($("#txType").val() == ""){
+					alert("거래 구분을 선택하세요.");
+					$("#txType").focus();
+					return false;
+				}
+				
+				if($("#buyPrice").val() == 0.0){
+					alert("단가를 입력하세요.");
+					$("#buyPrice").focus();
+					return false;
+				}
+				
+				if($("#quantity").val() == 0.0){
+					alert("수량을 입력하세요.");
+					$("#quantity").focus();
+					return false;
+				}
+				
+				if($('input[type="radio"]').is(':checked') == false){
+					alert("통화를 선택하세요.");
+					return false;
+				}
+					
+				if($("#exchange").val() == ""){
+					alert("거래소를 선택하세요.");
+					$("#exchange").focus();
+					return false;
+				}
         	})
         })
 	</script>

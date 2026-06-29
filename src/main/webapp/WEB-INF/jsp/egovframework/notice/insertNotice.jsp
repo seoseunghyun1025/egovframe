@@ -70,6 +70,20 @@
                 e.preventDefault();
                 $(this).parent().remove();
             });
+            
+            $(".needs-validation").submit(function(){
+				if($("#title").val() == ""){
+					alert("제목을 입력하세요.");
+					$("#title").focus();
+					return false;
+				}
+				
+				if($("#content").val() == ""){
+					alert("내용을 입력하세요.");
+					$("#content").focus();
+					return false;
+				}
+        	})
         });
     </script>
 	<script src="/js/Bootstrap/form-validation.js"></script>

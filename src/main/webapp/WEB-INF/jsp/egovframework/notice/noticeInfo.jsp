@@ -39,7 +39,8 @@
 	    		</div>
 	    		<div class="col-sm-6 border-bottom">
 	        			<strong class="d-block text-gray-dark">등록일:</strong>
-	        			${notice.registryDate}
+	        			<fmt:parseDate value="${notice.registryDate}" var="registered" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+	        			<fmt:formatDate value="${registered}" pattern="yyyy-MM-dd HH:mm" />
 	        	</div>
 	        	<c:if test="${not empty fileList}">
 	                <div class="col-12 border-bottom">
