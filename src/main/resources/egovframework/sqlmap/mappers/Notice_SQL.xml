@@ -12,6 +12,15 @@
     	<result property="registryDate" column="REGISTRY_DATE"/>
     	<result property="noticeId" column="NOTICE_ID"/>
 	</resultMap>
+	<resultMap id="noticeFile" type="egovframework.notice.dto.NoticeFile">
+		<result property="fileId" column="FILE_ID"/>
+		<result property="noticeUuid" column="NOTICE_UUID"/>
+		<result property="originalName" column="ORIGINAL_NAME"/>
+		<result property="storedFileName" column="STORED_FILE_NAME"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="registryDate" column="REGISTRY_DATE"/>
+		<result property="delYn" column="DEL_YN"/>
+	</resultMap>
 
     <select id="selectNoticeInfo" resultMap="noticeMap">
         SELECT
@@ -88,20 +97,20 @@
         WHERE FILE_ID = #{fileId}
     </update>
     
-    <insert id="insertFile" parameterType="java.util.HashMap">
-    	INSERT INTO notice_file(
-    		NOTICE_UUID,
-    		ORIGINAL_NAME,
-    		STORED_FILE_NAME,
-    		FILE_SIZE,
-    		REGISTRY_DATE
-    	) VALUES (
-    		#{NOTICE_UUID, jdbcType=VARCHAR},
-    		#{ORIGINAL_NAME},
-    		#{STORED_FILE_NAME},
-    		#{FILE_SIZE},
-    		SYSDATE
-    	)
+    <insert id="insertFile" parameterType="egovframework.notice.dto.NoticeFile">
+    	<![CDATA[
+    		INSERT INTO NOTICE_FILE(NOTICE_UUID, ORIGINAL_NAME, STORED_FILE_NAME, FILE_SIZE, DEL_YN)
+    		VALUES
+    	]]>
+    	<foreach collection="list" item="item" separator=",">
+    		(
+    			#{item.noticeUuid},
+    			#{item.originalName},
+    			#{item.storedFileName},
+    			#{item.fileSize},
+    			'N'
+    		)
+    	</foreach>
     </insert>
     
     <select id="selectFileList" parameterType="String" resultType="hashMap">

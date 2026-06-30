@@ -50,11 +50,8 @@
 	        		</c:forEach>
 	        	</div>
 	            </c:if>
-	            
-	            <div id="fileIndex"></div>
-				
 	            <div class="btn-box">
-	        		<button id="fileAdd_btn" class="w-20 btn btn-dark" type="button">파일추가+</button>
+					<input class="form-control" type="file" id="file" name="files" multiple="multiple">	
 				</div>
 				<div class="col-12">
 					<label for="content" class="form-label">내용</label>
@@ -75,18 +72,7 @@
 	</div>
 </main>
 <script>
-	$(document).ready(function() {
-	    var fileIndex = 1;
-	    $("#fileAdd_btn").on("click", function(e) {
-	        e.preventDefault();
-	        var fileHtml = "<div class='input-group mb-2 file-item'>" +
-	        			   "<input class='form-control' type='file' name='files' /> " +
-	        			   "<button type='button' class='btn btn-danger btn-del-new'>삭제</button>" +
-	                       "</div>";
-	        $("#fileIndex").append(fileHtml);
-	        fileIndex++;
-	    });
-	    
+	$(document).ready(function() {	    
 	    $(document).on("click", ".btn-del-new", function(e) {
 	        e.preventDefault();
 	        $(this).closest('.file-item').remove();

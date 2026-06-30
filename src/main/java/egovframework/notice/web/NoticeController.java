@@ -100,7 +100,7 @@ public class NoticeController {
 		UUID uuid = UUID.randomUUID();
 		String noticeUuid = uuid.toString();
 		notice.setNoticeUuid(noticeUuid);
-		
+				
 		//스크립트에서 체크 후 컨트롤러로 넘어오게 구현
 		//없을 때 에러 표시 화면으로 경고창 뜨게 구현
 		if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {

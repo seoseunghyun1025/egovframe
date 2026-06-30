@@ -37,11 +37,7 @@
 				</div>
 				<div class="btn-box">
 					<label for="file" class="form-label">파일을 선택하세요</label>
-					<input class="form-control" type="file" id="file" name="files">
-					<div id="fileIndex"></div>	
-				</div>
-				<div class="btn-box">
-					<button id="fileAdd_btn" class="w-20 btn btn-dark" type="button">파일추가+</button>
+					<input class="form-control" type="file" id="file" name="files" multiple="multiple">	
 				</div>
 				<div class="btn-box">
 	        		<button type="submit" class="w-20 btn btn-primary">등록</button>
@@ -51,26 +47,10 @@
 	    	</div>
 	    </form>
     </div>
-   	
-   
+    
    	<script type="text/javascript">
-        $(document).ready(function() {
-            var fileIndex = 1;
-            $("#fileAdd_btn").on("click", function(e) {
-                e.preventDefault();
-                var fileHtml = "<div class='file-item'>" +
-                			   "<input class='form-control' type='file' name='files' /> " +
-                			   "<button type='button' class='btn btn-danger' id='fileDel_btn'>삭제</button>" +
-                               "</div>";
-                $("#fileIndex").append(fileHtml);
-                fileIndex++;
-            });
-            
-            $(document).on("click", "#fileDel_btn", function(e) {
-                e.preventDefault();
-                $(this).parent().remove();
-            });
-            
+        $(document).ready(function() {        
+          	//유효성 검사
             $(".needs-validation").submit(function(){
 				if($("#title").val() == ""){
 					alert("제목을 입력하세요.");

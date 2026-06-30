@@ -8,6 +8,7 @@ import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 import org.springframework.dao.DataAccessException;
 
 import egovframework.notice.dto.Notice;
+import egovframework.notice.dto.NoticeFile;
 import egovframework.notice.dto.SearchType;
 
 @EgovMapper("noticeMapper")
@@ -24,7 +25,7 @@ public interface NoticeMapper {
 
     int deleteNotice(Notice notice) throws Exception;
     
-    void insertFile(Map<String, Object> map) throws Exception;
+    void insertFile(List<NoticeFile> noticeFile) throws Exception;
     
     List<Map<String, Object>> selectFileList(String noticeUuid) throws Exception;
     

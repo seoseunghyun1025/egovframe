@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.config.FileUtils;
 import egovframework.notice.dto.Notice;
+import egovframework.notice.dto.NoticeFile;
 import egovframework.notice.dto.SearchType;
 import egovframework.notice.service.NoticeService;
 import jakarta.annotation.Resource;
@@ -80,10 +81,9 @@ public class NoticeServiceImpl implements NoticeService{
 	public int insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception {
 		// TODO Auto-generated method stub
 		int result = noticeMapper.insertNotice(notice);
-		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(noticeUuid, request);
-		int size = list.size();
-		for(int i = 0; i<size; i++) {
-			noticeMapper.insertFile(list.get(i));
+		List<NoticeFile> list = fileUtils.parseInsertFileInfo(noticeUuid, request);
+		if(list.isEmpty() == false) {
+			noticeMapper.insertFile(list);
 		}
 		return result;
 	}
@@ -94,7 +94,7 @@ public class NoticeServiceImpl implements NoticeService{
 		noticeMapper.updateNotice(notice);
 		
 		String[] deleteFiles = request.getParameterValues("deleteFiles");
-
+				
 		if(deleteFiles != null) {
 		    for(String fid : deleteFiles) {
 		        if(fid != null && !fid.isBlank()) {
@@ -107,11 +107,9 @@ public class NoticeServiceImpl implements NoticeService{
 		    System.out.println("deleteFiles 파라미터가 null입니다");
 		}
 		
-		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(notice.getNoticeUuid(), request);
+		List<NoticeFile> list = fileUtils.parseInsertFileInfo(notice.getNoticeUuid(), request);
 		if(list != null && !list.isEmpty()) {
-			for(Map<String, Object> fileMap : list) {
-				noticeMapper.insertFile(fileMap);
-			}
+			noticeMapper.insertFile(list);
 		}
 	}
 
