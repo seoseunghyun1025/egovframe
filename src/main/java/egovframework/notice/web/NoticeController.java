@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.notice.dto.Notice;
@@ -94,7 +95,8 @@ public class NoticeController {
 	
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/insertNotice.do", method = RequestMethod.POST)
-	public String noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model, MultipartHttpServletRequest mpRequest) throws Exception {
+	@ResponseBody
+	public void noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model, MultipartHttpServletRequest mpRequest) throws Exception {
 		Notice notice = new Notice();
 		
 		UUID uuid = UUID.randomUUID();
@@ -115,20 +117,7 @@ public class NoticeController {
 			notice.setNoticeContent(request.getParameter("noticeContent"));
 		}
 
-		int resultNumber = noticeService.insertNotice(notice, mpRequest, noticeUuid);
-		
-		if(resultNumber > 0) {
-			return "redirect:/notice/noticeList.do";
-		}else {
-			// model로 성공, 실패 보내기 (response 제거)
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script type='text/javascript'>alert('해당 글을 등록하는데 실패하였습니다.');</script>");
-			out.flush();
-			
-			return "redirect:/notice/insertNoticeForm.do";
-		}
+		noticeService.insertNotice(notice, mpRequest, noticeUuid);
 	}
 	
 	@Auth(role = Role.ADMIN)

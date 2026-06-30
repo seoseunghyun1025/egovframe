@@ -101,13 +101,13 @@ public class InvestmentController {
     }
     
     @RequestMapping(value="/regist.do", method=RequestMethod.POST)
-    public String registAction(InvestmentDTO dto) throws Exception {
+    @ResponseBody 
+    public void registAction(InvestmentDTO dto) throws Exception {
     	if (dto.getId() > 0) {
             investmentService.updateInvestment(dto);
         } else {
             investmentService.insertInvestment(dto);
         }
-        return "redirect:/investment/list.do";
     }
     
     @RequestMapping(value="/update.do", method=RequestMethod.POST)

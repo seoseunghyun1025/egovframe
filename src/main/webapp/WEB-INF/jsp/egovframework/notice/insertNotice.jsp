@@ -17,7 +17,7 @@
 		<h2>공지사항 작성</h2>
 	</div>    
 	<div class="my-3 p-3 bg-body rounded shadow-sm">
-	    <form class="needs-validation" action="/notice/insertNotice.do" method="POST" enctype="multipart/form-data" novalidate>
+	    <form id="registForm" class="needs-validation" action="/notice/insertNotice.do" method="POST" enctype="multipart/form-data" novalidate>
 	    	<div class="row g-3">
 	    		<div class="col-12">
 	    			<label for="title" class="form-label">제목</label>
@@ -40,7 +40,7 @@
 					<input class="form-control" type="file" id="file" name="files" multiple="multiple">	
 				</div>
 				<div class="btn-box">
-	        		<button type="submit" class="w-20 btn btn-primary">등록</button>
+	        		<button type="button" class="w-20 btn btn-primary" onclick="registNotice()">등록</button>
 	        		<a class="btn btn-outline-dark" href="/notice/noticeList.do">취소</a>
 	        	</div>
 	        	<input type="hidden" name="writeId" value="${loginMember.name}"required>
@@ -49,6 +49,31 @@
     </div>
     
    	<script type="text/javascript">
+	   	function registNotice(){
+			var formData = new FormData($("#registForm")[0]);
+			
+			$.ajax({
+				url : "/notice/insertNotice.do",
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				beforeSend : function(xmlHttpRequest){
+					xmlHttpRequest.setRequestHeader("AJAX", "true");
+				},
+				success : function(){
+					location.href = location.origin + "/notice/noticeForm.do"
+				},
+				error : function(e) {
+					if(e.status == 400){
+						new Swal("", "session값이 존재하지 않습니다. 3초 후 로그인 페이지로 이동됩니다.", "error");
+						setTimeout(function(){
+							location.href = location.origin + "/member/loginForm.do";
+						}, 3000);				
+					}
+				}
+			}) 
+		}
         $(document).ready(function() {        
           	//유효성 검사
             $(".needs-validation").submit(function(){

@@ -7,10 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>투자 등록</title>
-    <script src="/js/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/egovframework/investment/investmentRegist.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -25,7 +26,7 @@
     </c:choose>
     <div class="my-3 p-3 bg-body rounded shadow-sm">
     <div class="row g-3">	
-    <form id="investmentForm" class="needs-validation" action="<c:url value='/investment/regist.do'/>" method="post" novalidate>
+    <form id="investmentForm" class="needs-validation" novalidate>
     	<input type="hidden" name="id" value="${investmentDTO.id}">
     	<input type="hidden" name="memberId" value="${loginMember.memberId}">
     	
@@ -126,11 +127,11 @@
         <div class="btn-box">
     		<c:choose>
         		<c:when test="${not empty investmentDTO.id && investmentDTO.id > 0}">
-            		<button type="submit" class="w-20 btn btn-primary">수정하기</button>
+            		<button type="button" class="w-20 btn btn-primary" onclick="updateInvestment()">수정하기</button>
             		<button type="button" id="btn-delete" class="w-20 btn btn-danger" data-id="${investmentDTO.id}">삭제하기</button>
         		</c:when>
         		<c:otherwise>
-            		<button type="submit" class="w-20 btn btn-dark">저장하기</button>
+            		<button type="submit" class="w-20 btn btn-dark" onclick="registInvestment()">저장하기</button>
         		</c:otherwise>
     		</c:choose>
     		<button type="button" id="list" class="w-20 btn btn-outline-dark">취소</button>
@@ -143,7 +144,58 @@
 	</div>
 </main>
 </body>
-	<script type="text/javascript">        
+	<script type="text/javascript">
+		function registInvestment(){
+			var formData = $("#investmentForm").serialize();
+			
+			$.ajax({
+				url : "/investment/regist.do",
+				type: "POST",
+				data: formData,
+				beforeSend : function(xmlHttpRequest){
+					xmlHttpRequest.setRequestHeader("AJAX", "true");
+				},
+				success : function(){
+					location.href = location.origin + "/investment/list.do"
+				},
+				error : function(e) {
+					if(e.status == 400){
+						new Swal("", "session값이 존재하지 않습니다. 3초 후 로그인 페이지로 이동됩니다.", "error");
+						setTimeout(function(){
+							location.href = location.origin + "/member/loginForm.do";
+						}, 3000);				
+					}
+				}
+			}) 
+		}
+		
+		function updateInvestment(){
+			var formData = $("#investmentForm").serialize();
+			
+			$.ajax({
+				url : "/investment/regist.do",
+				type: "POST",
+				data: formData,
+				beforeSend : function(xmlHttpRequest){
+					xmlHttpRequest.setRequestHeader("AJAX", "true");
+				},
+				success : function(){
+					location.href = location.origin + "/investment/list.do"
+				},
+				error : function(e) {
+					if(e.status == 400){
+						new Swal("", "session값이 존재하지 않습니다. 3초 후 로그인 페이지로 이동됩니다.", "error");
+						setTimeout(function(){
+							location.href = location.origin + "/member/loginForm.do";
+						}, 3000);				
+					}
+				}
+			}) 
+		}
+		
+		function makeView(data){
+			alert(data);
+		}
         $(document).ready(function(){
 			$("#btn-delete").on("click", function(){
 				var id = $(this).data("id");
@@ -154,7 +206,7 @@
 			$("#list").click(function() {
     			window.location = "/investment/list.do";
         	});
-        	
+
         	//유효성 검사
         	$("#investmentForm").submit(function(){
 				if($("#assetName").val() == ""){

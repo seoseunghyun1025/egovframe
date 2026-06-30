@@ -16,7 +16,7 @@ public interface NoticeService {
 	
 	void selectSearch(Model model, SearchType type, String keyword, int page) throws Exception;
 	
-	int insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception;
+	void insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception;
 	
 	void updatePost(Notice notice, MultipartHttpServletRequest request) throws Exception;
 	
