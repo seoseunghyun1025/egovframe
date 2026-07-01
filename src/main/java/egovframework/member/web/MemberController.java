@@ -31,7 +31,7 @@ public class MemberController {
 	
 	@RequestMapping(value="/registForm.do", method=RequestMethod.GET)
     public String registView() throws Exception {
-    	return "member/memberRegist"; 
+    	return "member/memberRegist";
     }
 	
 	@RequestMapping(value="/regist.do", method=RequestMethod.POST)

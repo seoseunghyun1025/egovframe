@@ -3,10 +3,12 @@ package egovframework.notice.web;
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -96,28 +98,41 @@ public class NoticeController {
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/insertNotice.do", method = RequestMethod.POST)
 	@ResponseBody
-	public void noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model, MultipartHttpServletRequest mpRequest) throws Exception {
+	public String noticeInsert(HttpServletRequest request, HttpServletResponse response, Model model, MultipartHttpServletRequest mpRequest) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		//저장, 유효성 검사 분리
+		//유효성 검사는 .json으로 
+		//JSONObject<String, Stri> jsonObject = new JSONObject<>();
 		Notice notice = new Notice();
 		
 		UUID uuid = UUID.randomUUID();
 		String noticeUuid = uuid.toString();
 		notice.setNoticeUuid(noticeUuid);
-				
+		boolean flag = false;
 		//스크립트에서 체크 후 컨트롤러로 넘어오게 구현
 		//없을 때 에러 표시 화면으로 경고창 뜨게 구현
-		if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
-			notice.setWriteId(request.getParameter("writeId"));
+		if(request.getParameter("writeId") == null && request.getParameter("writeId").isBlank() == true) {
+			//jsonObject.put("status", "writeId");
+			return "작성자";
 		}
 		
-		if(request.getParameter("noticeTitle") != null && request.getParameter("noticeTitle").isBlank() == false) {
-			notice.setNoticeTitle(request.getParameter("noticeTitle"));
+		if(request.getParameter("noticeTitle") == null && request.getParameter("noticeTitle").isBlank() == true) {
+			result.put("status", "작성자를 작성하세요");
+			return "제목";
 		}
 		
-		if(request.getParameter("noticeContent") != null && request.getParameter("noticeContent").isBlank() == false) {
-			notice.setNoticeContent(request.getParameter("noticeContent"));
+		if(request.getParameter("noticeContent") == null && request.getParameter("noticeContent").isBlank() == true) {
+			result.put("status", "작성자를 작성하세요");
+			return "내용";
 		}
+		
+		notice.setWriteId(request.getParameter("writeId"));
+		notice.setNoticeTitle(request.getParameter("noticeTitle"));
+		notice.setNoticeContent(request.getParameter("noticeContent"));
 
 		noticeService.insertNotice(notice, mpRequest, noticeUuid);
+		result.put("status", "success");
+		return "성공";
 	}
 	
 	@Auth(role = Role.ADMIN)
@@ -140,26 +155,31 @@ public class NoticeController {
 	 
 	@Auth(role = Role.ADMIN)
 	@RequestMapping(value = "/noticeUpdate.do", method=RequestMethod.POST)
-	public String updatePost(MultipartHttpServletRequest request) throws Exception {
+	public String updatePost(MultipartHttpServletRequest request, Model model) throws Exception {
 
 		Notice notice= new Notice();
 
-		if(request.getParameter("noticeUuid") != null && request.getParameter("noticeUuid").isBlank() == false) {
-			notice.setNoticeUuid(request.getParameter("noticeUuid"));
+		if(request.getParameter("noticeUuid") == null && request.getParameter("noticeUuid").isBlank() == true) {
+			
 		}
 
-		if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
-	        notice.setWriteId(request.getParameter("writeId"));
+		if(request.getParameter("writeId") == null && request.getParameter("writeId").isBlank() == true) {
+	        
 	    }
 
-	    if(request.getParameter("noticeTitle") != null && request.getParameter("noticeTitle").isBlank() == false) {
-	        notice.setNoticeTitle(request.getParameter("noticeTitle"));
+	    if(request.getParameter("noticeTitle") == null && request.getParameter("noticeTitle").isBlank() == true) {
+	        
 	    }
 
-	    if(request.getParameter("noticeContent") != null && request.getParameter("noticeContent").isBlank() == false) {
-	        notice.setNoticeContent(request.getParameter("noticeContent"));
+	    if(request.getParameter("noticeContent") == null && request.getParameter("noticeContent").isBlank() == true) {
+	        
 	    }
-
+	    
+	    notice.setNoticeUuid(request.getParameter("noticeUuid"));
+	    notice.setWriteId(request.getParameter("writeId"));
+	    notice.setNoticeTitle(request.getParameter("noticeTitle"));
+	    notice.setNoticeContent(request.getParameter("noticeContent"));
+	    
 	    noticeService.updatePost(notice, request);
 	    
 	    return "redirect:/notice/noticeList.do";

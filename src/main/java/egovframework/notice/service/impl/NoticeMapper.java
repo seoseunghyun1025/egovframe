@@ -19,7 +19,7 @@ public interface NoticeMapper {
 
     List<Notice> selectNoticeList(@Param("start") int start, @Param("end") int end) throws DataAccessException;
 
-    int insertNotice(Notice notice) throws Exception;
+    void insertNotice(Notice notice) throws Exception;
 
     void updateNotice(Notice notice) throws Exception;
 

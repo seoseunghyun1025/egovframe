@@ -10,23 +10,23 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="/js/jquery.min.js"></script>
 	<link href="/css/egovframework/notice/notice.css" rel="stylesheet">
+	<script src="/js/Bootstrap/form-validation.js"></script>
 </head>
 <body class="bg-light">
 <main class="container mx-auto my-5">
 	<div id="situation" class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm">
 		<h2>공지사항 작성</h2>
 	</div>    
+	<!-- enctype="multipart/form-data" -->
 	<div class="my-3 p-3 bg-body rounded shadow-sm">
-	    <form id="registForm" class="needs-validation" action="/notice/insertNotice.do" method="POST" enctype="multipart/form-data" novalidate>
+	    <form id="registForm" class="needs-validation" novalidate>
 	    	<div class="row g-3">
 	    		<div class="col-12">
-	    			<label for="title" class="form-label">제목</label>
-	    			<div class="input-group has-validation">
-	        			<input class="form-control" type="text" id="title" name="noticeTitle" required>
+	    			<label for="noticeTitle" class="form-label">제목</label>
+					<input class="form-control" type="text" id="noticeTitle" name="noticeTitle" required>
 	        			<div class="invalid-feedback">
 							제목을 입력하세요
 						</div>
-					</div>
 				</div>
 				<div class="col-12">
 					<label for="content" class="form-label">내용</label>
@@ -50,6 +50,10 @@
     
    	<script type="text/javascript">
 	   	function registNotice(){
+			var flag = validation();
+			if(flag){
+				return;
+			}
 			var formData = new FormData($("#registForm")[0]);
 			
 			$.ajax({
@@ -61,8 +65,20 @@
 				beforeSend : function(xmlHttpRequest){
 					xmlHttpRequest.setRequestHeader("AJAX", "true");
 				},
-				success : function(){
-					location.href = location.origin + "/notice/noticeForm.do"
+				success : function(result){
+					/* if(result.status["success"] == "success") {
+						alert("공지사항 등록에 성공했습니다.");
+						setTimeout(function(){
+							location.href = location.origin + "/notice/noticeList.do";
+						}, 3000);
+					} else {
+						alert("공지사항 등록에 실패했습니다.");
+						setTimeout(function(){
+							location.href = location.origin + "/notice/noticeList.do";
+						}, 3000);
+					}
+					 */
+					location.href = location.origin + "/notice/noticeList.do";
 				},
 				error : function(e) {
 					if(e.status == 400){
@@ -74,24 +90,23 @@
 				}
 			}) 
 		}
-        $(document).ready(function() {        
-          	//유효성 검사
-            $(".needs-validation").submit(function(){
-				if($("#title").val() == ""){
-					alert("제목을 입력하세요.");
-					$("#title").focus();
-					return false;
-				}
-				
-				if($("#content").val() == ""){
-					alert("내용을 입력하세요.");
-					$("#content").focus();
-					return false;
-				}
-        	})
-        });
+             
+        //유효성 검사
+        function validation(){   
+			if($("#noticeTitle").val() == ""){
+				alert("제목을 입력하세요.");
+				$("#noticeTitle").focus();
+				return true;
+			}
+					
+			if($("#content").val() == ""){
+				alert("내용을 입력하세요.");
+				$("#content").focus();
+				return true;
+			}
+       	}
     </script>
-	<script src="/js/Bootstrap/form-validation.js"></script>
+	
 </main>
 </body>
 </html>

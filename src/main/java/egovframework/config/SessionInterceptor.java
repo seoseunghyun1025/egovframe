@@ -51,7 +51,6 @@ public class SessionInterceptor implements HandlerInterceptor{
 	
 	private boolean isAjaxRequest(HttpServletRequest request) {
 		String header = request.getHeader("AJAX");
-		System.out.println("header: " + header);
 		if("true".equals(header)) {
 			return true;
 		}

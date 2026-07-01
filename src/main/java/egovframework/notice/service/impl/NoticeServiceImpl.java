@@ -78,14 +78,13 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception {
+	public void insertNotice(Notice notice, MultipartHttpServletRequest request, String noticeUuid) throws Exception {
 		// TODO Auto-generated method stub
-		int result = noticeMapper.insertNotice(notice);
+		noticeMapper.insertNotice(notice);
 		List<NoticeFile> list = fileUtils.parseInsertFileInfo(noticeUuid, request);
 		if(list.isEmpty() == false) {
 			noticeMapper.insertFile(list);
 		}
-		return result;
 	}
 
 	@Override

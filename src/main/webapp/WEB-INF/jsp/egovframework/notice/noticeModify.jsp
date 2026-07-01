@@ -18,7 +18,7 @@
 	    <h2>공지사항 수정</h2>
 	</div>
 	<div class="my-3 p-3 bg-body rounded shadow-sm">
-	    <form class="needs-validation" action="/notice/noticeUpdate.do" method="POST" enctype="multipart/form-data" novalidate>
+	    <form class="needs-validation" id="noticeModifyForm" action="/notice/noticeUpdate.do" method="POST" enctype="multipart/form-data" novalidate>
 	    	<div id="deleteFilesContainer"></div>
 	        <input type="hidden" name="noticeUuid" value="${noticeUuid}">
 	        <div class="row g-3">
@@ -63,10 +63,9 @@
 	        
 	        
 	        <div class="btn-box">
-	        	<button class="btn btn-primary" type="submit">수정 완료</button>
+	        	<button class="btn btn-primary submitButton" type="submit">수정 완료</button>
 	        	<a class="btn btn-outline-dark" href="/notice/noticeList.do">취소</a>
 	        </div>
-	        
 	        </div>
 	    </form>
 	</div>
@@ -84,7 +83,22 @@
 	    	$("#deleteFilesContainer").append("<input type='hidden' name='deleteFiles' value='" + fileId + "' />");
 	    	$(this).closest(".existing-file-item").remove();
 		});
-	});
+	    
+	    $("#noticeModifyForm").submit(function(){
+	    	if($("#title").val() == ""){
+				alert("제목을 입력하세요.");
+				$("#title").focus();
+				return false;
+			}
+					
+			if($("#content").val() == ""){
+				alert("내용을 입력하세요.");
+				$("#content").focus();
+				return false;
+			}
+	    })
+	}); 
+	
 </script>
 </body>
 </html>

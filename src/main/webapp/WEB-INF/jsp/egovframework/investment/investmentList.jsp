@@ -8,6 +8,7 @@
     <title>나의 투자 기록</title>
     <!--favicon 404 방지-->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/egovframework/investment/investment.css'/>">
     <script src="/js/jquery.min.js"></script>
 </head>
@@ -24,8 +25,8 @@
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
-        <button type="button" id="newRegistInvestment" class="btn-link" >투자 작성</button> 
-        <button type="button" id="notice" class="btn-link" >공지 사항</button> <br> <br>
+        <button type="button" id="newRegistInvestment" class="btn btn-primary" >투자 작성</button> 
+        <button type="button" id="notice" class="btn btn-purple" >공지 사항</button> <br> <br>
         <table>
             <thead>
                 <tr>

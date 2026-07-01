@@ -86,7 +86,7 @@
         
         <div class="col-12 mb-3">
             <h6><span class="text-danger fw-bold">*</span>통화</h6>
-            <div class="form-check">
+            <div class="form-check" id="currenchRadio">
             	<input type="radio" name="currency"  value="KRW" class="form-check-input radionClass" <c:if test="${investmentDTO.currency eq 'KRW'}">checked</c:if> required>
             	<label class="form-check-label" for="KRW">
             		KRW
@@ -146,6 +146,10 @@
 </body>
 	<script type="text/javascript">
 		function registInvestment(){
+			var flag = validation();
+			if(flag){
+				return;
+			}
 			var formData = $("#investmentForm").serialize();
 			
 			$.ajax({
@@ -170,6 +174,10 @@
 		}
 		
 		function updateInvestment(){
+			var flag = validation();
+			if(flag){
+				return;
+			}
 			var formData = $("#investmentForm").serialize();
 			
 			$.ajax({
@@ -193,8 +201,43 @@
 			}) 
 		}
 		
-		function makeView(data){
-			alert(data);
+		function validation(){
+				if($("#assetName").val() == ""){
+					alert("종목명을 입력하세요.");
+					$("#assetName").focus();
+					return true;
+				}
+				
+				if($("#txType").val() == ""){
+					alert("거래 구분을 선택하세요.");
+					$("#txType").focus();
+					return true;
+				}
+				
+				if($("#buyPrice").val() <= 0.0 || $("#buyPrice").val() == null || $("#buyPrice").val() == ""){
+					console.log($("#buyPrice").val());
+					alert("단가를 입력하세요.");
+					$("#buyPrice").focus();
+					return true;
+				}
+				
+				if($("#quantity").val() == 0.0 || $("#quantity").val() == null || $("#quantity").val() == ""){
+					alert("수량을 입력하세요.");
+					$("#quantity").focus();
+					return true;
+				}
+				
+				if($("input[name=currency]:radio:checked").length < 1){
+					alert("통화를 선택하세요.");
+					$("#currenchRadio").focus();
+					return true;
+				}
+					
+				if($("#exchange").val() == ""){
+					alert("거래소를 선택하세요.");
+					$("#exchange").focus();
+					return true;
+				}
 		}
         $(document).ready(function(){
 			$("#btn-delete").on("click", function(){
@@ -206,44 +249,6 @@
 			$("#list").click(function() {
     			window.location = "/investment/list.do";
         	});
-
-        	//유효성 검사
-        	$("#investmentForm").submit(function(){
-				if($("#assetName").val() == ""){
-					alert("종목명을 입력하세요.");
-					$("#assetName").focus();
-					return false;
-				}
-				
-				if($("#txType").val() == ""){
-					alert("거래 구분을 선택하세요.");
-					$("#txType").focus();
-					return false;
-				}
-				
-				if($("#buyPrice").val() == 0.0){
-					alert("단가를 입력하세요.");
-					$("#buyPrice").focus();
-					return false;
-				}
-				
-				if($("#quantity").val() == 0.0){
-					alert("수량을 입력하세요.");
-					$("#quantity").focus();
-					return false;
-				}
-				
-				if($('input[type="radio"]').is(':checked') == false){
-					alert("통화를 선택하세요.");
-					return false;
-				}
-					
-				if($("#exchange").val() == ""){
-					alert("거래소를 선택하세요.");
-					$("#exchange").focus();
-					return false;
-				}
-        	})
         })
 	</script>
 	<script src="/js/Bootstrap/form-validation.js"></script>

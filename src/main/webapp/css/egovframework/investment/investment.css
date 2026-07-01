@@ -80,3 +80,13 @@ tr:hover { background-color: #f8faff; cursor: pointer; }
 	background-color: #fff5f5;
 	border-color: #feb2b2;
 }
+
+.btn-purple {
+    background-color: #6f42c1 !important;
+    color: #ffffff !important;
+}
+
+.btn-purple:hover {
+    background-color: #563d7c !important;
+    color: #ffffff !important;
+}
