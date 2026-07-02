@@ -65,6 +65,52 @@
             </tbody>
         </table>
     </section>
+    
+    <nav aria-label="Page navigation example">
+    	<ul class="pagination">
+    		<li class="page-item"><a class="page-link" id="startPage"><<</a></li>
+    		<c:if test="${pageInfo.pageNo <= 1}">
+    			<li class="page-item disabled"><a class="page-link" tabindex="-1" aria-disabled="true"><</a></li>
+    		</c:if>
+    		
+    		<c:if test="${pageInfo.pageNo > 1}">
+    			<li class="page-item"><a class="page-link" id="prevPage"><</a></li>
+    		</c:if>
+    		
+    		<c:forEach var="p" begin="${pageInfo.startPage}" end="${pageInfo.endPage}" step="1">
+    		
+    			<c:if test="${pageInfo.pageNo eq p}">
+    				<li class="page-item disabled">
+    					<a class="page-link" tabindex="-1" aria-disabled="true">
+    						<c:out value="${p}"></c:out>
+    					</a>
+    				</li>
+    			</c:if>
+    			
+    			<c:if test="${pageInfo.pageNo ne p}">
+    				<a class="page-link paging-button" >
+    					<c:out value="${p}"></c:out>
+    				</a>
+    			</c:if>
+    		</c:forEach>
+    		
+    		<c:if test="${pageInfo.pageNo >= pageInfo.maxPage}">
+    			<li class="page-item disabled">
+	    			<a class="page-link" tabindex="-1" aria-disabled="true">></a>
+    			</li>
+    		</c:if>
+    		
+    		<c:if test="${pageInfo.pageNo < pageInfo.maxPage}">
+    			<li class="page-item">
+    				<a class="page-link" id="nextPage">></a>
+    			</li>
+    		</c:if>
+    		
+    		<li class="page-item">
+    			<a class="page-link" id="maxPage">>></a>
+    		</li>
+    	</ul>	
+    <%-- 
     <button id="startPage"><<</button>
     <c:if test="${pageInfo.pageNo <= 1}">
     	<button disabled><</button>
@@ -96,7 +142,9 @@
     	<button id="nextPage">></button>
     </c:if>
     
-    <button id="maxPage">>></button>
+    <button id="maxPage">>></button> --%>
+    	</ul>
+    </nav>
     <form id="updateInvestmentForm" action="/investment/update.do" method="POST">
     	<input type="hidden" id="update" name="id" value=""/>
     </form>
