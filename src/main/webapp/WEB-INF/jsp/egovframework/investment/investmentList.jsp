@@ -25,7 +25,7 @@
 <div class="container">
     <section id="listSection">
         <h3>📜 전체 투자 내역</h3>
-        <button type="button" id="newRegistInvestment" class="btn btn-primary" >투자 작성</button> 
+        <button type="button" id="newRegistInvestment" class="btn btn-secondary" >투자 작성</button> 
         <button type="button" id="notice" class="btn btn-purple" >공지 사항</button> <br> <br>
         <table>
             <thead>
@@ -42,7 +42,6 @@
             <tbody id="investmentTableBody">
                 <c:choose>
                     <c:when test="${not empty list}">
-                    <!--  -->
                         <c:forEach var="item" items="${list}">
                             <tr id="registInvestment" class="investment-row" data-id="${item.id}">
                                 <td>${item.id}</td>
@@ -53,7 +52,6 @@
                                     </span>	
                                 </td>
                                 <td><fmt:formatNumber value="${item.buyPrice}" pattern="#,###"/></td>
-                                <!-- format의 종류 공부 -->
                                 <td>${item.quantity}</td>
                                 <td>${item.buyDate}</td>
                                 <td><c:out value="${item.memo}" default="-"/></td>
@@ -67,6 +65,38 @@
             </tbody>
         </table>
     </section>
+    <button id="startPage"><<</button>
+    <c:if test="${pageInfo.pageNo <= 1}">
+    	<button disabled><</button>
+    </c:if>
+    
+    <c:if test="${pageInfo.pageNo > 1}">
+    	<button id="prevPage"><</button>
+    </c:if>
+    
+    <c:forEach var="p" begin="${pageInfo.startPage}" end="${pageInfo.endPage}" step="1">
+    	<c:if test="${pageInfo.pageNo eq p}">
+    		<button disabled>
+    			<c:out value="${p}"></c:out>
+    		</button>
+    	</c:if>
+    	
+    	<c:if test="${pageInfo.pageNo ne p}">
+    		<button class="paging-button">
+    			<c:out value="${p}"></c:out>
+    		</button>
+    	</c:if>
+    </c:forEach>
+    
+    <c:if test="${pageInfo.pageNo >= pageInfo.maxPage}">
+    	<button disabled>></button>
+    </c:if>
+    
+    <c:if test="${pageInfo.pageNo < pageInfo.maxPage}">
+    	<button id="nextPage">></button>
+    </c:if>
+    
+    <button id="maxPage">>></button>
     <form id="updateInvestmentForm" action="/investment/update.do" method="POST">
     	<input type="hidden" id="update" name="id" value=""/>
     </form>
@@ -94,6 +124,30 @@
 			$("#updateInvestmentForm").submit();
         })
     });
+    
+    const PAGING_PATH = "/investment/list.do";
+    $(function(){
+		$("#startPage").on("click", function(){
+			location.href = PAGING_PATH + "?currentPage=1";
+		})
+		
+		$("#prevPage").on("click", function(){
+			location.href = PAGING_PATH + "?currentPage=${pageInfo.pageNo - 1}";
+		})
+		
+		$("#nextPage").on("click", function(){
+			location.href = PAGING_PATH + "?currentPage=${pageInfo.pageNo + 1}";
+		})
+		
+		$("#maxPage").on("click", function(){
+			location.href = PAGING_PATH + "?currentPage=${pageInfo.maxPage}";
+		})
+		
+		$(".paging-button").on("click", function(){
+			let pageNumber = $(this).text();
+			location.href = PAGING_PATH + "?currentPage=" + pageNumber;
+		})
+    })
 </script>
 </body>
 </html>

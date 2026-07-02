@@ -17,24 +17,82 @@
 	</resultMap>
     <!-- resultmap을 쓰면 snake case와 camel case를 강제로 연결시켜주는 용도 -->
 
-	<select id="selectInvestmentList" resultMap="investmentMap">
+	<select id="selectInvestmentList" parameterType="egovframework.page.dto.PageInfoDTO" resultMap="investmentMap">
         SELECT 
-            ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
-            COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
-            MEMO
-        FROM INVESTMENT
-        WHERE DEL_YN = 'N' AND MEMBER_ID = #{memberId, jdbcType=NUMERIC}
-        ORDER BY BUY_DATE DESC, ID DESC
+			A.RNUM,
+			A.ID,
+		    A.ASSET_NAME,
+		    A.TX_TYPE,
+		    A.BUY_DATE,
+		    A.QUANTITY,
+		    A.MEMO
+		FROM(
+			SELECT
+				ROWNUM AS RNUM,
+				B.ID,
+			    B.ASSET_NAME,
+			    B.TX_TYPE,
+			    B.BUY_DATE,
+			    B.QUANTITY,
+			    B.MEMO
+			FROM(
+				SELECT 
+					C.ID,
+				    C.ASSET_NAME,
+				    C.TX_TYPE,
+				    C.BUY_PRICE,
+				    C.QUANTITY,
+				    C.BUY_DATE,
+				    C.MEMO
+				FROM INVESTMENT C
+				WHERE DEL_YN = 'N' AND MEMBER_ID = #{memberId, jdbcType=NUMERIC}
+				ORDER BY C.ID DESC
+			) B
+		) A
+		WHERE A.RNUM BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
     </select>
     
-    <select id="selectAllInvestmentList" resultMap="investmentMap">
+    <select id="selectAllInvestmentList" parameterType="egovframework.page.dto.PageInfoDTO" resultMap="investmentMap">
         SELECT 
-            ID, ASSET_NAME, TX_TYPE, BUY_PRICE, QUANTITY, 
-            COMMISSION, CURRENCY, EXCHANGE, TO_CHAR(BUY_DATE, 'YYYY-MM-DD') AS BUY_DATE,
-            MEMO
-        FROM INVESTMENT
-        WHERE DEL_YN = 'N'
-        ORDER BY BUY_DATE DESC, ID DESC
+			A.RNUM,
+			A.ID,
+		    A.ASSET_NAME,
+		    A.TX_TYPE,
+		    A.BUY_DATE,
+		    A.QUANTITY,
+		    A.MEMO
+		FROM(
+			SELECT
+				ROWNUM AS RNUM,
+				B.ID,
+			    B.ASSET_NAME,
+			    B.TX_TYPE,
+			    B.BUY_DATE,
+			    B.QUANTITY,
+			    B.MEMO
+			FROM(
+				SELECT 
+					C.ID,
+				    C.ASSET_NAME,
+				    C.TX_TYPE,
+				    C.BUY_PRICE,
+				    C.QUANTITY,
+				    C.BUY_DATE,
+				    C.MEMO
+				FROM INVESTMENT C
+				WHERE DEL_YN = 'N'
+				ORDER BY C.ID DESC
+			) B
+		) A
+		WHERE A.RNUM BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
+    </select>
+    
+    <select id="totalAllCount" resultType="int">
+    	SELECT COUNT(*) FROM INVESTMENT WHERE DEL_YN = 'N'
+    </select>
+    
+    <select id="totalCount" resultType="int">
+    	SELECT COUNT(*) FROM INVESTMENT WHERE DEL_YN = 'N' AND MEMBER_ID = #{memberId}
     </select>
     
     <insert id="insertInvestment" parameterType="egovframework.investment.service.InvestmentDTO">

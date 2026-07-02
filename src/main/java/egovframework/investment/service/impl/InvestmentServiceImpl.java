@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentService;
 import egovframework.investment.service.InvestmentSummaryDTO;
+import egovframework.page.dto.PageInfoDTO;
 import egovframework.role.enums.Auth.Role;
 
 @Service("investmentService")
@@ -17,14 +18,25 @@ public class InvestmentServiceImpl extends EgovAbstractServiceImpl implements In
     private InvestmentMapper investmentMapper;
 
 	@Override
-	public List<InvestmentDTO> selectInvestmentList(Role role, Long memberId) throws Exception {
+	public List<InvestmentDTO> selectInvestmentList(PageInfoDTO pageInfo, Role role, Long memberId) throws Exception {
 		// TODO Auto-generated method stub
 		
 		if(role.equals(Role.ADMIN)) {
-			return investmentMapper.selectAllInvestmentList();
+			return investmentMapper.selectAllInvestmentList(pageInfo);
 		}
 		
-		return investmentMapper.selectInvestmentList(memberId);
+		return investmentMapper.selectInvestmentList(pageInfo, memberId);
+	}
+	
+	@Override
+	public int totalCount(Role role, Long memberId) throws Exception {
+		// TODO Auto-generated method stub
+		
+		if(role.equals(Role.ADMIN)) {
+			return investmentMapper.totalAllCount();
+		}
+		
+		return investmentMapper.totalCount(memberId);
 	}
 
 	@Override

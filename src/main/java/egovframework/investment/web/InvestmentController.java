@@ -46,6 +46,7 @@ package egovframework.investment.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +56,8 @@ import org.springframework.web.servlet.ModelAndView;
 import egovframework.investment.service.InvestmentDTO;
 import egovframework.investment.service.InvestmentService;
 import egovframework.member.dto.Member;
+import egovframework.page.dto.PageInfoDTO;
+import egovframework.pagenation.Pagenation;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -67,21 +70,32 @@ public class InvestmentController {
     private InvestmentService investmentService;
     
     @RequestMapping(value="/list.do", method=RequestMethod.GET)
-    public ModelAndView selectInvestmentListView(HttpServletRequest request) throws Exception {
+    public ModelAndView selectInvestmentListView(HttpServletRequest request, @RequestParam(required = false, defaultValue = "1") int currentPage) throws Exception {
     	HttpSession session = request.getSession(false);
     	Member member = new Member();
-    	List<InvestmentDTO> list = null;
     	
     	if(session != null) {
     		member = (Member)session.getAttribute("loginMember");
     	}
     	
-        ModelAndView mav = new ModelAndView();
+    	//페이징
+    	int pageNo = 1;
+    	
+    	//넘어온 currentPage 값이 0이하면 1로 설정
+    	if(currentPage <= 0) {
+    		pageNo = 1;
+    	}else {
+    		pageNo = currentPage;
+    	}
+    	
+    	int totalCount = investmentService.totalCount(member.getRole(), member.getMemberId());
+    	PageInfoDTO pageInfo = Pagenation.getPageInfo(pageNo, totalCount);
+    	List<InvestmentDTO> list = investmentService.selectInvestmentList(pageInfo, member.getRole(), member.getMemberId());
+                
+    	ModelAndView mav = new ModelAndView();
         
-        list = investmentService.selectInvestmentList(member.getRole(), member.getMemberId());
-        
-        mav.addObject("list", list);
-        
+    	mav.addObject("list", list);
+    	mav.addObject("pageInfo", pageInfo);
         mav.setViewName("investment/investmentList");
         
         return mav; 
